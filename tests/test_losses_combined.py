@@ -355,8 +355,8 @@ class TestAspireLoss:
         for name, value in result.items():
             assert not torch.isnan(value).any(), f"{name} contains NaN"
             assert not torch.isinf(value).any(), f"{name} contains Inf"
-            # Losses should generally be non-negative
-            assert value >= 0 or name in ["trajectory"], f"{name} is negative"
+            # Losses should generally be non-negative (allow small floating point errors)
+            assert value >= -1e-6 or name in ["trajectory"], f"{name} is negative: {value}"
 
     def test_aspire_loss_gradient_flow_critic(self, batch_size, hidden_dim):
         """Gradients flow correctly for critic training."""
