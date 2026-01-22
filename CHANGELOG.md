@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-01-22
+
 ### Added
 - `aspire doctor` command for environment diagnostics
 - `--version` / `-V` flag to CLI
@@ -14,9 +16,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - SECURITY.md for vulnerability reporting
 - Dependabot configuration for automated dependency updates
 - Comprehensive CONTRIBUTING.md guide
+- Input validation for all teacher implementations
+- Expanded test suite with 7 new test files
+- CI and PyPI badges to README
 
 ### Changed
 - CLI now shows help when run without arguments
+- Improved error handling across the codebase
+
+### Security
+- Added ClaudeTeacherError and OpenAITeacherError for better error handling
+- API keys now validated before use with actionable error messages
 
 ## [0.1.0] - 2026-01-22
 
@@ -61,5 +71,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - LoRA fine-tuning via PEFT
 - Async teacher API calls
 
-[Unreleased]: https://github.com/mikeyfrilot/aspire-ai/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/mikeyfrilot/aspire-ai/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/mikeyfrilot/aspire-ai/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/mikeyfrilot/aspire-ai/releases/tag/v0.1.0

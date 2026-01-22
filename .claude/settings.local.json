@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m pytest:*)",
+      "Bash(python -m pytest tests/test_config.py -v --tb=short)",
+      "Bash(python -m pytest tests/test_trainer.py -v --tb=short)",
+      "Bash(find:*)",
+      "Bash(python:*)"
+    ]
+  }
+}
