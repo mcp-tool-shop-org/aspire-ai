@@ -81,6 +81,8 @@ class LocalTeacher(BaseTeacher):
         challenge_type: ChallengeType | None = None,
     ) -> TeacherChallenge:
         """Generate a challenge using local model."""
+        # Validate inputs
+        self._validate_input(prompt=prompt, student_response=student_response)
 
         if challenge_type is None:
             challenge_type = self.select_challenge_type(dialogue_history)
@@ -137,6 +139,8 @@ Generate a single challenging question or statement.<|end|>
         generate_improved: bool = True,
     ) -> TeacherEvaluation:
         """Evaluate using local model."""
+        # Validate inputs
+        self._validate_input(prompt=prompt, student_response=student_response)
 
         history_context = ""
         if dialogue_history and dialogue_history.turns:

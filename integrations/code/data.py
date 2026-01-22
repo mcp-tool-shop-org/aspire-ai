@@ -10,6 +10,7 @@ Provides utilities for:
 from __future__ import annotations
 
 import json
+import logging
 import os
 import random
 import subprocess
@@ -24,6 +25,8 @@ from torch.utils.data import Dataset, IterableDataset
 from .config import Language
 from .code_teacher import CodeSample, CodeCritique, CodeTeacher
 from .analysis import detect_language
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -215,7 +218,8 @@ class GitHubRepoCollector:
 
                 try:
                     code = path.read_text(encoding="utf-8", errors="ignore")
-                except Exception:
+                except (OSError, UnicodeDecodeError) as e:
+                    logger.debug(f"Skipping file {path}: {e}")
                     continue
 
                 lines = code.split("\n")
@@ -244,8 +248,8 @@ class GitHubRepoCollector:
                     repo, language, max_files=files_per_repo
                 ):
                     yield repo, filename, code
-            except Exception as e:
-                print(f"Failed to collect from {repo}: {e}")
+            except (OSError, subprocess.CalledProcessError) as e:
+                logger.warning(f"Failed to collect from {repo}: {e}")
                 continue
 
 
@@ -279,7 +283,7 @@ def generate_training_pairs(
         try:
             critique = teacher.critique(sample)
         except Exception as e:
-            print(f"Failed to critique {filename}: {e}")
+            logger.warning(f"Failed to critique {filename}: {e}")
             continue
 
         pair = CodeReviewPair(
@@ -305,7 +309,7 @@ def save_training_data(
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
 
-    print(f"Saved {len(pairs)} training pairs to {output_path}")
+    logger.info(f"Saved {len(pairs)} training pairs to {output_path}")
 
 
 def load_training_data(input_path: str) -> list[CodeReviewPair]:
@@ -430,7 +434,8 @@ class StreamingCodeDataset(IterableDataset):
 
                     try:
                         critique = self.teacher.critique(sample)
-                    except Exception:
+                    except Exception as e:
+                        logger.debug(f"Failed to critique {filename}: {e}")
                         continue
 
                     # Tokenize
@@ -451,7 +456,7 @@ class StreamingCodeDataset(IterableDataset):
                     }
 
             except Exception as e:
-                print(f"Error processing repo {repo}: {e}")
+                logger.warning(f"Error processing repo {repo}: {e}")
                 continue
 
 

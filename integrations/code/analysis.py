@@ -8,6 +8,8 @@ and extracting features for the code critic.
 from __future__ import annotations
 
 import ast
+import json
+import logging
 import re
 import subprocess
 import tempfile
@@ -16,6 +18,8 @@ from pathlib import Path
 from typing import Any
 
 from .config import Language, CodeDimension
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -385,7 +389,6 @@ class CodeAnalyzer:
             )
 
             if result.stdout:
-                import json
                 try:
                     data = json.loads(result.stdout)
                     for item in data:
@@ -397,11 +400,13 @@ class CodeAnalyzer:
                             dimension=CodeDimension.STYLE,
                             rule_id=item.get("code", ""),
                         ))
-                except json.JSONDecodeError:
-                    pass
+                except json.JSONDecodeError as e:
+                    logger.debug(f"Failed to parse ruff output: {e}")
 
-        except (subprocess.TimeoutExpired, FileNotFoundError):
-            pass
+        except subprocess.TimeoutExpired:
+            logger.debug(f"Ruff timed out analyzing {filepath}")
+        except FileNotFoundError:
+            logger.debug("Ruff not available - skipping linting")
 
         return issues
 
@@ -431,8 +436,10 @@ class CodeAnalyzer:
                         rule_id="mypy",
                     ))
 
-        except (subprocess.TimeoutExpired, FileNotFoundError):
-            pass
+        except subprocess.TimeoutExpired:
+            logger.debug(f"Mypy timed out analyzing {filepath}")
+        except FileNotFoundError:
+            logger.debug("Mypy not available - skipping type checking")
 
         return issues
 
@@ -449,7 +456,6 @@ class CodeAnalyzer:
             )
 
             if result.stdout:
-                import json
                 try:
                     data = json.loads(result.stdout)
                     for item in data.get("results", []):
@@ -466,11 +472,13 @@ class CodeAnalyzer:
                             dimension=CodeDimension.SECURITY,
                             rule_id=item.get("test_id", ""),
                         ))
-                except json.JSONDecodeError:
-                    pass
+                except json.JSONDecodeError as e:
+                    logger.debug(f"Failed to parse bandit output: {e}")
 
-        except (subprocess.TimeoutExpired, FileNotFoundError):
-            pass
+        except subprocess.TimeoutExpired:
+            logger.debug(f"Bandit timed out analyzing {filepath}")
+        except FileNotFoundError:
+            logger.debug("Bandit not available - skipping security scanning")
 
         return issues
 

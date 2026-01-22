@@ -3,15 +3,43 @@ ASPIRE CLI - command line interface for training.
 """
 
 import json
+import os
+import shutil
+import sys
 from multiprocessing import freeze_support
 from pathlib import Path
+from typing import Optional
 
 import typer
 from rich.console import Console
+from rich.panel import Panel
 from rich.table import Table
 
-app = typer.Typer(help="ASPIRE: Adversarial Student-Professor Internalized Reasoning Engine")
+from aspire import __version__
+
+app = typer.Typer(
+    help="ASPIRE: Adversarial Student-Professor Internalized Reasoning Engine",
+    no_args_is_help=True,
+)
 console = Console()
+
+
+def version_callback(value: bool) -> None:
+    """Print version and exit."""
+    if value:
+        console.print(f"aspire [bold cyan]{__version__}[/bold cyan]")
+        raise typer.Exit()
+
+
+@app.callback()
+def main(
+    version: Optional[bool] = typer.Option(
+        None, "--version", "-V", callback=version_callback, is_eager=True,
+        help="Show version and exit."
+    ),
+) -> None:
+    """ASPIRE: Teaching AI to develop judgment, not just knowledge."""
+    pass
 
 
 @app.command()
@@ -197,6 +225,113 @@ def init(
     cfg = AspireConfig()
     cfg.to_yaml(output)
     console.print(f"[green]Created config file: {output}[/green]")
+
+
+@app.command()
+def doctor():
+    """Check your environment for ASPIRE compatibility."""
+    console.print(Panel.fit(
+        f"[bold]ASPIRE Environment Check[/bold]\nVersion {__version__}",
+        border_style="blue"
+    ))
+    console.print()
+
+    all_good = True
+
+    # Python version
+    py_version = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
+    if sys.version_info >= (3, 10):
+        console.print(f"[green]OK[/green]  Python {py_version} (>= 3.10 required)")
+    else:
+        console.print(f"[red]ERROR[/red]  Python {py_version} (>= 3.10 required)")
+        all_good = False
+
+    # PyTorch and CUDA
+    try:
+        import torch
+        console.print(f"[green]OK[/green]  PyTorch {torch.__version__}")
+
+        if torch.cuda.is_available():
+            gpu_name = torch.cuda.get_device_name(0)
+            gpu_mem = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+            console.print(f"[green]OK[/green]  CUDA available: {gpu_name} ({gpu_mem:.1f} GB)")
+
+            if gpu_mem < 8:
+                console.print(f"[yellow]WARN[/yellow]  GPU has < 8GB VRAM - may need 4-bit quantization")
+        else:
+            console.print(f"[yellow]WARN[/yellow]  CUDA not available - training will be slow on CPU")
+    except ImportError:
+        console.print(f"[red]ERROR[/red]  PyTorch not installed")
+        all_good = False
+
+    # Transformers
+    try:
+        import transformers
+        console.print(f"[green]OK[/green]  Transformers {transformers.__version__}")
+    except ImportError:
+        console.print(f"[red]ERROR[/red]  Transformers not installed")
+        all_good = False
+
+    # API Keys
+    console.print()
+    console.print("[bold]API Keys:[/bold]")
+
+    anthropic_key = os.environ.get("ANTHROPIC_API_KEY")
+    if anthropic_key:
+        masked = anthropic_key[:8] + "..." + anthropic_key[-4:] if len(anthropic_key) > 12 else "***"
+        console.print(f"[green]OK[/green]  ANTHROPIC_API_KEY set ({masked})")
+    else:
+        console.print(f"[yellow]WARN[/yellow]  ANTHROPIC_API_KEY not set")
+        console.print(f"         Set with: [cyan]export ANTHROPIC_API_KEY=your-key[/cyan]")
+
+    openai_key = os.environ.get("OPENAI_API_KEY")
+    if openai_key:
+        masked = openai_key[:8] + "..." + openai_key[-4:] if len(openai_key) > 12 else "***"
+        console.print(f"[green]OK[/green]  OPENAI_API_KEY set ({masked})")
+    else:
+        console.print(f"[dim]--[/dim]    OPENAI_API_KEY not set (optional)")
+
+    # Disk space
+    console.print()
+    console.print("[bold]Storage:[/bold]")
+
+    cache_dir = Path.home() / ".cache" / "huggingface"
+    if cache_dir.exists():
+        # Get size
+        total_size = sum(f.stat().st_size for f in cache_dir.rglob("*") if f.is_file())
+        size_gb = total_size / (1024**3)
+        console.print(f"[dim]--[/dim]    HuggingFace cache: {size_gb:.1f} GB at {cache_dir}")
+    else:
+        console.print(f"[dim]--[/dim]    HuggingFace cache: not yet created")
+
+    # Check free space
+    try:
+        total, used, free = shutil.disk_usage(Path.home())
+        free_gb = free / (1024**3)
+        if free_gb > 20:
+            console.print(f"[green]OK[/green]  Free disk space: {free_gb:.1f} GB")
+        elif free_gb > 10:
+            console.print(f"[yellow]WARN[/yellow]  Free disk space: {free_gb:.1f} GB (models can be large)")
+        else:
+            console.print(f"[red]ERROR[/red]  Free disk space: {free_gb:.1f} GB (may be insufficient)")
+            all_good = False
+    except Exception:
+        pass
+
+    # Summary
+    console.print()
+    if all_good:
+        console.print(Panel.fit(
+            "[bold green]All checks passed![/bold green]\nYou're ready to use ASPIRE.",
+            border_style="green"
+        ))
+    else:
+        console.print(Panel.fit(
+            "[bold red]Some issues found.[/bold red]\nPlease address the errors above.",
+            border_style="red"
+        ))
+
+    raise typer.Exit(0 if all_good else 1)
 
 
 if __name__ == "__main__":

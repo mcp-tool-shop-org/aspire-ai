@@ -3,6 +3,7 @@ OpenAI-based teacher implementation.
 """
 
 import json
+import os
 
 from openai import AsyncOpenAI
 
@@ -15,6 +16,11 @@ from aspire.teachers.base import (
     TeacherChallenge,
     TeacherEvaluation,
 )
+
+
+class OpenAITeacherError(Exception):
+    """Error specific to OpenAI teacher operations."""
+    pass
 
 
 class OpenAITeacher(BaseTeacher):
@@ -35,7 +41,20 @@ class OpenAITeacher(BaseTeacher):
     ):
         super().__init__(name=name, description=description, **kwargs)
         self.model = model
-        self.client = AsyncOpenAI(api_key=api_key)
+
+        # Check for API key with helpful error message
+        resolved_key = api_key or os.environ.get("OPENAI_API_KEY")
+        if not resolved_key:
+            raise OpenAITeacherError(
+                "OPENAI_API_KEY not found.\n\n"
+                "To fix this, set your API key:\n"
+                "  Windows:   set OPENAI_API_KEY=your-key-here\n"
+                "  Linux/Mac: export OPENAI_API_KEY=your-key-here\n\n"
+                "Or pass it directly: OpenAITeacher(api_key='your-key')\n\n"
+                "Get your API key at: https://platform.openai.com/api-keys"
+            )
+
+        self.client = AsyncOpenAI(api_key=resolved_key)
 
     async def challenge(
         self,
@@ -45,6 +64,8 @@ class OpenAITeacher(BaseTeacher):
         challenge_type: ChallengeType | None = None,
     ) -> TeacherChallenge:
         """Generate a challenge using OpenAI."""
+        # Validate inputs
+        self._validate_input(prompt=prompt, student_response=student_response)
 
         if challenge_type is None:
             challenge_type = self.select_challenge_type(dialogue_history)
@@ -104,6 +125,8 @@ Respond with JSON only:
         generate_improved: bool = True,
     ) -> TeacherEvaluation:
         """Evaluate using OpenAI."""
+        # Validate inputs
+        self._validate_input(prompt=prompt, student_response=student_response)
 
         history_context = ""
         if dialogue_history and dialogue_history.turns:

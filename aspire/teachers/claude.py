@@ -3,6 +3,7 @@ Claude-based teacher implementation.
 """
 
 import json
+import os
 from typing import Any
 
 import anthropic
@@ -16,6 +17,11 @@ from aspire.teachers.base import (
     TeacherChallenge,
     TeacherEvaluation,
 )
+
+
+class ClaudeTeacherError(Exception):
+    """Error specific to Claude teacher operations."""
+    pass
 
 
 class ClaudeTeacher(BaseTeacher):
@@ -36,7 +42,20 @@ class ClaudeTeacher(BaseTeacher):
     ):
         super().__init__(name=name, description=description, **kwargs)
         self.model = model
-        self.client = anthropic.AsyncAnthropic(api_key=api_key)
+
+        # Check for API key with helpful error message
+        resolved_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
+        if not resolved_key:
+            raise ClaudeTeacherError(
+                "ANTHROPIC_API_KEY not found.\n\n"
+                "To fix this, set your API key:\n"
+                "  Windows:   set ANTHROPIC_API_KEY=your-key-here\n"
+                "  Linux/Mac: export ANTHROPIC_API_KEY=your-key-here\n\n"
+                "Or pass it directly: ClaudeTeacher(api_key='your-key')\n\n"
+                "Get your API key at: https://console.anthropic.com/settings/keys"
+            )
+
+        self.client = anthropic.AsyncAnthropic(api_key=resolved_key)
 
     async def challenge(
         self,
@@ -46,6 +65,8 @@ class ClaudeTeacher(BaseTeacher):
         challenge_type: ChallengeType | None = None,
     ) -> TeacherChallenge:
         """Generate a challenge using Claude."""
+        # Validate inputs
+        self._validate_input(prompt=prompt, student_response=student_response)
 
         if challenge_type is None:
             challenge_type = self.select_challenge_type(dialogue_history)
@@ -116,6 +137,8 @@ Respond with JSON:
         generate_improved: bool = True,
     ) -> TeacherEvaluation:
         """Evaluate a student response using Claude."""
+        # Validate inputs
+        self._validate_input(prompt=prompt, student_response=student_response)
 
         # Build context from history
         history_context = ""

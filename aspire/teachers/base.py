@@ -11,6 +11,15 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
+# Input validation constants
+MAX_PROMPT_LENGTH = 100_000  # Maximum characters for prompts
+MAX_RESPONSE_LENGTH = 100_000  # Maximum characters for responses
+
+
+class InputValidationError(ValueError):
+    """Error raised when input validation fails."""
+    pass
+
 
 class ChallengeType(str, Enum):
     """Types of challenges a teacher can pose."""
@@ -174,6 +183,43 @@ class BaseTeacher(ABC):
         self.preferred_challenges = preferred_challenges or list(ChallengeType)
         self.temperature = temperature
         self.max_tokens = max_tokens
+
+    def _validate_input(
+        self,
+        prompt: str | None = None,
+        student_response: str | None = None,
+    ) -> None:
+        """
+        Validate input parameters.
+
+        Args:
+            prompt: Prompt to validate
+            student_response: Response to validate
+
+        Raises:
+            InputValidationError: If validation fails
+        """
+        if prompt is not None:
+            if not isinstance(prompt, str):
+                raise InputValidationError(
+                    f"Prompt must be a string, got {type(prompt).__name__}"
+                )
+            if len(prompt) > MAX_PROMPT_LENGTH:
+                raise InputValidationError(
+                    f"Prompt exceeds maximum length of {MAX_PROMPT_LENGTH:,} characters "
+                    f"(got {len(prompt):,} characters)"
+                )
+
+        if student_response is not None:
+            if not isinstance(student_response, str):
+                raise InputValidationError(
+                    f"Student response must be a string, got {type(student_response).__name__}"
+                )
+            if len(student_response) > MAX_RESPONSE_LENGTH:
+                raise InputValidationError(
+                    f"Student response exceeds maximum length of {MAX_RESPONSE_LENGTH:,} characters "
+                    f"(got {len(student_response):,} characters)"
+                )
 
     @abstractmethod
     async def challenge(

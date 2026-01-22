@@ -11,6 +11,7 @@ After training, the critic enables self-refinement without teacher API calls.
 
 from __future__ import annotations
 
+import logging
 import math
 from dataclasses import dataclass
 from typing import Literal
@@ -20,6 +21,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from .config import CriticArchitecture, CriticConfig, CodeDimension
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -385,8 +388,13 @@ class CodeCritic(nn.Module):
                     self._tokenizer = AutoTokenizer.from_pretrained(
                         self.config.pretrained_model or "microsoft/codebert-base"
                     )
-                except Exception:
+                except (ImportError, OSError) as e:
                     # Fallback to basic tokenizer
+                    logger.warning(
+                        f"Failed to load tokenizer for "
+                        f"{self.config.pretrained_model or 'microsoft/codebert-base'}: {e}. "
+                        "Tokenizer will be None - use tokenize() with caution."
+                    )
                     self._tokenizer = None
         return self._tokenizer
 
