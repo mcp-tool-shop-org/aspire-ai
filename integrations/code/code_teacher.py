@@ -619,14 +619,14 @@ class PerformanceAnalyst(BaseCodeTeacher):
 
     # Common performance anti-patterns
     ANTI_PATTERNS = {
-        "for.*in.*for.*in": ("Nested loops", "Consider if O(n^2) is necessary"),
+        r"for.*in.*for.*in": ("Nested loops", "Consider if O(n^2) is necessary"),
         r"\+\s*=.*str": ("String concatenation in loop", "Use list and join() instead"),
-        "append.*for": ("Append in loop", "Consider list comprehension"),
+        r"append.*for": ("Append in loop", "Consider list comprehension"),
         r"in\s+list\(": ("Converting to list unnecessarily", "Iterate directly over generator"),
-        "range(len(": ("range(len()) pattern", "Use enumerate() instead"),
+        r"range\(len\(": ("range(len()) pattern", "Use enumerate() instead"),
         r"\.keys\(\)\s*\)": ("Iterating over .keys()", "Iterate over dict directly"),
-        "global ": ("Global variables", "Consider passing as parameters"),
-        "import.*\*": ("Wildcard import", "Import only what's needed"),
+        r"global ": ("Global variables", "Consider passing as parameters"),
+        r"import.*\*": ("Wildcard import", "Import only what's needed"),
     }
 
     def critique(self, sample: CodeSample) -> CodeCritique:

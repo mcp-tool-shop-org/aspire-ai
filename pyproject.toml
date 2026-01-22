@@ -30,8 +30,23 @@ dependencies = [
 dev = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.0.0",
+    "pytest-xdist>=3.0.0",
     "ruff>=0.3.0",
     "pyright>=1.1.350",
+]
+teachers = [
+    "anthropic>=0.25.0",
+    "openai>=1.20.0",
+]
+code = [
+    "ruff>=0.3.0",
+    "mypy>=1.0.0",
+    "bandit>=1.7.0",
+]
+forge = [
+    "Pillow>=10.0.0",
+    "gradio>=4.0.0",
 ]
 
 [project.scripts]
@@ -42,7 +57,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["aspire"]
+packages = ["aspire", "integrations"]
 
 [tool.ruff]
 line-length = 100
@@ -51,6 +66,50 @@ target-version = "py310"
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
 
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["N", "E501"]
+
 [tool.pyright]
 pythonVersion = "3.10"
 typeCheckingMode = "standard"
+ignore = ["tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+addopts = [
+    "-v",
+    "--tb=short",
+    "-ra",
+    "--strict-markers",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "gpu: marks tests that require GPU",
+    "integration: marks integration tests",
+    "api: marks tests that call external APIs",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning",
+]
+
+[tool.coverage.run]
+source = ["aspire", "integrations"]
+branch = true
+omit = [
+    "*/tests/*",
+    "*/__init__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+]
