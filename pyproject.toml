@@ -2,7 +2,7 @@
 name = "aspire-ai"
 version = "0.1.1"
 description = "Adversarial Student-Professor Internalized Reasoning Engine"
-readme = "README.md"
+readme = "README.md"`nauthors = [{ name = "mcp-tool-shop", email = "64996768+mcp-tool-shop@users.noreply.github.com" }]
 requires-python = ">=3.10"
 dependencies = [
     "torch>=2.0.0",
