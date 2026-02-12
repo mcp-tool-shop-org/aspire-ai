@@ -1,6 +1,6 @@
 [project]
 name = "aspire-ai"
-version = "0.1.1"
+version = "0.1.2"
 description = "Adversarial Student-Professor Internalized Reasoning Engine"
 readme = "README.md"
 authors = [{ name = "mcp-tool-shop", email = "64996768+mcp-tool-shop@users.noreply.github.com" }]
@@ -49,6 +49,11 @@ forge = [
     "Pillow>=10.0.0",
     "gradio>=4.0.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/mcp-tool-shop-org/aspire-ai"
+Repository = "https://github.com/mcp-tool-shop-org/aspire-ai"
+Issues = "https://github.com/mcp-tool-shop-org/aspire-ai/issues"
 
 [project.scripts]
 aspire = "aspire.cli:app"
