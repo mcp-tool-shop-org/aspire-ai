@@ -1,4 +1,8 @@
 <p align="center">
+  <img src="logo.png" alt="ASPIRE Logo" width="120">
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/ASPIRE-Teaching_AI_Judgment-blueviolet?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0wIDE4Yy00LjQxIDAtOC0zLjU5LTgtOHMzLjU5LTggOC04IDggMy41OSA4IDgtMy41OSA4LTggOHptLTEtMTNoMnY2aC0yem0wIDhoMnYyaC0yeiIvPjwvc3ZnPg==" alt="ASPIRE">
 </p>
 
@@ -22,12 +26,14 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/mikeyfrilot/aspire-ai/actions/workflows/ci.yml"><img src="https://github.com/mikeyfrilot/aspire-ai/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/mcp-tool-shop-org/aspire-ai/actions/workflows/ci.yml"><img src="https://github.com/mcp-tool-shop-org/aspire-ai/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://pypi.org/project/aspire-ai/"><img src="https://img.shields.io/pypi/v/aspire-ai.svg" alt="PyPI"></a>
   <img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/pytorch-2.0+-ee4c2c.svg" alt="PyTorch 2.0+">
   <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT License">
-  <img src="https://img.shields.io/github/stars/mikeyfrilot/aspire-ai?style=social" alt="GitHub Stars">
+  <img src="https://img.shields.io/github/stars/mcp-tool-shop-org/aspire-ai?style=social" alt="GitHub Stars">
+
+  Part of <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a>
 </p>
 
 ---
@@ -72,7 +78,7 @@ The **critic** learns to predict what the teacher would think. After training, t
 ### Installation
 
 ```bash
-git clone https://github.com/mikeyfrilot/aspire-ai.git
+git clone https://github.com/mcp-tool-shop-org/aspire-ai.git
 cd aspire-ai
 pip install -e .
 ```
@@ -426,10 +432,10 @@ This is early-stage research code. Contributions welcome:
 
 ```bibtex
 @software{aspire2026,
-  author = {Friloux, Mikey and Claude},
+  author = {mcp-tool-shop},
   title = {ASPIRE: Adversarial Student-Professor Internalized Reasoning Engine},
   year = {2026},
-  url = {https://github.com/mikeyfrilot/aspire-ai}
+  url = {https://github.com/mcp-tool-shop-org/aspire-ai}
 }
 ```
 
