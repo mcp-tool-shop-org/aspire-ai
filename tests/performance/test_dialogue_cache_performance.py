@@ -5,8 +5,8 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from aspire.dialogue.manager import DialogueManager
 from aspire.dialogue.generator import GeneratedDialogue
+from aspire.dialogue.manager import DialogueManager
 from aspire.teachers.base import DialogueHistory, TeacherEvaluation
 
 
@@ -73,10 +73,14 @@ async def test_get_dialogues_uses_batch_only_for_misses(tmp_path: Path):
 
 
 def test_cache_key_includes_teacher_name(tmp_path: Path):
-    teacherA = MagicMock(); teacherA.name = "A"
-    teacherB = MagicMock(); teacherB.name = "B"
-    genA = MagicMock(); genA.teacher = teacherA
-    genB = MagicMock(); genB.teacher = teacherB
+    teacherA = MagicMock()
+    teacherA.name = "A"
+    teacherB = MagicMock()
+    teacherB.name = "B"
+    genA = MagicMock()
+    genA.teacher = teacherA
+    genB = MagicMock()
+    genB.teacher = teacherB
 
     mgrA = DialogueManager(generator=genA, cache_dir=tmp_path, use_cache=True)
     mgrB = DialogueManager(generator=genB, cache_dir=tmp_path, use_cache=True)

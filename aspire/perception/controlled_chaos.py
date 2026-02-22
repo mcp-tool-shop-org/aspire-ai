@@ -21,10 +21,7 @@ import random
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Callable
-
-import torch
-import torch.nn as nn
+from typing import Any
 
 
 class ChaosType(str, Enum):

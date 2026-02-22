@@ -2,9 +2,26 @@ name: CI
 
 on:
   push:
-    branches: [master, main]
+    branches: [main]
+    paths:
+      - pyproject.toml
+      - "aspire/**"
+      - "integrations/**"
+      - "tests/**"
+      - ".github/workflows/**"
   pull_request:
-    branches: [master, main]
+    branches: [main]
+    paths:
+      - pyproject.toml
+      - "aspire/**"
+      - "integrations/**"
+      - "tests/**"
+      - ".github/workflows/**"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lint:
@@ -25,7 +42,7 @@ jobs:
           pip install ruff pyright
 
       - name: Run Ruff
-        run: ruff check aspire/
+        run: ruff check .
 
       - name: Run Pyright
         run: pyright aspire/
@@ -36,7 +53,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.11", "3.12"]
 
     steps:
       - uses: actions/checkout@v4

@@ -4,7 +4,6 @@ Claude-based teacher implementation.
 
 import json
 import os
-from typing import Any
 
 import anthropic
 
@@ -149,6 +148,15 @@ Respond with JSON:
                 history_context += f"Student: {turn.student_response}\n\n"
 
         dimensions_list = ", ".join([d.value for d in self.evaluation_dimensions])
+        improved_hint = (
+            "Also provide an improved version of the response."
+            if generate_improved else ""
+        )
+        improved_field = (
+            '"improved_response": "Better version of the response"'
+            if generate_improved
+            else ""
+        )
 
         eval_prompt = f"""Evaluate this student response.
 
@@ -159,7 +167,7 @@ Student's response: {student_response}
 
 Evaluate on these dimensions: {dimensions_list}
 
-{"Also provide an improved version of the response." if generate_improved else ""}
+{improved_hint}
 
 Respond with JSON:
 {{
@@ -172,7 +180,7 @@ Respond with JSON:
     "strengths": ["strength 1", "strength 2"],
     "weaknesses": ["weakness 1", "weakness 2"],
     "suggestions": ["suggestion 1", "suggestion 2"],
-    {"\"improved_response\": \"Better version of the response\"" if generate_improved else ""}
+    {improved_field}
 }}"""
 
         response = await self.client.messages.create(
@@ -227,12 +235,22 @@ Respond with JSON:
     def _get_challenge_description(self, challenge_type: ChallengeType) -> str:
         """Get description of what each challenge type means."""
         descriptions = {
-            ChallengeType.PROBE_REASONING: "Ask 'why' or 'how' to probe the reasoning behind the answer",
-            ChallengeType.EDGE_CASE: "Present an edge case or unusual scenario that tests the limits",
-            ChallengeType.DEVILS_ADVOCATE: "Argue the opposite position to test conviction and reasoning",
+            ChallengeType.PROBE_REASONING: (
+                "Ask 'why' or 'how' to probe the reasoning behind the answer"
+            ),
+            ChallengeType.EDGE_CASE: (
+                "Present an edge case or unusual scenario that tests the limits"
+            ),
+            ChallengeType.DEVILS_ADVOCATE: (
+                "Argue the opposite position to test conviction and reasoning"
+            ),
             ChallengeType.SOCRATIC: "Ask questions that reveal hidden assumptions or gaps in logic",
-            ChallengeType.CLARIFICATION: "Ask for clarification on vague or ambiguous points",
-            ChallengeType.EXTENSION: "Ask how the reasoning extends to related domains or scenarios",
+            ChallengeType.CLARIFICATION: (
+                "Ask for clarification on vague or ambiguous points"
+            ),
+            ChallengeType.EXTENSION: (
+                "Ask how the reasoning extends to related domains or scenarios"
+            ),
             ChallengeType.CONTRADICTION: "Point out apparent contradictions or inconsistencies",
             ChallengeType.STEELMAN: "Ask for the strongest counter-argument to their position",
             ChallengeType.EMOTIONAL: "Explore emotional or human impact dimensions",

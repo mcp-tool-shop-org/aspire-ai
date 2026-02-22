@@ -21,7 +21,6 @@ from unittest.mock import patch
 import pytest
 import yaml
 
-
 # ============================================================================
 # StudentConfig Tests
 # ============================================================================
@@ -36,10 +35,10 @@ class TestStudentConfig:
         config = StudentConfig()
 
         assert config.model_name_or_path == "microsoft/Phi-3-mini-4k-instruct"
-        assert config.load_in_4bit == True
-        assert config.load_in_8bit == False
-        assert config.use_lora == True
-        assert config.use_gradient_checkpointing == True
+        assert config.load_in_4bit
+        assert not config.load_in_8bit
+        assert config.use_lora
+        assert config.use_gradient_checkpointing
         assert config.max_length == 2048
 
         # LoRA defaults
@@ -65,8 +64,8 @@ class TestStudentConfig:
         )
 
         assert config.model_name_or_path == "meta-llama/Llama-3-8B"
-        assert config.load_in_4bit == False
-        assert config.load_in_8bit == True
+        assert not config.load_in_4bit
+        assert config.load_in_8bit
         assert config.lora_r == 32
         assert config.lora_alpha == 64
         assert config.lora_dropout == 0.1
@@ -82,8 +81,8 @@ class TestStudentConfig:
             load_in_8bit=False,
         )
 
-        assert config.load_in_4bit == False
-        assert config.load_in_8bit == False
+        assert not config.load_in_4bit
+        assert not config.load_in_8bit
 
 
 # ============================================================================
@@ -124,7 +123,7 @@ class TestCriticConfig:
 
         assert config.architecture == "separate"
         assert config.separate_model_name == "microsoft/deberta-v3-base"
-        assert config.separate_load_in_4bit == True
+        assert config.separate_load_in_4bit
 
     def test_critic_config_architectures_shared_encoder(self):
         """Test 'shared_encoder' architecture is valid."""
@@ -345,8 +344,8 @@ class TestTrainingConfig:
         assert config.max_grad_norm == 1.0
 
         # Mixed precision
-        assert config.bf16 == True
-        assert config.fp16 == False
+        assert config.bf16
+        assert not config.fp16
 
         # Checkpointing
         assert config.save_steps == 500
@@ -439,7 +438,7 @@ class TestAspireConfig:
         assert config.seed == 42
         assert config.device == "cuda"
         assert config.experiment_name == "aspire-run"
-        assert config.use_wandb == True
+        assert config.use_wandb
         assert config.wandb_project == "aspire-ai"
 
     def test_aspire_config_custom_seed(self):
@@ -487,7 +486,7 @@ training:
             assert config.seed == 123
             assert config.device == "cpu"
             assert config.experiment_name == "test-experiment"
-            assert config.use_wandb == False
+            assert not config.use_wandb
 
             # Check nested configs
             assert config.student.model_name_or_path == "test-model"
@@ -532,8 +531,9 @@ student:
 
     def test_aspire_config_from_yaml_invalid(self):
         """Test that invalid YAML field raises validation error."""
-        from aspire.config import AspireConfig
         from pydantic import ValidationError
+
+        from aspire.config import AspireConfig
 
         yaml_content = """
 student:
@@ -551,7 +551,7 @@ student:
 
     def test_aspire_config_to_yaml(self):
         """Test saving configuration to YAML file."""
-        from aspire.config import AspireConfig, StudentConfig, TrainingConfig, CurriculumConfig
+        from aspire.config import AspireConfig, CurriculumConfig, StudentConfig, TrainingConfig
 
         student_config = StudentConfig(
             model_name_or_path="test-model",
@@ -592,7 +592,7 @@ student:
 
     def test_aspire_config_yaml_round_trip(self):
         """Test that config survives YAML round-trip (non-Path fields)."""
-        from aspire.config import AspireConfig, StudentConfig, CriticConfig
+        from aspire.config import AspireConfig, CriticConfig, StudentConfig
 
         # Note: Round-trip with default Path fields fails because PyYAML
         # serializes Path objects as Python-specific tags that safe_load can't read.
@@ -656,7 +656,7 @@ student:
         # The config uses env_nested_delimiter="__"
         # So ASPIRE_STUDENT__LORA_R should set student.lora_r
         with patch.dict(os.environ, {"ASPIRE_STUDENT__LORA_R": "64"}):
-            config = AspireConfig()
+            AspireConfig()
             # Note: pydantic-settings nested env support may vary by version
             # This test documents expected behavior
             # May need adjustment based on pydantic-settings version
@@ -673,7 +673,7 @@ student:
         )
 
         assert config.experiment_name == "my-experiment"
-        assert config.use_wandb == True
+        assert config.use_wandb
         assert config.wandb_project == "my-project"
 
     def test_aspire_config_disable_wandb(self):
@@ -681,7 +681,7 @@ student:
         from aspire.config import AspireConfig
 
         config = AspireConfig(use_wandb=False)
-        assert config.use_wandb == False
+        assert not config.use_wandb
 
 
 # ============================================================================
@@ -695,11 +695,11 @@ class TestConfigIntegration:
         """Test all configs can serialize to dict."""
         from aspire.config import (
             AspireConfig,
-            StudentConfig,
             CriticConfig,
-            TeacherConfig,
             CurriculumConfig,
             LossConfig,
+            StudentConfig,
+            TeacherConfig,
             TrainingConfig,
         )
 

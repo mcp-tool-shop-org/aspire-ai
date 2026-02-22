@@ -6,25 +6,26 @@ syntropic integration, and the overall syntropic engine.
 """
 
 import os
+
 os.environ["XFORMERS_DISABLED"] = "1"
+
 
 import pytest
 import torch
-import math
 
 from aspire.perception.syntropy import (
-    SyntropicDimension,
-    SyntropicState,
-    SyntropicMeasurement,
     CoherenceField,
-    SyntropicResonanceDetector,
-    SyntropicIntegrator,
-    SyntropicFlowTracker,
-    SyntropicEngine,
+    SyntropicDimension,
     SyntropicEmpathyEvaluator,
+    SyntropicEngine,
+    SyntropicFlowTracker,
+    SyntropicIntegrator,
+    SyntropicMeasurement,
+    SyntropicResonanceDetector,
+    SyntropicState,
+    compute_empathic_syntropy,
     compute_negentropy_approximation,
     compute_semantic_coherence,
-    compute_empathic_syntropy,
 )
 
 
@@ -183,7 +184,7 @@ class TestNegentropy:
 
         # Non-Gaussian (uniform is more structured)
         uniform = torch.rand(10000) * 2 - 1  # [-1, 1]
-        uniform_negentropy = compute_negentropy_approximation(uniform, method="exp")
+        compute_negentropy_approximation(uniform, method="exp")
 
         # Gaussian should have lower negentropy
         # (Note: with approximation, difference may be subtle)
@@ -620,7 +621,7 @@ class TestIntegration:
             evaluator.evaluate(hidden_states)
 
         # Should have tracking data (measurements recorded)
-        summary = evaluator.engine.flow_tracker.get_summary()
+        evaluator.engine.flow_tracker.get_summary()
         # Peak may be 0 if all syntropy_scores were negative (entropic)
         # Just verify that we have measurements recorded
         assert len(evaluator.engine.flow_tracker.measurements) == 10

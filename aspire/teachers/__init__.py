@@ -8,20 +8,20 @@ teaches differently than a rigorous scientist or a creative artist.
 
 from aspire.teachers.base import (
     BaseTeacher,
-    TeacherEvaluation,
-    TeacherChallenge,
     DialogueTurn,
+    TeacherChallenge,
+    TeacherEvaluation,
 )
 from aspire.teachers.claude import ClaudeTeacher
-from aspire.teachers.openai import OpenAITeacher
-from aspire.teachers.local import LocalTeacher
 from aspire.teachers.composite import CompositeTeacher
+from aspire.teachers.local import LocalTeacher
+from aspire.teachers.openai import OpenAITeacher
 from aspire.teachers.personas import (
-    SocraticTeacher,
-    ScientificTeacher,
-    CreativeTeacher,
     AdversarialTeacher,
     CompassionateTeacher,
+    CreativeTeacher,
+    ScientificTeacher,
+    SocraticTeacher,
 )
 from aspire.teachers.registry import TeacherRegistry, get_teacher, register_teacher
 

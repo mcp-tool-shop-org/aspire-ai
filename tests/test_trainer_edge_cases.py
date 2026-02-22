@@ -17,10 +17,8 @@ Windows compatibility notes:
 from __future__ import annotations
 
 import os
-import tempfile
 from multiprocessing import freeze_support
-from pathlib import Path
-from unittest.mock import MagicMock, patch, PropertyMock
+from unittest.mock import patch
 
 os.environ["XFORMERS_DISABLED"] = "1"
 
@@ -313,7 +311,6 @@ class TestLRSchedulerEdgeCases:
     def test_warmup_steps_zero(self):
         """LR scheduler with zero warmup steps."""
         num_warmup_steps = 0
-        num_training_steps = 1000
 
         # At step 0, should be at full LR (no warmup)
         warmup_ratio = min(1.0, 1 / max(num_warmup_steps, 1))
@@ -331,7 +328,6 @@ class TestLRSchedulerEdgeCases:
     def test_single_step_training(self):
         """LR scheduler with only 1 training step."""
         num_training_steps = 1
-        num_warmup_steps = 0
 
         # Should work without division by zero
         current_step = 0

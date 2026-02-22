@@ -9,7 +9,6 @@ Requirements:
     # OR use the DummyIsaacEnv for testing without Isaac Gym
 """
 
-import torch
 from multiprocessing import freeze_support
 
 
@@ -17,10 +16,10 @@ def main():
     # Import ASPIRE Isaac components
     from aspire.integrations.isaac import (
         AspireIsaacTrainer,
-        MotionTeacher,
         IsaacAspireConfig,
+        MotionTeacher,
     )
-    from aspire.integrations.isaac.isaac_wrapper import DummyIsaacEnv, AspireIsaacEnv
+    from aspire.integrations.isaac.isaac_wrapper import AspireIsaacEnv, DummyIsaacEnv
 
     # Configuration
     config = IsaacAspireConfig()
@@ -40,7 +39,7 @@ def main():
 
     # Check if Isaac Gym is available
     try:
-        from isaacgymenvs.tasks import FrankaCubeStack
+        from isaacgymenvs.tasks import FrankaCubeStack  # noqa: F401
         print("Isaac Gym found! Using real physics simulation.")
         env_name = "FrankaCubeStack-v0"
         use_dummy = False
@@ -91,7 +90,7 @@ def main():
     print("Starting ASPIRE Embodied Training")
     print("=" * 60 + "\n")
 
-    metrics = trainer.train(callback=on_epoch)
+    trainer.train(callback=on_epoch)
 
     # Evaluate
     print("\n" + "=" * 60)
@@ -104,7 +103,7 @@ def main():
         deterministic=True,
     )
 
-    print(f"Final Results:")
+    print("Final Results:")
     print(f"  Mean reward: {eval_results['mean_reward']:.2f}")
     print(f"  Success rate: {eval_results['success_rate']:.1%}")
     print(f"  Mean motion score: {eval_results['mean_score']:.2f}/10")

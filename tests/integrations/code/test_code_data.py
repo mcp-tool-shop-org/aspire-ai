@@ -14,19 +14,18 @@ from unittest.mock import MagicMock, patch
 import pytest
 import torch
 
-from integrations.code.config import Language
 from integrations.code.code_teacher import CodeCritique, CodeSample, CodeTeacher
+from integrations.code.config import Language
 from integrations.code.data import (
-    CodeReviewPair,
     CodeReviewDataset,
-    StreamingCodeDataset,
+    CodeReviewPair,
     GitHubRepoCollector,
-    generate_training_pairs,
-    save_training_data,
-    load_training_data,
+    StreamingCodeDataset,
     create_balanced_dataset,
+    generate_training_pairs,
+    load_training_data,
+    save_training_data,
 )
-
 
 # ============================================================================
 # CodeReviewPair Tests
@@ -306,7 +305,7 @@ class TestGitHubRepoCollector:
         """Test clone_repo calls git clone."""
         mock_run.return_value = MagicMock(returncode=0)
 
-        result = collector.clone_repo("user/repo", shallow=True)
+        collector.clone_repo("user/repo", shallow=True)
 
         mock_run.assert_called_once()
         call_args = mock_run.call_args[0][0]
@@ -400,7 +399,6 @@ class TestGitHubRepoCollector:
         """Test collect_files respects min/max line limits."""
         # Use a temp directory that doesn't contain 'test' in the path
         # because collect_files skips any path containing 'test'
-        import tempfile
         with tempfile.TemporaryDirectory(prefix="linelim_") as temp_dir:
             repo_dir = Path(temp_dir) / "repo"
             repo_dir.mkdir(parents=True)

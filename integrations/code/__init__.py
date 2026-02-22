@@ -28,33 +28,33 @@ Example:
     trainer.train(dataset="code_review_data")
 """
 
-from .code_teacher import (
-    CodeTeacher,
-    CorrectnessChecker,
-    StyleGuide,
-    SecurityAuditor,
-    ArchitectureReviewer,
-    PerformanceAnalyst,
-    DocumentationCritic,
-)
-from .code_critic import (
-    CodeCritic,
-    CodeEncoder,
-    CodeCriticHead,
-)
 from .analysis import (
     CodeAnalyzer,
     StaticAnalysisResult,
     extract_code_features,
     parse_code,
 )
-from .trainer import AspireCodeTrainer
+from .code_critic import (
+    CodeCritic,
+    CodeCriticHead,
+    CodeEncoder,
+)
+from .code_teacher import (
+    ArchitectureReviewer,
+    CodeTeacher,
+    CorrectnessChecker,
+    DocumentationCritic,
+    PerformanceAnalyst,
+    SecurityAuditor,
+    StyleGuide,
+)
 from .config import CodeAspireConfig
 from .data import (
     CodeReviewDataset,
     GitHubRepoCollector,
     generate_training_pairs,
 )
+from .trainer import AspireCodeTrainer
 
 __all__ = [
     # Teachers

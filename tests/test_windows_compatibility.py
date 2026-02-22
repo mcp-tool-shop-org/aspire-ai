@@ -24,13 +24,11 @@ import sys
 import tempfile
 from multiprocessing import freeze_support, get_start_method
 from pathlib import Path
-from unittest.mock import MagicMock, patch
 
 os.environ["XFORMERS_DISABLED"] = "1"
 
 import pytest
 import torch
-
 
 # ============================================================================
 # DataLoader Compatibility
@@ -305,7 +303,7 @@ class TestCUDAMemoryManagement:
     @pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA not available")
     def test_cuda_memory_cleanup(self):
         """CUDA memory should be cleanable."""
-        initial_memory = torch.cuda.memory_allocated()
+        torch.cuda.memory_allocated()
 
         # Allocate
         tensors = [torch.randn(1000, 1000, device="cuda") for _ in range(5)]

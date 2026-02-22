@@ -6,10 +6,11 @@ by a wise teacher to develop deeper understanding.
 """
 
 import asyncio
+
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from aspire.teachers import get_teacher
 from aspire.dialogue import DialogueGenerator
+from aspire.teachers import get_teacher
 
 
 async def main():
@@ -54,14 +55,14 @@ async def main():
         print(f"--- Turn {i} ---")
         print(f"Challenge ({turn.challenge.challenge_type.value}):")
         print(f"  {turn.challenge.content}\n")
-        print(f"Student Response:")
+        print("Student Response:")
         print(f"  {turn.student_response}\n")
 
         if turn.evaluation:
             print(f"  [Score: {turn.evaluation.overall_score:.1f}/10]\n")
 
     print(f"{'='*60}")
-    print(f"Final Evaluation")
+    print("Final Evaluation")
     print(f"{'='*60}")
     print(f"Score: {dialogue.final_evaluation.overall_score:.1f}/10")
     print(f"\nReasoning:\n{dialogue.final_evaluation.reasoning}")

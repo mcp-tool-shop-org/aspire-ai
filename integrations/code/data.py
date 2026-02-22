@@ -14,17 +14,15 @@ import logging
 import os
 import random
 import subprocess
-import tempfile
-from dataclasses import dataclass, field
+from collections.abc import Iterator
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterator
 
 import torch
 from torch.utils.data import Dataset, IterableDataset
 
+from .code_teacher import CodeCritique, CodeSample, CodeTeacher
 from .config import Language
-from .code_teacher import CodeSample, CodeCritique, CodeTeacher
-from .analysis import detect_language
 
 logger = logging.getLogger(__name__)
 
@@ -61,7 +59,7 @@ class CodeReviewPair:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> "CodeReviewPair":
+    def from_dict(cls, data: dict) -> CodeReviewPair:
         """Create from dictionary."""
         critique = CodeCritique(
             overall_score=data["score"],
@@ -314,7 +312,7 @@ def save_training_data(
 
 def load_training_data(input_path: str) -> list[CodeReviewPair]:
     """Load training pairs from JSON."""
-    with open(input_path, "r", encoding="utf-8") as f:
+    with open(input_path, encoding="utf-8") as f:
         data = json.load(f)
 
     return [CodeReviewPair.from_dict(d) for d in data]
@@ -365,7 +363,7 @@ class CodeReviewDataset(Dataset):
 
         elif self.mode == "student":
             # For student training, include the critique as input
-            prompt = f"Review this code and improve it:\n\n```{pair.language.value}\n{pair.code}\n```\n\nIssues: {'; '.join(pair.critique.weaknesses[:3])}\n\nImproved code:"
+            prompt = f"Review this code and improve it:\n\n```{pair.language.value}\n{pair.code}\n```\n\nIssues: {'; '.join(pair.critique.weaknesses[:3])}\n\nImproved code:"  # noqa: E501
 
             tokens = self.tokenizer(
                 prompt,

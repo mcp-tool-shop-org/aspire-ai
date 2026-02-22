@@ -7,7 +7,6 @@ Converts dialogues into formats suitable for training.
 from dataclasses import dataclass
 
 from aspire.dialogue.generator import GeneratedDialogue
-from aspire.teachers.base import DialogueHistory
 
 
 @dataclass

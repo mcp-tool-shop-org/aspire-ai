@@ -6,18 +6,19 @@ scenario creation for robust training.
 """
 
 import os
+
 os.environ["XFORMERS_DISABLED"] = "1"
 
 import pytest
 
 from aspire.perception.controlled_chaos import (
-    ChaosGenerator,
-    ChaosConfig,
-    ChaosType,
-    ChaosSeverity,
-    NoiseInjector,
-    AmbiguityGenerator,
     AdversarialScenarioGenerator,
+    AmbiguityGenerator,
+    ChaosConfig,
+    ChaosGenerator,
+    ChaosSeverity,
+    ChaosType,
+    NoiseInjector,
     apply_chaos_to_batch,
 )
 

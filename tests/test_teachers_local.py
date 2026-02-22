@@ -17,7 +17,6 @@ from aspire.teachers.base import (
 )
 from aspire.teachers.local import LocalTeacher
 
-
 # ============================================================================
 # Initialization Tests
 # ============================================================================
@@ -61,14 +60,14 @@ class TestLocalTeacherInit:
 
     def test_init_sets_pad_token_from_eos(self, mock_model_and_tokenizer):
         """Test LocalTeacher sets pad_token from eos_token when None."""
-        teacher = LocalTeacher(model_name_or_path="test-model")
+        LocalTeacher(model_name_or_path="test-model")
 
         # pad_token should be set to eos_token
         assert mock_model_and_tokenizer["tokenizer"].pad_token == "</s>"
 
     def test_init_with_4bit_quantization(self, mock_model_and_tokenizer):
         """Test LocalTeacher initialization with 4-bit quantization."""
-        teacher = LocalTeacher(
+        LocalTeacher(
             model_name_or_path="test-model",
             load_in_4bit=True,
             load_in_8bit=False
@@ -80,7 +79,7 @@ class TestLocalTeacherInit:
 
     def test_init_with_8bit_quantization(self, mock_model_and_tokenizer):
         """Test LocalTeacher initialization with 8-bit quantization."""
-        teacher = LocalTeacher(
+        LocalTeacher(
             model_name_or_path="test-model",
             load_in_4bit=False,
             load_in_8bit=True
@@ -91,7 +90,7 @@ class TestLocalTeacherInit:
 
     def test_init_without_quantization(self, mock_model_and_tokenizer):
         """Test LocalTeacher initialization without quantization."""
-        teacher = LocalTeacher(
+        LocalTeacher(
             model_name_or_path="test-model",
             load_in_4bit=False,
             load_in_8bit=False
@@ -122,7 +121,7 @@ class TestLocalTeacherInit:
 
     def test_init_sets_model_to_eval_mode(self, mock_model_and_tokenizer):
         """Test LocalTeacher sets model to eval mode."""
-        teacher = LocalTeacher(model_name_or_path="test-model")
+        LocalTeacher(model_name_or_path="test-model")
 
         mock_model_and_tokenizer["model"].eval.assert_called_once()
 
@@ -514,7 +513,7 @@ class TestLocalTeacherCustomTokenizer:
             mock_tokenizer.eos_token = "</s>"
             mock_tokenizer_class.from_pretrained.return_value = mock_tokenizer
 
-            teacher = LocalTeacher(model_name_or_path="test-model")
+            LocalTeacher(model_name_or_path="test-model")
 
             # pad_token should remain unchanged
             assert mock_tokenizer.pad_token == "<pad>"

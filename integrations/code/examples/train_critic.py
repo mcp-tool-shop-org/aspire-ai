@@ -12,16 +12,15 @@ from multiprocessing import freeze_support
 
 def main():
     from aspire.integrations.code import (
-        CodeTeacher,
-        CodeCritic,
         AspireCodeTrainer,
         CodeAspireConfig,
+        CodeTeacher,
     )
     from aspire.integrations.code.config import Language
     from aspire.integrations.code.data import (
         GitHubRepoCollector,
-        generate_training_pairs,
         create_balanced_dataset,
+        generate_training_pairs,
     )
 
     print("=" * 60)
@@ -106,7 +105,11 @@ def process_items(items):
 
     # Show score distribution
     scores = [p.critique.overall_score for p in pairs]
-    print(f"Score distribution: min={min(scores):.1f}, max={max(scores):.1f}, mean={sum(scores)/len(scores):.1f}")
+    avg = sum(scores) / len(scores)
+    print(
+        f"Score distribution: min={min(scores):.1f},"
+        f" max={max(scores):.1f}, mean={avg:.1f}"
+    )
 
     # Balance the dataset
     balanced_pairs = create_balanced_dataset(pairs, score_bins=5)
@@ -127,7 +130,7 @@ def process_items(items):
 
     # Train critic
     print("\nTraining critic...")
-    losses = trainer.train_critic(
+    trainer.train_critic(
         train_pairs=train_pairs,
         val_pairs=val_pairs,
         epochs=config.training.epochs,

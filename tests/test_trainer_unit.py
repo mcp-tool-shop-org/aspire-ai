@@ -6,14 +6,13 @@ Coverage target: Trainer initialization and component setup.
 
 import tempfile
 from pathlib import Path
-from unittest.mock import MagicMock, patch, AsyncMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 import torch
 
 from aspire.config import AspireConfig
 from aspire.trainer import AspireDataset
-
 
 # ============================================================================
 # AspireDataset Tests
@@ -101,9 +100,9 @@ class TestAspireTrainerInit:
              patch("aspire.trainer.SharedEncoderCritic") as mock_shared_critic, \
              patch("aspire.trainer.get_teacher") as mock_get_teacher, \
              patch("aspire.trainer.AspireLoss") as mock_loss, \
-             patch("aspire.trainer.DialogueGenerator") as mock_dialogue_gen, \
-             patch("aspire.trainer.DialogueManager") as mock_dialogue_mgr, \
-             patch("aspire.trainer.DialogueFormatter") as mock_formatter, \
+             patch("aspire.trainer.DialogueGenerator"), \
+             patch("aspire.trainer.DialogueManager"), \
+             patch("aspire.trainer.DialogueFormatter"), \
              patch("aspire.trainer.AdamW") as mock_adamw:
 
             # Setup model mock
@@ -174,7 +173,7 @@ class TestAspireTrainerInit:
         config.student.load_in_4bit = False
         config.student.load_in_8bit = False
 
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # Should apply LoRA
         mock_dependencies["peft"].assert_called_once()
@@ -188,7 +187,7 @@ class TestAspireTrainerInit:
         config.student.load_in_4bit = False
         config.student.load_in_8bit = False
 
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # Should NOT apply LoRA
         mock_dependencies["peft"].assert_not_called()
@@ -201,7 +200,7 @@ class TestAspireTrainerInit:
         config.student.load_in_4bit = True
         config.student.load_in_8bit = False
 
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # Should prepare for kbit training
         mock_dependencies["prepare"].assert_called_once()
@@ -217,7 +216,7 @@ class TestAspireTrainerInit:
         config.student.load_in_4bit = False
         config.student.load_in_8bit = True
 
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # Should prepare for kbit training
         mock_dependencies["prepare"].assert_called_once()
@@ -237,7 +236,7 @@ class TestAspireTrainerInit:
         config.student.load_in_8bit = False
         config.student.use_lora = False
 
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # Should NOT prepare for kbit training
         mock_dependencies["prepare"].assert_not_called()
@@ -249,7 +248,7 @@ class TestAspireTrainerInit:
         config = AspireConfig()
         config.critic.architecture = "head"
 
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # Should use CriticHead
         mock_dependencies["critic_head"].assert_called_once()
@@ -263,7 +262,7 @@ class TestAspireTrainerInit:
         config = AspireConfig()
         config.critic.architecture = "separate"
 
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # Should use SeparateCritic
         mock_dependencies["separate_critic"].assert_called_once()
@@ -276,7 +275,7 @@ class TestAspireTrainerInit:
         config = AspireConfig()
         config.critic.architecture = "shared_encoder"
 
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # Should use SharedEncoderCritic
         mock_dependencies["shared_critic"].assert_called_once()
@@ -290,7 +289,7 @@ class TestAspireTrainerInit:
         config.teacher.default_teacher = "claude"
         config.teacher.claude_model = "claude-sonnet-4-20250514"
 
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # Should call get_teacher with correct args
         mock_dependencies["get_teacher"].assert_called_once()
@@ -305,7 +304,7 @@ class TestAspireTrainerInit:
         config.teacher.default_teacher = "openai"
         config.teacher.openai_model = "gpt-4o"
 
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # Should call get_teacher with correct args
         mock_dependencies["get_teacher"].assert_called_once()
@@ -320,7 +319,7 @@ class TestAspireTrainerInit:
         config.seed = 12345
 
         with patch("aspire.trainer.torch.manual_seed") as mock_seed:
-            trainer = AspireTrainer(config)
+            AspireTrainer(config)
             mock_seed.assert_called_once_with(12345)
 
 
@@ -412,7 +411,7 @@ class TestAspireConfig:
 
         # The env prefix is ASPIRE_ with __ for nested
         with patch.dict(os.environ, {"ASPIRE_SEED": "777"}):
-            config = AspireConfig()
+            AspireConfig()
             # Note: Pydantic settings may require specific setup for this
             # This test verifies the config accepts env vars
 
@@ -590,10 +589,10 @@ class TestAspireTrainerCheckpoint:
              patch("aspire.trainer.prepare_model_for_kbit_training") as mock_prepare, \
              patch("aspire.trainer.CriticHead") as mock_critic_head, \
              patch("aspire.trainer.get_teacher") as mock_get_teacher, \
-             patch("aspire.trainer.AspireLoss") as mock_loss, \
-             patch("aspire.trainer.DialogueGenerator") as mock_dialogue_gen, \
-             patch("aspire.trainer.DialogueManager") as mock_dialogue_mgr, \
-             patch("aspire.trainer.DialogueFormatter") as mock_formatter, \
+             patch("aspire.trainer.AspireLoss"), \
+             patch("aspire.trainer.DialogueGenerator"), \
+             patch("aspire.trainer.DialogueManager"), \
+             patch("aspire.trainer.DialogueFormatter"), \
              patch("aspire.trainer.AdamW") as mock_adamw:
 
             # Setup model mock
@@ -644,7 +643,7 @@ class TestAspireTrainerCheckpoint:
     def test_save_checkpoint_creates_files(self, mock_trainer_with_deps):
         """Test AspireTrainer._save_checkpoint creates files."""
         trainer = mock_trainer_with_deps["trainer"]
-        tmp_path = mock_trainer_with_deps["tmp_path"]
+        mock_trainer_with_deps["tmp_path"]
 
         # Save checkpoint
         trainer._save_checkpoint(epoch=1)
@@ -726,9 +725,9 @@ class TestAspireTrainerLossInit:
              patch("aspire.trainer.CriticHead") as mock_critic_head, \
              patch("aspire.trainer.get_teacher") as mock_get_teacher, \
              patch("aspire.trainer.AspireLoss") as mock_loss, \
-             patch("aspire.trainer.DialogueGenerator") as mock_dialogue_gen, \
-             patch("aspire.trainer.DialogueManager") as mock_dialogue_mgr, \
-             patch("aspire.trainer.DialogueFormatter") as mock_formatter, \
+             patch("aspire.trainer.DialogueGenerator"), \
+             patch("aspire.trainer.DialogueManager"), \
+             patch("aspire.trainer.DialogueFormatter"), \
              patch("aspire.trainer.AdamW") as mock_adamw:
 
             mock_model = MagicMock()
@@ -763,7 +762,7 @@ class TestAspireTrainerLossInit:
         from aspire.trainer import AspireTrainer
 
         config = AspireConfig()
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # AspireLoss should have been instantiated
         mock_dependencies["loss"].assert_called_once()
@@ -776,7 +775,7 @@ class TestAspireTrainerLossInit:
         config.loss.critic_score_weight = 2.0
         config.loss.student_reward_weight = 1.5
 
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # Check that AspireLoss was called with correct weights
         call_kwargs = mock_dependencies["loss"].call_args[1]
@@ -799,10 +798,10 @@ class TestAspireTrainerOptimizerInit:
              patch("aspire.trainer.prepare_model_for_kbit_training") as mock_prepare, \
              patch("aspire.trainer.CriticHead") as mock_critic_head, \
              patch("aspire.trainer.get_teacher") as mock_get_teacher, \
-             patch("aspire.trainer.AspireLoss") as mock_loss, \
-             patch("aspire.trainer.DialogueGenerator") as mock_dialogue_gen, \
-             patch("aspire.trainer.DialogueManager") as mock_dialogue_mgr, \
-             patch("aspire.trainer.DialogueFormatter") as mock_formatter:
+             patch("aspire.trainer.AspireLoss"), \
+             patch("aspire.trainer.DialogueGenerator"), \
+             patch("aspire.trainer.DialogueManager"), \
+             patch("aspire.trainer.DialogueFormatter"):
 
             mock_model = MagicMock()
             mock_model.config.hidden_size = 768

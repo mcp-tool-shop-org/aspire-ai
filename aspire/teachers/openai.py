@@ -77,7 +77,8 @@ class OpenAITeacher(BaseTeacher):
                 history_context += f"Challenge: {turn.challenge.content}\n"
                 history_context += f"Student: {turn.student_response}\n\n"
 
-        challenge_prompt = f"""Generate a {challenge_type.value} challenge for this student response.
+        ct_value = challenge_type.value
+        challenge_prompt = f"""Generate a {ct_value} challenge for this student response.
 
 Original prompt: {prompt}
 
@@ -136,6 +137,7 @@ Respond with JSON only:
                 history_context += f"Student: {turn.student_response}\n\n"
 
         dimensions_list = ", ".join([d.value for d in self.evaluation_dimensions])
+        improved_field = '"improved_response": "..."' if generate_improved else ""
 
         eval_prompt = f"""Evaluate this student response.
 
@@ -153,7 +155,7 @@ Respond with JSON:
     "strengths": [],
     "weaknesses": [],
     "suggestions": [],
-    {"\"improved_response\": \"...\"" if generate_improved else ""}
+    {improved_field}
 }}"""
 
         response = await self.client.chat.completions.create(

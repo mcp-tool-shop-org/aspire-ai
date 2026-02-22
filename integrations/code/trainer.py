@@ -15,16 +15,15 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable
 
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
+from .code_critic import CodeCritic, CodeCriticLoss
+from .code_teacher import CodeCritique, CodeSample, CodeTeacher
 from .config import CodeAspireConfig
-from .code_teacher import CodeTeacher, CodeSample, CodeCritique
-from .code_critic import CodeCritic, CodeCriticLoss, CriticOutput
 from .data import CodeReviewDataset, CodeReviewPair, load_training_data
 
 
@@ -118,8 +117,8 @@ class AspireCodeTrainer:
     def _load_student_model(self, model_name: str):
         """Load a HuggingFace model as student."""
         try:
+            from peft import LoraConfig, TaskType, get_peft_model
             from transformers import AutoModelForCausalLM, AutoTokenizer
-            from peft import get_peft_model, LoraConfig, TaskType
 
             tokenizer = AutoTokenizer.from_pretrained(model_name)
 

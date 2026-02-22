@@ -575,7 +575,7 @@ class TestCodeCritic:
         )
         critic = CodeCritic(config=config)
 
-        result = critic.tokenize(["code1", "code2"])
+        critic.tokenize(["code1", "code2"])
 
         # Should have called with list
         mock_tokenizer.assert_called()

@@ -22,7 +22,7 @@ import time
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 import torch
 import torch.nn as nn
@@ -725,7 +725,7 @@ class CharacterCore:
                 }
                 char.set_value(value_type, **safe_data)
                 loaded_values += 1
-            except (ValueError, TypeError) as e:
+            except (ValueError, TypeError):
                 # Log and continue on invalid data
                 continue
 
@@ -758,7 +758,7 @@ class CharacterCore:
                 }
                 char.set_trait(trait_dim, **safe_data)
                 loaded_traits += 1
-            except (ValueError, TypeError) as e:
+            except (ValueError, TypeError):
                 # Log and continue on invalid data
                 continue
 
@@ -799,7 +799,10 @@ def create_compassionate_character() -> CharacterCore:
     """Create a character optimized for empathetic support."""
     char = CharacterCore(
         name="Compassionate Guide",
-        description="A warm, supportive helper who balances emotional awareness with practical help.",
+        description=(
+            "A warm, supportive helper who balances emotional"
+            " awareness with practical help."
+        ),
     )
 
     # Values emphasizing care

@@ -11,13 +11,12 @@ Tests the static analysis and feature extraction:
 import pytest
 
 from integrations.code.analysis import (
-    detect_language,
-    parse_code,
-    extract_code_features,
-    quick_analyze,
     CodeAnalyzer,
     StaticAnalysisResult,
-    CodeFeatures,
+    detect_language,
+    extract_code_features,
+    parse_code,
+    quick_analyze,
 )
 from integrations.code.config import Language
 

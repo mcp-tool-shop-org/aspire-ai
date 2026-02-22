@@ -11,15 +11,14 @@ Tests the code analysis and critique capabilities:
 import pytest
 
 from integrations.code.code_teacher import (
+    ArchitectureReviewer,
+    CodeCritique,
+    CodeSample,
     CodeTeacher,
     CorrectnessChecker,
-    StyleGuide,
-    SecurityAuditor,
-    ArchitectureReviewer,
     PerformanceAnalyst,
-    DocumentationCritic,
-    CodeSample,
-    CodeCritique,
+    SecurityAuditor,
+    StyleGuide,
 )
 from integrations.code.config import Language
 

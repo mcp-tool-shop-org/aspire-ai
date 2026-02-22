@@ -8,21 +8,20 @@ Tests the mathematical correctness and edge cases of:
 
 import pytest
 import torch
-import torch.nn.functional as F
 
 from aspire.losses.critic import (
-    CriticLoss,
-    CriticScoreLoss,
-    CriticReasoningLoss,
     CriticContrastiveLoss,
+    CriticLoss,
+    CriticReasoningLoss,
+    CriticScoreLoss,
 )
 from aspire.losses.student import (
-    StudentLoss,
-    RewardLoss,
-    ContrastiveLoss,
-    TrajectoryLoss,
     CoherenceLoss,
+    ContrastiveLoss,
     KLDivergenceLoss,
+    RewardLoss,
+    StudentLoss,
+    TrajectoryLoss,
 )
 
 

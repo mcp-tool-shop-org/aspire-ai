@@ -22,20 +22,19 @@ Usage:
 
 from __future__ import annotations
 
-import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from aspire.perception.theory_of_mind import MentalStateTracker
-from aspire.perception.controlled_chaos import ChaosGenerator, ChaosConfig, ChaosInjection
 from aspire.perception.character import CharacterCore
-from aspire.perception.metacognition import MetaCognitionModule, ConfidenceCalibrator
-from aspire.perception.empathy_evaluation import PerceptionEvaluator, PerceptionEvaluation
+from aspire.perception.controlled_chaos import ChaosConfig, ChaosGenerator, ChaosInjection
+from aspire.perception.empathy_evaluation import PerceptionEvaluation, PerceptionEvaluator
+from aspire.perception.metacognition import MetaCognitionModule
+from aspire.perception.theory_of_mind import MentalStateTracker
 
 
 @dataclass
@@ -559,7 +558,7 @@ def integrate_perception_with_trainer(
 
         # Compute perception loss
         if "hidden_states" in result:
-            perception_out = perception_module(
+            perception_module(
                 result["hidden_states"],
                 result.get("attention_mask"),
             )
@@ -569,7 +568,7 @@ def integrate_perception_with_trainer(
 
     trainer._train_step = perception_train_step
 
-    print(f"Perception module integrated with trainer")
+    print("Perception module integrated with trainer")
     print(f"  - ToM enabled: {perception_module.config.tom_enabled}")
     print(f"  - Chaos enabled: {perception_module.config.chaos_enabled}")
     print(f"  - Character enabled: {perception_module.config.character_enabled}")

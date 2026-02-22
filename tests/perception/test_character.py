@@ -6,25 +6,25 @@ and character consistency mechanisms.
 """
 
 import os
+
 os.environ["XFORMERS_DISABLED"] = "1"
 
-import json
 import tempfile
 from pathlib import Path
 
 import pytest
 
 from aspire.perception.character import (
-    CharacterCore,
-    ValueAnchor,
-    BehavioralTrait,
     AutobiographicalMemory,
+    BehavioralTrait,
+    CharacterCore,
     MemoryEntry,
-    ValueType,
     TraitDimension,
-    create_socratic_character,
-    create_compassionate_character,
+    ValueAnchor,
+    ValueType,
     create_analytical_character,
+    create_compassionate_character,
+    create_socratic_character,
 )
 
 

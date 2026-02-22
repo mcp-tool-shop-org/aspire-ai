@@ -12,19 +12,16 @@ Each teacher persona evaluates code from a different perspective:
 
 from __future__ import annotations
 
-import os
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Literal
 
-from .config import Language, CodeDimension
 from .analysis import (
     CodeAnalyzer,
-    StaticAnalysisResult,
     extract_code_features,
     parse_code,
-    quick_analyze,
 )
+from .config import CodeDimension, Language
 
 
 @dataclass
@@ -293,7 +290,8 @@ class StyleGuide(BaseCodeTeacher):
             camel_case = re.findall(r'\b[a-z]+[A-Z][a-z]+\b', sample.code)
             if camel_case:
                 score -= 0.5
-                weaknesses.append(f"Use snake_case instead of camelCase: {', '.join(camel_case[:3])}")
+                camel_examples = ", ".join(camel_case[:3])
+                weaknesses.append(f"Use snake_case instead of camelCase: {camel_examples}")
 
             # Check for ALLCAPS that aren't constants
             lines = sample.code.split('\n')
@@ -301,7 +299,9 @@ class StyleGuide(BaseCodeTeacher):
                 if '=' in line and not line.strip().startswith('#'):
                     # Simple check for non-constant ALLCAPS
                     match = re.search(r'\b([A-Z]{2,})\s*=\s*[^A-Z]', line)
-                    if match and match.group(1) not in ['ID', 'URL', 'API', 'SQL', 'HTML', 'JSON', 'XML']:
+                    if match and match.group(1) not in [
+                        'ID', 'URL', 'API', 'SQL', 'HTML', 'JSON', 'XML',
+                    ]:
                         score -= 0.2
 
         # Check line length
@@ -513,11 +513,18 @@ class ArchitectureReviewer(BaseCodeTeacher):
 
                 for node in ast.walk(tree):
                     if isinstance(node, ast.FunctionDef):
-                        func_lines = node.end_lineno - node.lineno if hasattr(node, 'end_lineno') else 0
+                        func_lines = (
+                            node.end_lineno - node.lineno
+                            if hasattr(node, 'end_lineno') else 0
+                        )
                         if func_lines > 50:
                             score -= 0.5
-                            weaknesses.append(f"Function '{node.name}' is too long ({func_lines} lines)")
-                            suggestions.append(f"Consider breaking '{node.name}' into smaller functions")
+                            weaknesses.append(
+                                f"Function '{node.name}' is too long ({func_lines} lines)"
+                            )
+                            suggestions.append(
+                                f"Consider breaking '{node.name}' into smaller functions"
+                            )
                         elif func_lines > 30:
                             score -= 0.2
 
@@ -552,8 +559,13 @@ class ArchitectureReviewer(BaseCodeTeacher):
                         methods = [n for n in node.body if isinstance(n, ast.FunctionDef)]
                         if len(methods) > 15:
                             score -= 1.0
-                            weaknesses.append(f"Class '{node.name}' has too many methods ({len(methods)})")
-                            suggestions.append("Consider splitting into smaller classes (Single Responsibility)")
+                            weaknesses.append(
+                            f"Class '{node.name}' has too many methods ({len(methods)})"
+                        )
+                            suggestions.append(
+                            "Consider splitting into smaller classes"
+                            " (Single Responsibility)"
+                        )
                         elif len(methods) > 10:
                             score -= 0.3
 
@@ -572,7 +584,11 @@ class ArchitectureReviewer(BaseCodeTeacher):
 
         if len(detected_concerns) > 2 and features.num_classes <= 1:
             score -= 0.5
-            suggestions.append(f"Multiple concerns in one place: {', '.join(detected_concerns)}. Consider separating.")
+            concerns_list = ", ".join(detected_concerns)
+            suggestions.append(
+                f"Multiple concerns in one place: {concerns_list}."
+                " Consider separating."
+            )
 
         score = max(0.0, min(10.0, score))
 
@@ -647,7 +663,7 @@ class PerformanceAnalyst(BaseCodeTeacher):
                 suggestions.append(suggestion)
 
         # Check for common inefficiencies
-        lines = sample.code.split('\n')
+        sample.code.split('\n')
 
         # Repeated function calls that could be cached
         import re
@@ -656,7 +672,11 @@ class PerformanceAnalyst(BaseCodeTeacher):
         for call in func_calls:
             call_counts[call] = call_counts.get(call, 0) + 1
 
-        repeated = [f for f, c in call_counts.items() if c > 3 and f not in ['print', 'len', 'str', 'int', 'range']]
+        skip_funcs = {"print", "len", "str", "int", "range"}
+        repeated = [
+            fn for fn, c in call_counts.items()
+            if c > 3 and fn not in skip_funcs
+        ]
         if repeated:
             suggestions.append(f"Consider caching repeated calls: {', '.join(repeated[:3])}")
 
@@ -746,7 +766,10 @@ class DocumentationCritic(BaseCodeTeacher):
 
                 # Check module docstring
                 if tree.body and isinstance(tree.body[0], ast.Expr):
-                    if isinstance(tree.body[0].value, ast.Constant) and isinstance(tree.body[0].value.value, str):
+                    if (
+                        isinstance(tree.body[0].value, ast.Constant)
+                        and isinstance(tree.body[0].value.value, str)
+                    ):
                         strengths.append("Has module docstring")
                     else:
                         score -= 0.5
@@ -770,7 +793,10 @@ class DocumentationCritic(BaseCodeTeacher):
 
                 if functions_without_docs:
                     score -= min(2.0, len(functions_without_docs) * 0.3)
-                    weaknesses.append(f"Functions without docstrings: {', '.join(functions_without_docs[:5])}")
+                    missing_docs = ", ".join(functions_without_docs[:5])
+                    weaknesses.append(
+                        f"Functions without docstrings: {missing_docs}"
+                    )
                 elif features.num_functions > 0:
                     strengths.append("All public functions have docstrings")
 
@@ -783,8 +809,8 @@ class DocumentationCritic(BaseCodeTeacher):
 
         # Check comment quality
         lines = sample.code.split('\n')
-        comment_lines = [l for l in lines if l.strip().startswith('#')]
-        code_lines = [l for l in lines if l.strip() and not l.strip().startswith('#')]
+        comment_lines = [ln for ln in lines if ln.strip().startswith('#')]
+        code_lines = [ln for ln in lines if ln.strip() and not ln.strip().startswith('#')]
 
         if code_lines:
             comment_ratio = len(comment_lines) / len(code_lines)
@@ -797,8 +823,12 @@ class DocumentationCritic(BaseCodeTeacher):
                 weaknesses.append("Possibly over-commented - code should be self-documenting")
 
         # Check for TODO/FIXME without explanation
-        todos = [l for l in lines if 'TODO' in l or 'FIXME' in l]
-        unclear_todos = [l for l in todos if len(l.split('TODO')[-1].strip()) < 10 or len(l.split('FIXME')[-1].strip()) < 10]
+        todos = [ln for ln in lines if 'TODO' in ln or 'FIXME' in ln]
+        unclear_todos = [
+            ln for ln in todos
+            if len(ln.split("TODO")[-1].strip()) < 10
+            or len(ln.split("FIXME")[-1].strip()) < 10
+        ]
         if unclear_todos:
             score -= 0.2 * len(unclear_todos)
             suggestions.append("Add explanations to TODO/FIXME comments")

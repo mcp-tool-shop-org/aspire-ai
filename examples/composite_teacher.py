@@ -6,15 +6,16 @@ richer, more balanced learning experiences.
 """
 
 import asyncio
+
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from aspire.teachers import (
-    CompositeTeacher,
-    SocraticTeacher,
-    ScientificTeacher,
-    AdversarialTeacher,
-)
 from aspire.dialogue import DialogueGenerator
+from aspire.teachers import (
+    AdversarialTeacher,
+    CompositeTeacher,
+    ScientificTeacher,
+    SocraticTeacher,
+)
 
 
 async def main():
@@ -57,7 +58,7 @@ async def main():
 
     print(f"\n{'='*60}")
     print(f"Prompt: {prompt}")
-    print(f"Teachers: Socratic → Scientific → Adversarial (rotating)")
+    print("Teachers: Socratic → Scientific → Adversarial (rotating)")
     print(f"{'='*60}\n")
 
     dialogue = await generator.generate_dialogue(prompt)
@@ -68,7 +69,7 @@ async def main():
         print(f"--- Turn {i} ---")
         print(f"Challenge ({turn.challenge.challenge_type.value}):")
         print(f"  {turn.challenge.content}\n")
-        print(f"Response:")
+        print("Response:")
         print(f"  {turn.student_response}\n")
 
     print(f"Final Score: {dialogue.final_evaluation.overall_score:.1f}/10")

@@ -12,10 +12,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Any, Protocol, runtime_checkable
-import numpy as np
 
+import numpy as np
 import torch
-import torch.nn as nn
 
 
 @dataclass
@@ -454,9 +453,9 @@ def create_isaac_env(
     except ImportError:
         try:
             # Fall back to Isaac Gym
-            from isaacgym import gymapi
-            from isaacgymenvs.utils.utils import set_seed
+            from isaacgym import gymapi  # noqa: F401
             from isaacgymenvs.tasks import isaacgym_task_map
+            from isaacgymenvs.utils.utils import set_seed  # noqa: F401
 
             # Parse env name
             task_name = env_name.replace("-v0", "").replace("-", "")

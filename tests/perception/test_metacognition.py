@@ -6,21 +6,22 @@ and reflective loop mechanisms.
 """
 
 import os
+
 os.environ["XFORMERS_DISABLED"] = "1"
 
 import pytest
 import torch
 
 from aspire.perception.metacognition import (
-    UncertaintyEstimator,
-    ConfidenceCalibrator,
-    ReflectiveLoop,
-    MetaCognitionModule,
-    UncertaintyType,
-    ConfidenceLevel,
-    UncertaintyEstimate,
-    ReflectiveInsight,
     CalibrationRecord,
+    ConfidenceCalibrator,
+    ConfidenceLevel,
+    MetaCognitionModule,
+    ReflectiveInsight,
+    ReflectiveLoop,
+    UncertaintyEstimate,
+    UncertaintyEstimator,
+    UncertaintyType,
 )
 
 

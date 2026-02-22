@@ -5,13 +5,12 @@ This example shows how to create a teacher for assembly tasks
 that evaluates precision, stability, and part alignment.
 """
 
-import numpy as np
-from dataclasses import dataclass
 
+import numpy as np
 from aspire.integrations.isaac.motion_teacher import (
     BaseMotionTeacher,
-    MotionDimension,
     MotionCritique,
+    MotionDimension,
     TrajectoryData,
 )
 
@@ -77,7 +76,7 @@ class AssemblyTeacher(BaseMotionTeacher):
             # Check for oscillations in the final approach phase
             final_states = trajectory.states[-20:]
             velocities = np.diff(final_states, axis=0)
-            velocity_magnitude = np.linalg.norm(velocities, axis=1)
+            np.linalg.norm(velocities, axis=1)
 
             # Look for sign changes (oscillation)
             sign_changes = np.sum(np.diff(np.sign(velocities[:, :3]), axis=0) != 0)
@@ -96,17 +95,15 @@ class AssemblyTeacher(BaseMotionTeacher):
         # === Force Control Analysis ===
         if trajectory.forces is not None:
             max_force = np.max(np.linalg.norm(trajectory.forces, axis=-1))
-            mean_force = np.mean(np.linalg.norm(trajectory.forces, axis=-1))
+            np.mean(np.linalg.norm(trajectory.forces, axis=-1))
 
             if max_force > self.max_contact_force:
-                force_score = max(0, 8.0 - (max_force - self.max_contact_force) * 0.5)
+                max(0, 8.0 - (max_force - self.max_contact_force) * 0.5)
                 weaknesses.append(f"Excessive contact force: {max_force:.1f}N")
                 suggestions.append("Reduce approach speed or use force feedback")
             elif max_force > self.max_contact_force * 0.7:
-                force_score = 8.0
                 strengths.append("Good force control")
             else:
-                force_score = 10.0
                 strengths.append("Excellent gentle contact")
 
             # Note: We'd need a custom dimension for force
@@ -221,12 +218,12 @@ if __name__ == "__main__":
     print("=" * 50)
     print(f"Overall Score: {critique.overall_score:.1f}/10")
     print(f"\nReasoning: {critique.reasoning}")
-    print(f"\nStrengths:")
+    print("\nStrengths:")
     for s in critique.strengths:
         print(f"  + {s}")
-    print(f"\nWeaknesses:")
+    print("\nWeaknesses:")
     for w in critique.weaknesses:
         print(f"  - {w}")
-    print(f"\nSuggestions:")
+    print("\nSuggestions:")
     for s in critique.improvement_suggestions:
         print(f"  > {s}")

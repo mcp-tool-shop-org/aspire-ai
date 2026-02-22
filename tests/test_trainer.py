@@ -17,7 +17,7 @@ import os
 import tempfile
 from multiprocessing import freeze_support
 from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, patch, PropertyMock
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 import torch
@@ -177,9 +177,9 @@ class TestAspireTrainerInit:
              patch("aspire.trainer.AutoTokenizer") as mock_tokenizer_class, \
              patch("aspire.trainer.get_teacher") as mock_get_teacher, \
              patch("aspire.trainer.CriticHead") as mock_critic_head, \
-             patch("aspire.trainer.DialogueGenerator") as mock_dialogue_gen, \
-             patch("aspire.trainer.DialogueManager") as mock_dialogue_mgr, \
-             patch("aspire.trainer.DialogueFormatter") as mock_dialogue_fmt, \
+             patch("aspire.trainer.DialogueGenerator"), \
+             patch("aspire.trainer.DialogueManager"), \
+             patch("aspire.trainer.DialogueFormatter"), \
              patch("aspire.trainer.AspireLoss") as mock_loss:
 
             # Mock model
@@ -221,8 +221,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init(self, mock_all_dependencies):
         """Test basic trainer initialization."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig
+        from aspire.trainer import AspireTrainer
 
         config = AspireConfig(device="cpu")
 
@@ -235,13 +235,13 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_student_basic(self, mock_all_dependencies):
         """Test student model loading and tokenizer pad_token setup."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig
+        from aspire.trainer import AspireTrainer
 
         mocks = mock_all_dependencies
         config = AspireConfig(device="cpu")
 
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # Verify model was loaded
         mocks["model_class"].from_pretrained.assert_called()
@@ -251,8 +251,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_student_with_lora(self, mock_all_dependencies):
         """Test LoRA configuration is applied when use_lora=True."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, StudentConfig
+        from aspire.trainer import AspireTrainer
 
         with patch("aspire.trainer.get_peft_model") as mock_get_peft, \
              patch("aspire.trainer.LoraConfig") as mock_lora_config:
@@ -268,7 +268,7 @@ class TestAspireTrainerInit:
             )
             config = AspireConfig(student=student_config, device="cpu")
 
-            trainer = AspireTrainer(config)
+            AspireTrainer(config)
 
             # Verify LoraConfig was created with correct params
             mock_lora_config.assert_called_once()
@@ -283,8 +283,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_student_with_quantization_4bit(self, mock_all_dependencies):
         """Test 4-bit quantization configuration."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, StudentConfig
+        from aspire.trainer import AspireTrainer
 
         with patch("aspire.trainer.BitsAndBytesConfig") as mock_bnb, \
              patch("aspire.trainer.prepare_model_for_kbit_training") as mock_prepare:
@@ -294,20 +294,20 @@ class TestAspireTrainerInit:
             student_config = StudentConfig(load_in_4bit=True, load_in_8bit=False)
             config = AspireConfig(student=student_config, device="cpu")
 
-            trainer = AspireTrainer(config)
+            AspireTrainer(config)
 
             # Verify BitsAndBytesConfig was called with 4-bit settings
             mock_bnb.assert_called()
             bnb_call_kwargs = mock_bnb.call_args.kwargs
-            assert bnb_call_kwargs.get("load_in_4bit") == True
+            assert bnb_call_kwargs.get("load_in_4bit")
 
             # Verify prepare_model_for_kbit_training was called
             mock_prepare.assert_called_once()
 
     def test_trainer_init_student_with_quantization_8bit(self, mock_all_dependencies):
         """Test 8-bit quantization configuration."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, StudentConfig
+        from aspire.trainer import AspireTrainer
 
         with patch("aspire.trainer.BitsAndBytesConfig") as mock_bnb, \
              patch("aspire.trainer.prepare_model_for_kbit_training") as mock_prepare:
@@ -317,12 +317,12 @@ class TestAspireTrainerInit:
             student_config = StudentConfig(load_in_4bit=False, load_in_8bit=True)
             config = AspireConfig(student=student_config, device="cpu")
 
-            trainer = AspireTrainer(config)
+            AspireTrainer(config)
 
             # Verify BitsAndBytesConfig was called with 8-bit settings
             mock_bnb.assert_called()
             bnb_call_kwargs = mock_bnb.call_args.kwargs
-            assert bnb_call_kwargs.get("load_in_8bit") == True
+            assert bnb_call_kwargs.get("load_in_8bit")
 
     def test_trainer_init_critic_head(self):
         """Test critic head initialization."""
@@ -358,7 +358,7 @@ class TestAspireTrainerInit:
             config = AspireConfig(critic=critic_config, device="cpu")
 
             from aspire.trainer import AspireTrainer
-            trainer = AspireTrainer(config)
+            AspireTrainer(config)
 
             # Verify CriticHead was created with student_hidden_size
             mock_critic_head.assert_called_once()
@@ -399,7 +399,7 @@ class TestAspireTrainerInit:
             config = AspireConfig(critic=critic_config, device="cpu")
 
             from aspire.trainer import AspireTrainer
-            trainer = AspireTrainer(config)
+            AspireTrainer(config)
 
             # Verify SeparateCritic was created
             mock_sep_critic.assert_called_once()
@@ -438,7 +438,7 @@ class TestAspireTrainerInit:
             config = AspireConfig(critic=critic_config, device="cpu")
 
             from aspire.trainer import AspireTrainer
-            trainer = AspireTrainer(config)
+            AspireTrainer(config)
 
             # Verify SharedEncoderCritic was created with student_model
             mock_shared_critic.assert_called_once()
@@ -482,13 +482,13 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_teacher_claude(self, mock_all_dependencies):
         """Test teacher initialization with Claude."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, TeacherConfig
+        from aspire.trainer import AspireTrainer
 
         teacher_config = TeacherConfig(default_teacher="claude", claude_model="claude-sonnet-4-20250514")
         config = AspireConfig(teacher=teacher_config, device="cpu")
 
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # Verify get_teacher was called with correct args
         mock_all_dependencies["get_teacher"].assert_called_once_with(
@@ -500,13 +500,13 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_teacher_openai(self, mock_all_dependencies):
         """Test teacher initialization with OpenAI."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, TeacherConfig
+        from aspire.trainer import AspireTrainer
 
         teacher_config = TeacherConfig(default_teacher="openai", openai_model="gpt-4o")
         config = AspireConfig(teacher=teacher_config, device="cpu")
 
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # Verify get_teacher was called with correct args
         mock_all_dependencies["get_teacher"].assert_called_once_with(
@@ -518,8 +518,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_loss(self, mock_all_dependencies):
         """Test AspireLoss initialization with config weights."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, LossConfig
+        from aspire.trainer import AspireTrainer
 
         loss_config = LossConfig(
             critic_score_weight=1.5,
@@ -529,7 +529,7 @@ class TestAspireTrainerInit:
         )
         config = AspireConfig(loss=loss_config, device="cpu")
 
-        trainer = AspireTrainer(config)
+        AspireTrainer(config)
 
         # Verify AspireLoss was created with correct weights
         mock_all_dependencies["loss"].assert_called_once()
@@ -541,8 +541,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_optimizers_adamw(self, mock_all_dependencies):
         """Test AdamW optimizer initialization."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, TrainingConfig
+        from aspire.trainer import AspireTrainer
 
         training_config = TrainingConfig(
             optimizer="adamw",
@@ -559,8 +559,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_optimizers_adamw_8bit(self, mock_all_dependencies):
         """Test AdamW 8-bit optimizer initialization."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, TrainingConfig
+        from aspire.trainer import AspireTrainer
 
         with patch("aspire.trainer.bnb") as mock_bnb:
             mock_opt = MagicMock()
@@ -575,7 +575,7 @@ class TestAspireTrainerInit:
             # This will fail in the actual init because bnb isn't available at import time
             # But we're testing the branch logic
             try:
-                trainer = AspireTrainer(config)
+                AspireTrainer(config)
             except (ImportError, AttributeError, RuntimeError):
                 # Expected if bitsandbytes not installed or CUDA unavailable
                 pass
@@ -661,7 +661,6 @@ class TestAspireTrainerTraining:
 
     def test_trainer_train_creates_dataloader(self, mock_trainer):
         """Test that train() creates DataLoader with correct settings."""
-        from torch.utils.data import DataLoader
 
         with patch.object(mock_trainer, "_train_epoch", return_value={"loss": 0.5, "critic_loss": 0.3, "student_loss": 0.2}), \
              patch.object(mock_trainer, "_save_checkpoint"):
@@ -703,7 +702,7 @@ class TestAspireTrainerTraining:
     def test_trainer_train_with_eval(self, mock_trainer):
         """Test that train() calls _evaluate when eval_prompts provided."""
         with patch.object(mock_trainer, "_train_epoch", return_value={"loss": 0.5, "critic_loss": 0.3, "student_loss": 0.2}), \
-             patch.object(mock_trainer, "_evaluate", new_callable=AsyncMock) as mock_eval, \
+             patch.object(mock_trainer, "_evaluate", new_callable=AsyncMock), \
              patch.object(mock_trainer, "_save_checkpoint"), \
              patch("aspire.trainer.asyncio.run") as mock_asyncio_run:
 
@@ -731,6 +730,7 @@ class TestAspireTrainerTraining:
     def test_trainer_train_epoch_basic(self, mock_trainer):
         """Test _train_epoch sets models to train mode and processes batches."""
         from torch.utils.data import DataLoader
+
         from aspire.trainer import AspireDataset
 
         with patch.object(mock_trainer, "_compute_batch_loss") as mock_loss, \
@@ -773,7 +773,7 @@ class TestAspireTrainerTraining:
         with patch.object(mock_trainer, "_compute_batch_loss") as mock_loss, \
              patch("aspire.trainer.asyncio.run") as mock_asyncio, \
              patch.object(mock_trainer.student_optimizer, "step") as mock_opt_step, \
-             patch.object(mock_trainer.student_optimizer, "zero_grad") as mock_zero_grad:
+             patch.object(mock_trainer.student_optimizer, "zero_grad"):
 
             mock_dialogue = MagicMock()
             mock_dialogue.final_evaluation = MagicMock()
@@ -787,8 +787,9 @@ class TestAspireTrainerTraining:
             }
 
             # Create dataloader with 8 batches (should call optimizer.step twice with grad_accum=4)
-            from aspire.trainer import AspireDataset
             from torch.utils.data import DataLoader
+
+            from aspire.trainer import AspireDataset
 
             prompts = ["prompt"] * 8
             dataset = AspireDataset(prompts, mock_trainer.tokenizer, max_length=64)
@@ -817,8 +818,9 @@ class TestAspireTrainerTraining:
                 "student_total": torch.tensor(0.2),
             }
 
-            from aspire.trainer import AspireDataset
             from torch.utils.data import DataLoader
+
+            from aspire.trainer import AspireDataset
 
             prompts = ["prompt 1", "prompt 2"]
             dataset = AspireDataset(prompts, mock_trainer.tokenizer, max_length=64)
@@ -921,7 +923,7 @@ class TestAspireTrainerComputeBatchLoss:
             # Verify model was called with output_hidden_states=True
             mock_model.assert_called()
             call_kwargs = mock_model.call_args.kwargs
-            assert call_kwargs.get("output_hidden_states") == True
+            assert call_kwargs.get("output_hidden_states")
 
             # Verify critic was called
             mock_critic.assert_called()

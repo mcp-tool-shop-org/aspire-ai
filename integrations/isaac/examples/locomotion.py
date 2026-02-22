@@ -5,20 +5,15 @@ Teaches a legged robot to walk with good gait patterns
 by internalizing feedback from motion quality experts.
 """
 
-import numpy as np
-import torch
-from dataclasses import dataclass
 from multiprocessing import freeze_support
 
+import numpy as np
 from aspire.integrations.isaac.motion_teacher import (
     BaseMotionTeacher,
-    MotionTeacher,
-    MotionDimension,
     MotionCritique,
+    MotionDimension,
+    MotionTeacher,
     TrajectoryData,
-    SafetyInspector,
-    EfficiencyExpert,
-    GraceCoach,
 )
 
 
@@ -97,7 +92,7 @@ class GaitAnalyst(BaseMotionTeacher):
         # === Stability (vertical oscillation) ===
         if states.shape[1] >= 3:
             z_positions = states[:, 2]  # Assume z is vertical
-            z_variance = np.var(z_positions)
+            np.var(z_positions)
             z_range = np.max(z_positions) - np.min(z_positions)
 
             if z_range < 0.1:
@@ -140,12 +135,11 @@ class GaitAnalyst(BaseMotionTeacher):
 
             # Lower is better for CoT
             if cost_of_transport < 10:
-                efficiency_score = 9.0
                 strengths.append(f"Excellent efficiency (CoT: {cost_of_transport:.1f})")
             elif cost_of_transport < 50:
-                efficiency_score = 7.0
+                pass
             else:
-                efficiency_score = max(0, 7 - cost_of_transport / 20)
+                max(0, 7 - cost_of_transport / 20)
                 weaknesses.append(f"High energy cost (CoT: {cost_of_transport:.1f})")
 
         # === Overall Score ===
@@ -180,7 +174,7 @@ def main():
         AspireIsaacTrainer,
         IsaacAspireConfig,
     )
-    from aspire.integrations.isaac.isaac_wrapper import DummyIsaacEnv, AspireIsaacEnv
+    from aspire.integrations.isaac.isaac_wrapper import AspireIsaacEnv, DummyIsaacEnv
 
     print("=" * 60)
     print("ASPIRE Locomotion Training")
@@ -204,7 +198,7 @@ def main():
     )
 
     # Add our custom gait analyst
-    gait_analyst = GaitAnalyst(
+    GaitAnalyst(
         num_legs=4,
         target_stride_length=0.25,
     )

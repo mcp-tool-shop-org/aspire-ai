@@ -30,7 +30,7 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Callable
+from typing import Any
 
 import torch
 import torch.nn as nn
@@ -223,7 +223,10 @@ class UncertaintyEstimator(nn.Module):
         # Also compute Mahalanobis-style OOD score
         if self.num_samples > 100:
             diff = pooled - self.mean_hidden.unsqueeze(0)
-            mahal = (diff ** 2 / self.var_hidden.unsqueeze(0).clamp(min=1e-6)).mean(dim=-1, keepdim=True)
+            mahal = (
+                (diff ** 2 / self.var_hidden.unsqueeze(0).clamp(min=1e-6))
+                .mean(dim=-1, keepdim=True)
+            )
             # Normalize to 0-1 range
             mahal_ood = torch.sigmoid(mahal - 1.0)  # Centered at distance 1
             # Combine with learned OOD

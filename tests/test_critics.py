@@ -17,9 +17,7 @@ Windows compatibility notes:
 
 from __future__ import annotations
 
-import tempfile
 from multiprocessing import freeze_support
-from pathlib import Path
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, patch
 
