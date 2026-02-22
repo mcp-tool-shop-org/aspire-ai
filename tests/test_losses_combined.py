@@ -14,11 +14,9 @@ from __future__ import annotations
 
 from multiprocessing import freeze_support
 from typing import TYPE_CHECKING
-from unittest.mock import MagicMock
 
 import pytest
 import torch
-import torch.nn as nn
 
 from aspire.losses.combined import AspireLoss
 from aspire.losses.critic import CriticLoss
@@ -593,7 +591,7 @@ class TestLossIntegration:
 
         for device in devices:
             scores = torch.randn(4, device=device)
-            embeds = torch.randn(4, 256, device=device)
+            torch.randn(4, 256, device=device)
 
             result = loss_fn.forward(
                 critic_predicted_score=scores,

@@ -7,9 +7,8 @@ allowing self-improvement without API calls at inference time.
 """
 
 import gradio as gr
-
-from modules import scripts, shared
-from modules.processing import StableDiffusionProcessing, Processed
+from modules import scripts
+from modules.processing import Processed, StableDiffusionProcessing
 
 
 class AspireGenerateScript(scripts.Script):
@@ -144,4 +143,4 @@ class AspireGenerateScript(scripts.Script):
         # For now, just log that ASPIRE was active
         if hasattr(processed, "infotexts") and processed.infotexts:
             for i, infotext in enumerate(processed.infotexts):
-                processed.infotexts[i] = infotext + f"\nASPIRE Critic: strength={p.aspire_critic_strength}"
+                processed.infotexts[i] = infotext + f"\nASPIRE Critic: strength={p.aspire_critic_strength}"  # noqa: E501

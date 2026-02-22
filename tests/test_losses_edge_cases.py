@@ -19,24 +19,20 @@ from multiprocessing import freeze_support
 
 import pytest
 import torch
-import torch.nn.functional as F
 
-from aspire.losses.student import (
-    RewardLoss,
-    ContrastiveLoss,
-    TrajectoryLoss,
-    CoherenceLoss,
-    KLDivergenceLoss,
-    StudentLoss,
-)
-from aspire.losses.critic import (
-    CriticLoss,
-    CriticScoreLoss,
-    CriticReasoningLoss,
-    CriticContrastiveLoss,
-)
 from aspire.losses.combined import AspireLoss
-
+from aspire.losses.critic import (
+    CriticContrastiveLoss,
+    CriticReasoningLoss,
+    CriticScoreLoss,
+)
+from aspire.losses.student import (
+    CoherenceLoss,
+    ContrastiveLoss,
+    KLDivergenceLoss,
+    RewardLoss,
+    TrajectoryLoss,
+)
 
 # ============================================================================
 # RewardLoss Edge Cases

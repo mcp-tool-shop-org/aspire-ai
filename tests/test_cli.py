@@ -7,16 +7,14 @@ Coverage target: CLI commands and options.
 import json
 import os
 import sys
-from pathlib import Path
-from unittest.mock import MagicMock, patch, AsyncMock
 import tempfile
+from pathlib import Path
+from unittest.mock import AsyncMock, MagicMock, patch
 
-import pytest
 from typer.testing import CliRunner
 
-from aspire.cli import app
 from aspire import __version__
-
+from aspire.cli import app
 
 runner = CliRunner()
 
@@ -171,7 +169,7 @@ def test_train_with_demo_prompts():
     with tempfile.TemporaryDirectory() as tmpdir:
         # Patch at the aspire.config and aspire.trainer module level
         with patch("aspire.config.AspireConfig", return_value=mock_config) as mock_config_class, \
-             patch("aspire.trainer.AspireTrainer", return_value=mock_trainer) as mock_trainer_class:
+             patch("aspire.trainer.AspireTrainer", return_value=mock_trainer):
             mock_config_class.from_yaml.return_value = mock_config
             result = runner.invoke(app, ["train", "--output", tmpdir])
             # Should attempt to train (may show warning about demo prompts)
@@ -199,7 +197,7 @@ def test_train_with_config_file():
         with patch("aspire.config.AspireConfig", return_value=mock_config) as mock_config_class, \
              patch("aspire.trainer.AspireTrainer", return_value=mock_trainer):
             mock_config_class.from_yaml.return_value = mock_config
-            result = runner.invoke(app, ["train", "--config", str(config_path), "--output", tmpdir])
+            runner.invoke(app, ["train", "--config", str(config_path), "--output", tmpdir])
             # Should load config from file
             mock_config_class.from_yaml.assert_called_once()
 
@@ -234,6 +232,6 @@ def test_evaluate_with_mock_checkpoint():
         with patch("aspire.config.AspireConfig") as mock_config_class, \
              patch("aspire.trainer.AspireTrainer", return_value=mock_trainer):
             mock_config_class.from_yaml.return_value = mock_config
-            result = runner.invoke(app, ["evaluate", str(checkpoint_dir), "--prompts", str(prompts_path)])
+            runner.invoke(app, ["evaluate", str(checkpoint_dir), "--prompts", str(prompts_path)])
             # Should attempt evaluation
             mock_trainer.load_checkpoint.assert_called_once()

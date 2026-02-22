@@ -8,16 +8,10 @@ Train LoRA adapters using ASPIRE methodology:
 4. Model learns from critic's internalized standards
 """
 
-import os
-import json
-from pathlib import Path
 from datetime import datetime
 
 import gradio as gr
-import torch
-
-from modules import scripts, shared, sd_models
-from modules.ui_components import FormRow
+from modules import scripts
 
 
 class AspireTrainScript(scripts.Script):
@@ -59,7 +53,7 @@ class AspireTrainScript(scripts.Script):
                             prompts_text = gr.Textbox(
                                 label="Or enter prompts directly (one per line)",
                                 lines=5,
-                                placeholder="a beautiful sunset over mountains\na portrait of a wise old man\n...",
+                                placeholder="a beautiful sunset over mountains\na portrait of a wise old man\n...",  # noqa: E501
                             )
 
                         with gr.Column(scale=1):
@@ -90,8 +84,8 @@ class AspireTrainScript(scripts.Script):
                                 value="Balanced Critic",
                             )
 
-                            api_key_status = gr.Markdown(
-                                "⚠️ Set `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` environment variable"
+                            gr.Markdown(
+                                "⚠️ Set `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` environment variable"  # noqa: E501
                             )
 
                     with gr.Row():
@@ -178,7 +172,8 @@ class AspireTrainScript(scripts.Script):
                     gr.Markdown("""
                     ### Critic Architecture
 
-                    The critic learns to predict what the teacher would think about generated images.
+                    The critic learns to predict what the teacher would think
+                    about generated images.
                     After training, it provides aesthetic guidance without API calls.
                     """)
 
@@ -234,18 +229,18 @@ class AspireTrainScript(scripts.Script):
                 # Tab 3: Live Training
                 with gr.TabItem("Training Progress"):
                     with gr.Row():
-                        start_btn = gr.Button("▶ Start Training", variant="primary")
-                        pause_btn = gr.Button("⏸ Pause")
-                        stop_btn = gr.Button("⏹ Stop", variant="stop")
+                        gr.Button("▶ Start Training", variant="primary")
+                        gr.Button("⏸ Pause")
+                        gr.Button("⏹ Stop", variant="stop")
 
-                    progress_bar = gr.Progress()
+                    gr.Progress()
 
                     with gr.Row():
                         with gr.Column(scale=2):
                             # Training metrics
-                            metrics_plot = gr.Plot(label="Training Metrics")
+                            gr.Plot(label="Training Metrics")
 
-                            log_output = gr.Textbox(
+                            gr.Textbox(
                                 label="Training Log",
                                 lines=10,
                                 max_lines=20,
@@ -255,15 +250,15 @@ class AspireTrainScript(scripts.Script):
                         with gr.Column(scale=1):
                             # Live preview
                             gr.Markdown("### Live Preview")
-                            preview_image = gr.Image(
+                            gr.Image(
                                 label="Current Generation",
                                 type="pil",
                             )
-                            preview_score = gr.Number(
+                            gr.Number(
                                 label="Critic Score",
                                 precision=2,
                             )
-                            preview_feedback = gr.Textbox(
+                            gr.Textbox(
                                 label="Teacher Feedback",
                                 lines=3,
                             )
@@ -276,26 +271,26 @@ class AspireTrainScript(scripts.Script):
                     Compare generations before and after ASPIRE training.
                     """)
 
-                    eval_prompt = gr.Textbox(
+                    gr.Textbox(
                         label="Test Prompt",
-                        value="a serene Japanese garden at sunset, with a koi pond and cherry blossoms",
+                        value="a serene Japanese garden at sunset, with a koi pond and cherry blossoms",  # noqa: E501
                     )
 
                     with gr.Row():
-                        eval_btn = gr.Button("Generate Comparison", variant="primary")
+                        gr.Button("Generate Comparison", variant="primary")
 
                     with gr.Row():
                         with gr.Column():
                             gr.Markdown("**Before ASPIRE**")
-                            before_image = gr.Image(label="Original Model")
-                            before_score = gr.Number(label="Critic Score")
+                            gr.Image(label="Original Model")
+                            gr.Number(label="Critic Score")
 
                         with gr.Column():
                             gr.Markdown("**After ASPIRE**")
-                            after_image = gr.Image(label="ASPIRE-Trained Model")
-                            after_score = gr.Number(label="Critic Score")
+                            gr.Image(label="ASPIRE-Trained Model")
+                            gr.Number(label="Critic Score")
 
-                    improvement_text = gr.Markdown("")
+                    gr.Markdown("")
 
         # Return all components that need to be passed to run()
         return [
@@ -347,7 +342,7 @@ class AspireTrainScript(scripts.Script):
 
         # This would kick off the actual training
         # For now, return a message indicating setup is complete
-        print(f"ASPIRE Training would start with:")
+        print("ASPIRE Training would start with:")
         print(f"  Teacher: {teacher_type} ({teacher_persona})")
         print(f"  Epochs: {num_epochs}, Batch: {batch_size}, LR: {learning_rate}")
         print(f"  LoRA: rank={lora_rank}, alpha={lora_alpha}")

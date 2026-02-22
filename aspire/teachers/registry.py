@@ -4,7 +4,6 @@ Teacher registry - discover and instantiate teachers by name.
 Enables dynamic teacher selection and custom teacher registration.
 """
 
-from typing import Type
 
 from aspire.teachers.base import BaseTeacher
 
@@ -16,15 +15,15 @@ class TeacherRegistry:
     Allows registering custom teachers and retrieving them by name.
     """
 
-    _teachers: dict[str, Type[BaseTeacher]] = {}
+    _teachers: dict[str, type[BaseTeacher]] = {}
 
     @classmethod
-    def register(cls, name: str, teacher_class: Type[BaseTeacher]) -> None:
+    def register(cls, name: str, teacher_class: type[BaseTeacher]) -> None:
         """Register a teacher class."""
         cls._teachers[name.lower()] = teacher_class
 
     @classmethod
-    def get(cls, name: str) -> Type[BaseTeacher] | None:
+    def get(cls, name: str) -> type[BaseTeacher] | None:
         """Get a teacher class by name."""
         return cls._teachers.get(name.lower())
 
@@ -45,7 +44,7 @@ class TeacherRegistry:
 def register_teacher(name: str):
     """Decorator to register a teacher class."""
 
-    def decorator(cls: Type[BaseTeacher]) -> Type[BaseTeacher]:
+    def decorator(cls: type[BaseTeacher]) -> type[BaseTeacher]:
         TeacherRegistry.register(name, cls)
         return cls
 
@@ -61,14 +60,14 @@ def get_teacher(name: str, **kwargs) -> BaseTeacher:
 def _register_builtin_teachers():
     """Register all built-in teachers."""
     from aspire.teachers.claude import ClaudeTeacher
-    from aspire.teachers.openai import OpenAITeacher
     from aspire.teachers.local import LocalTeacher
+    from aspire.teachers.openai import OpenAITeacher
     from aspire.teachers.personas import (
-        SocraticTeacher,
-        ScientificTeacher,
-        CreativeTeacher,
         AdversarialTeacher,
         CompassionateTeacher,
+        CreativeTeacher,
+        ScientificTeacher,
+        SocraticTeacher,
     )
 
     TeacherRegistry.register("claude", ClaudeTeacher)

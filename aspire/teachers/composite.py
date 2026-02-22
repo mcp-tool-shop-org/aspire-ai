@@ -8,7 +8,6 @@ their own expertise and style.
 
 import asyncio
 import random
-from typing import Callable
 
 from aspire.teachers.base import (
     BaseTeacher,

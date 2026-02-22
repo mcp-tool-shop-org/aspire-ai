@@ -9,10 +9,8 @@ Tests cover:
 - CompositeTeacher and CurriculumCompositeTeacher
 """
 
-import asyncio
 import os
-import random
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
@@ -40,7 +38,6 @@ from aspire.teachers.registry import (
     get_teacher,
     register_teacher,
 )
-
 
 # =============================================================================
 # Data Structure Tests

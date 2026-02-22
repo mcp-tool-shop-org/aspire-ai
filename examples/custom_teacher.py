@@ -5,8 +5,8 @@ Teachers embody different philosophies. This example shows how to
 create your own teacher with a unique perspective.
 """
 
-from aspire.teachers.claude import ClaudeTeacher
 from aspire.teachers.base import ChallengeType, EvaluationDimension
+from aspire.teachers.claude import ClaudeTeacher
 from aspire.teachers.registry import register_teacher
 
 
@@ -70,7 +70,9 @@ Remember: "The happiness of your life depends upon the quality of your thoughts.
 # Example usage
 if __name__ == "__main__":
     import asyncio
+
     from transformers import AutoModelForCausalLM, AutoTokenizer
+
     from aspire.dialogue import DialogueGenerator
 
     async def main():

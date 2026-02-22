@@ -14,7 +14,6 @@ Mix and match these to create students with different strengths.
 from aspire.teachers.base import (
     BaseTeacher,
     ChallengeType,
-    DialogueHistory,
     EvaluationDimension,
 )
 from aspire.teachers.claude import ClaudeTeacher

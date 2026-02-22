@@ -11,10 +11,10 @@ import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Any
-from PIL import Image
 
 import anthropic
 import openai
+from PIL import Image
 
 
 @dataclass
@@ -269,7 +269,8 @@ class GPT4VisionTeacher(BaseVisionTeacher):
 
 Evaluate and respond with JSON containing:
 - overall_score (0-10)
-- aesthetic_score, composition_score, color_score, lighting_score, style_score, prompt_adherence_score, technical_score
+- aesthetic_score, composition_score, color_score, lighting_score
+- style_score, prompt_adherence_score, technical_score
 - reasoning, strengths, weaknesses, suggestions
 - improved_description"""
 

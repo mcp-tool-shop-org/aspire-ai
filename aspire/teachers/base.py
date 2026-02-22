@@ -217,7 +217,8 @@ class BaseTeacher(ABC):
                 )
             if len(student_response) > MAX_RESPONSE_LENGTH:
                 raise InputValidationError(
-                    f"Student response exceeds maximum length of {MAX_RESPONSE_LENGTH:,} characters "
+                    f"Student response exceeds maximum length"
+                    f" of {MAX_RESPONSE_LENGTH:,} characters "
                     f"(got {len(student_response):,} characters)"
                 )
 

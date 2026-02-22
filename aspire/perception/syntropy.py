@@ -35,7 +35,7 @@ import time
 from collections import deque
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Callable
+from typing import Any
 
 import torch
 import torch.nn as nn
@@ -731,7 +731,12 @@ class SyntropicEngine(nn.Module):
 
             # Extract scalar values
             syntropy_score = outputs["syntropy_score"].mean().item()
-            negentropy = outputs["negentropy"].item() if outputs["negentropy"].dim() == 0 else outputs["negentropy"].mean().item()
+            negentropy_out = outputs["negentropy"]
+            negentropy = (
+                negentropy_out.item()
+                if negentropy_out.dim() == 0
+                else negentropy_out.mean().item()
+            )
 
             # Build dimension scores dict
             dim_scores = outputs["dimension_scores"].mean(dim=0)

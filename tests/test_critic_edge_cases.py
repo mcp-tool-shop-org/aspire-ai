@@ -19,11 +19,9 @@ from multiprocessing import freeze_support
 
 import pytest
 import torch
-import torch.nn as nn
 
-from aspire.critic.base import BaseCritic, CriticOutput
+from aspire.critic.base import CriticOutput
 from aspire.critic.head import CriticHead, MultiHeadCriticHead
-
 
 # ============================================================================
 # CriticHead Pooling Edge Cases

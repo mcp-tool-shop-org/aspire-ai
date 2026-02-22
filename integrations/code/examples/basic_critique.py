@@ -6,8 +6,8 @@ to get comprehensive code feedback.
 """
 
 from aspire.integrations.code import (
-    CodeTeacher,
     CodeSample,
+    CodeTeacher,
 )
 from aspire.integrations.code.config import Language
 

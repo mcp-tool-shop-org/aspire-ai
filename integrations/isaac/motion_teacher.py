@@ -12,6 +12,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Literal
+
 import numpy as np
 
 
@@ -202,7 +203,10 @@ class SafetyInspector(BaseMotionTeacher):
         elif safety_score >= 5.0:
             reasoning = "This trajectory has some safety concerns that should be addressed. "
         else:
-            reasoning = "This trajectory has significant safety issues and should not be executed on real hardware. "
+            reasoning = (
+                "This trajectory has significant safety issues"
+                " and should not be executed on real hardware. "
+            )
 
         if weaknesses:
             reasoning += f"Key concerns: {'; '.join(weaknesses[:3])}."
@@ -273,7 +277,7 @@ class EfficiencyExpert(BaseMotionTeacher):
             min_distance = np.min(trajectory.goal_distances)
 
             # Did we achieve the goal?
-            goal_achievement = max(0, 1.0 - final_distance / (initial_distance + 1e-6))
+            max(0, 1.0 - final_distance / (initial_distance + 1e-6))
 
             # Path efficiency (did we take a direct route?)
             total_motion = np.sum(np.linalg.norm(np.diff(trajectory.states, axis=0), axis=1))
@@ -382,7 +386,7 @@ class GraceCoach(BaseMotionTeacher):
 
         # Jerk analysis (smoothness metric)
         jerk_magnitude = np.linalg.norm(jerks, axis=1)
-        mean_jerk = np.mean(jerk_magnitude)
+        np.mean(jerk_magnitude)
         max_jerk = np.max(jerk_magnitude)
 
         if max_jerk > self.jerk_threshold:
@@ -396,7 +400,7 @@ class GraceCoach(BaseMotionTeacher):
                 problem_timesteps.append((int(t) + 2, "high jerk"))
             suggestions.append("Use minimum-jerk trajectory optimization")
         else:
-            strengths.append(f"Smooth motion (jerk within limits)")
+            strengths.append("Smooth motion (jerk within limits)")
 
         # Velocity profile shape (should be bell-shaped for point-to-point)
         vel_magnitude = np.linalg.norm(velocities, axis=1)

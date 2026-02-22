@@ -13,13 +13,11 @@ import pytest
 
 from aspire.teachers.base import (
     ChallengeType,
-    DialogueHistory,
     EvaluationDimension,
     TeacherChallenge,
     TeacherEvaluation,
 )
 from aspire.teachers.openai import OpenAITeacher, OpenAITeacherError
-
 
 # ============================================================================
 # Initialization Tests
@@ -41,7 +39,7 @@ class TestOpenAITeacherInit:
         """Test OpenAITeacher initialization with API key from environment."""
         with patch.dict(os.environ, {"OPENAI_API_KEY": "sk-env-key"}):
             with patch("aspire.teachers.openai.AsyncOpenAI") as mock_client:
-                teacher = OpenAITeacher()
+                OpenAITeacher()
 
                 mock_client.assert_called_once_with(api_key="sk-env-key")
 
@@ -179,7 +177,7 @@ class TestOpenAITeacherChallenge:
         ]
         mock_client.chat.completions.create = AsyncMock(return_value=mock_response)
 
-        result = await teacher.challenge(
+        await teacher.challenge(
             prompt=sample_dialogue_history.prompt,
             student_response="Updated response",
             dialogue_history=sample_dialogue_history

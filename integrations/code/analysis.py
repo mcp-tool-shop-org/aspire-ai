@@ -17,7 +17,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from .config import Language, CodeDimension
+from .config import CodeDimension, Language
 
 logger = logging.getLogger(__name__)
 
@@ -228,7 +228,10 @@ def extract_code_features(code: str, language: Language) -> CodeFeatures:
             )
 
             # Check for main guard
-            features.has_main_guard = 'if __name__ == "__main__"' in code or "if __name__ == '__main__'" in code
+            features.has_main_guard = (
+                'if __name__ == "__main__"' in code
+                or "if __name__ == '__main__'" in code
+            )
 
             # Calculate complexity (simplified)
             complexity = 1
@@ -334,7 +337,8 @@ class CodeAnalyzer:
             if self.use_ruff and self._available_tools.get("ruff"):
                 ruff_issues = self._run_ruff(temp_path)
                 result.issues.extend(ruff_issues)
-                result.style_score -= len([i for i in ruff_issues if i.dimension == CodeDimension.STYLE]) * 0.5
+                style_issues = [i for i in ruff_issues if i.dimension == CodeDimension.STYLE]
+                result.style_score -= len(style_issues) * 0.5
                 result.style_score = max(0, result.style_score)
 
             # Mypy (type checker)

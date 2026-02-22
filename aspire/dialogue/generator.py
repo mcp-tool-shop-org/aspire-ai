@@ -8,7 +8,7 @@ thoroughly tested.
 
 import asyncio
 from dataclasses import dataclass
-from typing import Callable, Any
+from typing import Any
 
 import torch
 from transformers import PreTrainedModel, PreTrainedTokenizer
@@ -17,7 +17,6 @@ from aspire.teachers.base import (
     BaseTeacher,
     DialogueHistory,
     DialogueTurn,
-    TeacherChallenge,
     TeacherEvaluation,
 )
 

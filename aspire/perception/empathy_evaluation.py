@@ -21,8 +21,8 @@ from enum import Enum
 from typing import Any
 
 from aspire.teachers.base import (
-    EvaluationDimension,
     DimensionScore,
+    EvaluationDimension,
     TeacherEvaluation,
 )
 
@@ -341,7 +341,7 @@ class PerceptionEvaluation:
                     self.overall_perception_score * 0.4
                 ),
                 dimension_scores=base_evaluation.dimension_scores + perception_dim_scores,
-                reasoning=f"{base_evaluation.reasoning}\n\nPERCEPTION ASSESSMENT:\n{self._perception_summary()}",
+                reasoning=f"{base_evaluation.reasoning}\n\nPERCEPTION ASSESSMENT:\n{self._perception_summary()}",  # noqa: E501
                 improved_response=base_evaluation.improved_response,
                 strengths=base_evaluation.strengths + self.perception_strengths,
                 weaknesses=base_evaluation.weaknesses + self.perception_weaknesses,

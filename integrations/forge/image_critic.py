@@ -6,10 +6,11 @@ generated images. After training, it provides aesthetic guidance without
 requiring API calls.
 """
 
+from dataclasses import dataclass
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from dataclasses import dataclass
 
 
 @dataclass

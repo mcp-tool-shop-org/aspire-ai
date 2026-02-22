@@ -6,20 +6,21 @@ and perspective-taking capabilities.
 """
 
 import os
+
 os.environ["XFORMERS_DISABLED"] = "1"
 
 import pytest
 import torch
 
 from aspire.perception.theory_of_mind import (
-    MentalStateTracker,
     BeliefState,
-    IntentState,
     EmotionalState,
-    KnowledgeState,
+    EmotionalValence,
     EmotionType,
     IntentCategory,
-    EmotionalValence,
+    IntentState,
+    KnowledgeState,
+    MentalStateTracker,
 )
 
 

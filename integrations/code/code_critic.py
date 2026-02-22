@@ -18,9 +18,8 @@ from typing import Literal
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
-from .config import CriticArchitecture, CriticConfig, CodeDimension
+from .config import CriticArchitecture, CriticConfig
 
 logger = logging.getLogger(__name__)
 
@@ -506,7 +505,7 @@ class CodeCritic(nn.Module):
             if score < threshold:
                 # Convert token position to character position
                 # This is simplified - real implementation would use offset mapping
-                token = tokenizer.decode([tokens["input_ids"][0, i].item()])
+                tokenizer.decode([tokens["input_ids"][0, i].item()])
                 problems.append((i, i + 1, float(score)))
 
         return problems

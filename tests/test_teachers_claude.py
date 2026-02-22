@@ -13,13 +13,11 @@ import pytest
 
 from aspire.teachers.base import (
     ChallengeType,
-    DialogueHistory,
     EvaluationDimension,
     TeacherChallenge,
     TeacherEvaluation,
 )
 from aspire.teachers.claude import ClaudeTeacher, ClaudeTeacherError
-
 
 # ============================================================================
 # Initialization Tests
@@ -41,7 +39,7 @@ class TestClaudeTeacherInit:
         """Test ClaudeTeacher initialization with API key from environment."""
         with patch.dict(os.environ, {"ANTHROPIC_API_KEY": "sk-ant-env-key"}):
             with patch("aspire.teachers.claude.anthropic.AsyncAnthropic") as mock_client:
-                teacher = ClaudeTeacher()
+                ClaudeTeacher()
 
                 mock_client.assert_called_once_with(api_key="sk-ant-env-key")
 
@@ -175,7 +173,7 @@ class TestClaudeTeacherChallenge:
         }))]
         mock_client.messages.create = AsyncMock(return_value=mock_response)
 
-        result = await teacher.challenge(
+        await teacher.challenge(
             prompt=sample_dialogue_history.prompt,
             student_response="Updated response",
             dialogue_history=sample_dialogue_history
@@ -379,7 +377,7 @@ class TestClaudeTeacherEvaluate:
         mock_response.content = [MagicMock(text=json.dumps(mock_claude_response_evaluate))]
         mock_client.messages.create = AsyncMock(return_value=mock_response)
 
-        result = await teacher.evaluate(
+        await teacher.evaluate(
             prompt=sample_dialogue_history.prompt,
             student_response="Final response",
             dialogue_history=sample_dialogue_history

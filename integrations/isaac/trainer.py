@@ -12,22 +12,21 @@ After training, the policy self-refines using the internalized critic.
 
 from __future__ import annotations
 
-import os
+import time
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable
-import time
 
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import Dataset
 
-from .config import IsaacAspireConfig, CriticConfig
-from .motion_teacher import MotionTeacher, MotionCritique, TrajectoryData
-from .trajectory_critic import TrajectoryCritic, TrajectoryCriticLoss, CriticOutput
-from .isaac_wrapper import AspireIsaacEnv, TrajectoryBuffer, Trajectory
+from .config import IsaacAspireConfig
+from .isaac_wrapper import AspireIsaacEnv, Trajectory, TrajectoryBuffer
+from .motion_teacher import MotionCritique, MotionTeacher
+from .trajectory_critic import TrajectoryCritic, TrajectoryCriticLoss
 
 
 @dataclass
@@ -483,14 +482,14 @@ class AspireIsaacTrainer:
 
             # Train critic
             if epoch % self.config.training.critic_update_frequency == 0:
-                print(f"  Training critic...")
+                print("  Training critic...")
                 critic_loss = self.train_critic_epoch(trajectories, critiques)
             else:
                 critic_loss = 0.0
 
             # Train policy
             if epoch % self.config.training.policy_update_frequency == 0:
-                print(f"  Training policy...")
+                print("  Training policy...")
                 policy_loss = self.train_policy_epoch(trajectories, critiques)
             else:
                 policy_loss = 0.0
