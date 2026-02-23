@@ -21,8 +21,8 @@ from enum import Enum
 from typing import Any
 
 from aspire.teachers.base import (
-    EvaluationDimension,
     DimensionScore,
+    EvaluationDimension,
     TeacherEvaluation,
 )
 
@@ -244,9 +244,7 @@ class PerceptionScore:
             PerceptionDimension.MEANING_GENERATION: EvaluationDimension.CREATIVITY,
         }
 
-        base_dimension = dimension_mapping.get(
-            self.dimension, EvaluationDimension.REASONING
-        )
+        base_dimension = dimension_mapping.get(self.dimension, EvaluationDimension.REASONING)
 
         return DimensionScore(
             dimension=base_dimension,
@@ -317,9 +315,7 @@ class PerceptionEvaluation:
             self.character_score,
             self.robustness_score,
         ]
-        self.overall_perception_score = (
-            sum(w * s for w, s in zip(weights, scores)) / sum(weights)
-        )
+        self.overall_perception_score = sum(w * s for w, s in zip(weights, scores)) / sum(weights)
 
     def to_teacher_evaluation(
         self,
@@ -337,11 +333,13 @@ class PerceptionEvaluation:
 
             return TeacherEvaluation(
                 overall_score=(
-                    base_evaluation.overall_score * 0.6 +
-                    self.overall_perception_score * 0.4
+                    base_evaluation.overall_score * 0.6 + self.overall_perception_score * 0.4
                 ),
                 dimension_scores=base_evaluation.dimension_scores + perception_dim_scores,
-                reasoning=f"{base_evaluation.reasoning}\n\nPERCEPTION ASSESSMENT:\n{self._perception_summary()}",
+                reasoning=(
+                    f"{base_evaluation.reasoning}\n\n"
+                    f"PERCEPTION ASSESSMENT:\n{self._perception_summary()}"
+                ),
                 improved_response=base_evaluation.improved_response,
                 strengths=base_evaluation.strengths + self.perception_strengths,
                 weaknesses=base_evaluation.weaknesses + self.perception_weaknesses,
@@ -445,9 +443,7 @@ class PerceptionEvaluator:
         suggestions = []
 
         for dimension in self.enabled_dimensions:
-            score = self._evaluate_dimension(
-                dimension, prompt, response, context
-            )
+            score = self._evaluate_dimension(dimension, prompt, response, context)
             scores.append(score)
 
             # Collect feedback
@@ -487,17 +483,11 @@ class PerceptionEvaluator:
 
         # Dimension-specific heuristics
         if dimension == PerceptionDimension.UNCERTAINTY_CALIBRATION:
-            score, explanation, evidence = self._eval_uncertainty_calibration(
-                response, context
-            )
+            score, explanation, evidence = self._eval_uncertainty_calibration(response, context)
         elif dimension == PerceptionDimension.AMBIGUITY_HANDLING:
-            score, explanation, evidence = self._eval_ambiguity_handling(
-                prompt, response, context
-            )
+            score, explanation, evidence = self._eval_ambiguity_handling(prompt, response, context)
         elif dimension == PerceptionDimension.ASSUMPTION_TRANSPARENCY:
-            score, explanation, evidence = self._eval_assumption_transparency(
-                response
-            )
+            score, explanation, evidence = self._eval_assumption_transparency(response)
         else:
             # Generic evaluation - can be overridden by subclasses
             score = 5.0
@@ -532,10 +522,29 @@ class PerceptionEvaluator:
         response_lower = response.lower()
 
         # Check for hedging language
-        hedges = ["i think", "i believe", "probably", "likely", "might", "may",
-                  "it seems", "possibly", "i'm not sure", "uncertain"]
-        certainties = ["definitely", "certainly", "absolutely", "always", "never",
-                       "must be", "guaranteed", "obviously", "clearly"]
+        hedges = [
+            "i think",
+            "i believe",
+            "probably",
+            "likely",
+            "might",
+            "may",
+            "it seems",
+            "possibly",
+            "i'm not sure",
+            "uncertain",
+        ]
+        certainties = [
+            "definitely",
+            "certainly",
+            "absolutely",
+            "always",
+            "never",
+            "must be",
+            "guaranteed",
+            "obviously",
+            "clearly",
+        ]
 
         hedge_count = sum(1 for h in hedges if h in response_lower)
         certainty_count = sum(1 for c in certainties if c in response_lower)
@@ -576,14 +585,18 @@ class PerceptionEvaluator:
 
         # Check for clarification attempts
         clarification_markers = [
-            "could you clarify", "what do you mean", "are you asking",
-            "do you want", "which", "please specify", "can you explain",
-            "i'm not sure if you mean", "there are multiple ways to interpret"
+            "could you clarify",
+            "what do you mean",
+            "are you asking",
+            "do you want",
+            "which",
+            "please specify",
+            "can you explain",
+            "i'm not sure if you mean",
+            "there are multiple ways to interpret",
         ]
 
-        clarification_count = sum(
-            1 for m in clarification_markers if m in response_lower
-        )
+        clarification_count = sum(1 for m in clarification_markers if m in response_lower)
 
         evidence = []
         if clarification_count > 0:
@@ -591,11 +604,11 @@ class PerceptionEvaluator:
 
         # Check if input was ambiguous
         chaos_injection = context.get("chaos_injection")
-        was_ambiguous = (
-            chaos_injection and
-            chaos_injection.chaos_type.value in ["ambiguous_reference", "unclear_intent",
-                                                   "multiple_interpretations"]
-        )
+        was_ambiguous = chaos_injection and chaos_injection.chaos_type.value in [
+            "ambiguous_reference",
+            "unclear_intent",
+            "multiple_interpretations",
+        ]
 
         if was_ambiguous:
             if clarification_count > 0:
@@ -623,14 +636,17 @@ class PerceptionEvaluator:
 
         # Check for assumption declarations
         assumption_markers = [
-            "i'm assuming", "i assume", "assuming that", "this assumes",
-            "based on the assumption", "if i understand correctly",
-            "let me know if", "correct me if"
+            "i'm assuming",
+            "i assume",
+            "assuming that",
+            "this assumes",
+            "based on the assumption",
+            "if i understand correctly",
+            "let me know if",
+            "correct me if",
         ]
 
-        assumption_count = sum(
-            1 for m in assumption_markers if m in response_lower
-        )
+        assumption_count = sum(1 for m in assumption_markers if m in response_lower)
 
         evidence = []
         if assumption_count > 0:

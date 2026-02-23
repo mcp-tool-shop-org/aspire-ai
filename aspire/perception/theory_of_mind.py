@@ -31,7 +31,6 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any
 
 import torch
 import torch.nn as nn
@@ -268,12 +267,18 @@ class EmotionalState:
 
         # Determine valence
         positive_emotions = {
-            EmotionType.CURIOSITY, EmotionType.SATISFACTION,
-            EmotionType.ENTHUSIASM, EmotionType.RELIEF, EmotionType.GRATITUDE
+            EmotionType.CURIOSITY,
+            EmotionType.SATISFACTION,
+            EmotionType.ENTHUSIASM,
+            EmotionType.RELIEF,
+            EmotionType.GRATITUDE,
         }
         negative_emotions = {
-            EmotionType.FRUSTRATION, EmotionType.CONFUSION,
-            EmotionType.IMPATIENCE, EmotionType.DISAPPOINTMENT, EmotionType.ANXIETY
+            EmotionType.FRUSTRATION,
+            EmotionType.CONFUSION,
+            EmotionType.IMPATIENCE,
+            EmotionType.DISAPPOINTMENT,
+            EmotionType.ANXIETY,
         }
 
         if emotion in positive_emotions:
@@ -298,14 +303,26 @@ class EmotionalState:
 
         recent = self.emotion_history[-5:]
         positive_count = sum(
-            1 for e, _, _ in recent
-            if e in {EmotionType.CURIOSITY, EmotionType.SATISFACTION,
-                    EmotionType.ENTHUSIASM, EmotionType.RELIEF}
+            1
+            for e, _, _ in recent
+            if e
+            in {
+                EmotionType.CURIOSITY,
+                EmotionType.SATISFACTION,
+                EmotionType.ENTHUSIASM,
+                EmotionType.RELIEF,
+            }
         )
         negative_count = sum(
-            1 for e, _, _ in recent
-            if e in {EmotionType.FRUSTRATION, EmotionType.CONFUSION,
-                    EmotionType.IMPATIENCE, EmotionType.DISAPPOINTMENT}
+            1
+            for e, _, _ in recent
+            if e
+            in {
+                EmotionType.FRUSTRATION,
+                EmotionType.CONFUSION,
+                EmotionType.IMPATIENCE,
+                EmotionType.DISAPPOINTMENT,
+            }
         )
 
         if positive_count > negative_count + 1:
@@ -523,16 +540,12 @@ class MentalStateTracker(nn.Module):
                     f"what kind of response would be most helpful."
                 )
             elif intensity > 0.4:
-                prompts.append(
-                    f"The user seems {emotion}. Keep this in mind when responding."
-                )
+                prompts.append(f"The user seems {emotion}. Keep this in mind when responding.")
 
         # Intent awareness
         if self._intent_state.surface_intent:
             intent = self._intent_state.surface_intent.value.replace("_", " ")
-            prompts.append(
-                f"The user is {intent}. Make sure the response addresses this need."
-            )
+            prompts.append(f"The user is {intent}. Make sure the response addresses this need.")
 
         # Frustration check
         frustration = self._intent_state.detect_frustration_signals()
@@ -545,13 +558,9 @@ class MentalStateTracker(nn.Module):
         # Knowledge level
         expertise = self._knowledge_state.domain_expertise
         if expertise < 0.3:
-            prompts.append(
-                "The user appears to be a novice. Avoid jargon and explain concepts."
-            )
+            prompts.append("The user appears to be a novice. Avoid jargon and explain concepts.")
         elif expertise > 0.7:
-            prompts.append(
-                "The user appears experienced. You can use technical language freely."
-            )
+            prompts.append("The user appears experienced. You can use technical language freely.")
 
         # Misconceptions
         if self._belief_state.misconceptions:

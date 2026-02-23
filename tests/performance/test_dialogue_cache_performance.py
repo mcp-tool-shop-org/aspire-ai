@@ -5,8 +5,8 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from aspire.dialogue.manager import DialogueManager
 from aspire.dialogue.generator import GeneratedDialogue
+from aspire.dialogue.manager import DialogueManager
 from aspire.teachers.base import DialogueHistory, TeacherEvaluation
 
 

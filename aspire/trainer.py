@@ -7,12 +7,14 @@ adversarial dialogue with teacher models.
 
 import asyncio
 import os
+from multiprocessing import freeze_support
 from pathlib import Path
 from typing import Any
-from multiprocessing import freeze_support
 
 import torch
-import torch.nn as nn
+from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
+from rich.console import Console
+from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn
 from torch.optim import AdamW
 from torch.utils.data import DataLoader, Dataset
 from transformers import (
@@ -21,15 +23,12 @@ from transformers import (
     BitsAndBytesConfig,
     get_scheduler,
 )
-from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
-from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn
 
 from aspire.config import AspireConfig
 from aspire.critic import CriticHead, SeparateCritic, SharedEncoderCritic
+from aspire.dialogue import DialogueFormatter, DialogueGenerator, DialogueManager
 from aspire.losses import AspireLoss
-from aspire.teachers import get_teacher, BaseTeacher
-from aspire.dialogue import DialogueGenerator, DialogueManager, DialogueFormatter
+from aspire.teachers import get_teacher
 
 # Windows compatibility
 os.environ["XFORMERS_DISABLED"] = "1"
@@ -313,7 +312,7 @@ class AspireTrainer:
         )
 
         # Training loop
-        console.print(f"\n[bold green]Starting ASPIRE training[/bold green]")
+        console.print("\n[bold green]Starting ASPIRE training[/bold green]")
         console.print(f"  Epochs: {cfg.num_epochs}")
         console.print(f"  Train samples: {len(train_prompts)}")
         console.print(f"  Batch size: {cfg.batch_size}")
@@ -362,9 +361,7 @@ class AspireTrainer:
             BarColumn(),
             TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
         ) as progress:
-            task = progress.add_task(
-                f"Epoch {self.current_epoch + 1}", total=len(dataloader)
-            )
+            task = progress.add_task(f"Epoch {self.current_epoch + 1}", total=len(dataloader))
 
             for batch_idx, batch in enumerate(dataloader):
                 # Generate dialogue for batch (async)

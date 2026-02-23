@@ -35,7 +35,7 @@ import time
 from collections import deque
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Callable
+from typing import Any
 
 import torch
 import torch.nn as nn
@@ -151,9 +151,7 @@ class CoherenceField:
                 self.attractor_embedding = new_embedding.clone()
             else:
                 # Gradual attractor shift
-                self.attractor_embedding = (
-                    0.9 * self.attractor_embedding + 0.1 * new_embedding
-                )
+                self.attractor_embedding = 0.9 * self.attractor_embedding + 0.1 * new_embedding
 
         # Compute stability from variance using numerically stable method
         if len(self.strength_history) >= 5:
@@ -217,7 +215,7 @@ def compute_negentropy_approximation(
     if method == "exp":
         # G(u) = -exp(-u²/2)
         # E[G(ν)] for standard Gaussian = -1/sqrt(2)
-        g_x = -torch.exp(-x_normalized ** 2 / 2)
+        g_x = -torch.exp(-(x_normalized**2) / 2)
         g_gaussian = -1.0 / math.sqrt(2)
         negentropy = (g_x.mean() - g_gaussian) ** 2
 
@@ -231,9 +229,9 @@ def compute_negentropy_approximation(
     elif method == "kurtosis":
         # Kurtosis-based: J ≈ (1/12) * E[x³]² + (1/48) * (E[x⁴] - 3)²
         # Gaussian has kurtosis = 3, skewness = 0
-        skewness = (x_normalized ** 3).mean()
-        kurtosis = (x_normalized ** 4).mean()
-        negentropy = (1/12) * skewness ** 2 + (1/48) * (kurtosis - 3) ** 2
+        skewness = (x_normalized**3).mean()
+        kurtosis = (x_normalized**4).mean()
+        negentropy = (1 / 12) * skewness**2 + (1 / 48) * (kurtosis - 3) ** 2
 
     else:
         raise ValueError(f"Unknown method: {method}")
@@ -271,15 +269,14 @@ def compute_semantic_coherence(
 
     # Compute adjacent similarities
     adjacent_sim = torch.sum(
-        embeddings_norm[:, :-1] * embeddings_norm[:, 1:],
-        dim=-1
+        embeddings_norm[:, :-1] * embeddings_norm[:, 1:], dim=-1
     )  # [batch, seq_len-1]
 
     # Local coherence: mean similarity in sliding windows
     if seq_len >= window_size:
         local_coherences = []
         for i in range(seq_len - window_size + 1):
-            window = embeddings_norm[:, i:i+window_size]
+            window = embeddings_norm[:, i : i + window_size]
             # Compute mean pairwise similarity in window
             sim_matrix = torch.bmm(window, window.transpose(1, 2))
             # Exclude diagonal by creating mask and zeroing diagonal
@@ -471,9 +468,9 @@ class SyntropicIntegrator(nn.Module):
         emergence_score = self.emergence_detector(emergence_input).squeeze(-1)
 
         # Compute attention entropy (lower entropy = more focused integration)
-        attention_entropy = -(
-            attention_weights * torch.log(attention_weights + 1e-10)
-        ).sum(dim=-1).mean(dim=-1)
+        attention_entropy = (
+            -(attention_weights * torch.log(attention_weights + 1e-10)).sum(dim=-1).mean(dim=-1)
+        )
         max_entropy = math.log(seq_len)
         normalized_entropy = attention_entropy / max_entropy
 
@@ -536,7 +533,7 @@ class SyntropicFlowTracker:
 
         # Convert deque to list for slicing (deque doesn't support negative slicing)
         measurements_list = list(self.measurements)
-        recent = [m.syntropy_score for m in measurements_list[-self.window_size:]]
+        recent = [m.syntropy_score for m in measurements_list[-self.window_size :]]
         n = len(recent)
 
         # Linear regression slope
@@ -673,25 +670,39 @@ class SyntropicEngine(nn.Module):
         coherence = compute_semantic_coherence(agent_hidden_states)
 
         # Combine features for dimension scoring
-        features = torch.cat([
-            agent_pooled,
-            integration_out["integration_score"].unsqueeze(-1),
-            integration_out["emergence_score"].unsqueeze(-1),
-            resonance.unsqueeze(-1),
-            coherence.unsqueeze(-1),
-        ], dim=-1)
+        features = torch.cat(
+            [
+                agent_pooled,
+                integration_out["integration_score"].unsqueeze(-1),
+                integration_out["emergence_score"].unsqueeze(-1),
+                resonance.unsqueeze(-1),
+                coherence.unsqueeze(-1),
+            ],
+            dim=-1,
+        )
 
         # Score all dimensions
         dimension_scores = torch.sigmoid(self.syntropy_head(features))
 
         # Overall syntropy score
         # Weighted combination favoring coherence and resonance
-        weights = torch.tensor([
-            1.0, 1.0, 0.8,  # Structural coherence
-            1.2, 1.1, 1.0,  # Relational attunement (weighted higher)
-            1.0, 1.0, 0.9,  # Emergent organization
-            0.8, 0.9, 0.7,  # Temporal coherence
-        ], device=dimension_scores.device)
+        weights = torch.tensor(
+            [
+                1.0,
+                1.0,
+                0.8,  # Structural coherence
+                1.2,
+                1.1,
+                1.0,  # Relational attunement (weighted higher)
+                1.0,
+                1.0,
+                0.9,  # Emergent organization
+                0.8,
+                0.9,
+                0.7,  # Temporal coherence
+            ],
+            device=dimension_scores.device,
+        )
 
         overall_syntropy = (dimension_scores * weights).sum(dim=-1) / weights.sum()
         # Scale to -1 to 1 range
@@ -731,13 +742,16 @@ class SyntropicEngine(nn.Module):
 
             # Extract scalar values
             syntropy_score = outputs["syntropy_score"].mean().item()
-            negentropy = outputs["negentropy"].item() if outputs["negentropy"].dim() == 0 else outputs["negentropy"].mean().item()
+            negentropy = (
+                outputs["negentropy"].item()
+                if outputs["negentropy"].dim() == 0
+                else outputs["negentropy"].mean().item()
+            )
 
             # Build dimension scores dict
             dim_scores = outputs["dimension_scores"].mean(dim=0)
             dimension_scores = {
-                dim: dim_scores[i].item()
-                for i, dim in enumerate(SyntropicDimension)
+                dim: dim_scores[i].item() for i, dim in enumerate(SyntropicDimension)
             }
 
             # Create measurement

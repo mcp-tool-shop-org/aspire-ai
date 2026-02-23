@@ -30,7 +30,7 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Callable
+from typing import Any
 
 import torch
 import torch.nn as nn
@@ -223,7 +223,9 @@ class UncertaintyEstimator(nn.Module):
         # Also compute Mahalanobis-style OOD score
         if self.num_samples > 100:
             diff = pooled - self.mean_hidden.unsqueeze(0)
-            mahal = (diff ** 2 / self.var_hidden.unsqueeze(0).clamp(min=1e-6)).mean(dim=-1, keepdim=True)
+            mahal = (diff**2 / self.var_hidden.unsqueeze(0).clamp(min=1e-6)).mean(
+                dim=-1, keepdim=True
+            )
             # Normalize to 0-1 range
             mahal_ood = torch.sigmoid(mahal - 1.0)  # Centered at distance 1
             # Combine with learned OOD
@@ -263,9 +265,8 @@ class UncertaintyEstimator(nn.Module):
 
             # Update variance
             self.var_hidden = (
-                (n * self.var_hidden + batch_size * batch_var +
-                 n * batch_size * delta ** 2 / new_n) / new_n
-            )
+                n * self.var_hidden + batch_size * batch_var + n * batch_size * delta**2 / new_n
+            ) / new_n
 
             self.num_samples = new_n
 
@@ -499,23 +500,18 @@ class ReflectiveLoop:
             # Consistency checks
             "Is this response consistent with what I said earlier?",
             "Am I contradicting any of my stated values or principles?",
-
             # Assumption awareness
             "What assumptions am I making that might not be valid?",
             "What am I taking for granted that I should question?",
-
             # Perspective taking
             "How might this appear from the user's perspective?",
             "What context might I be missing?",
-
             # Completeness
             "What important aspects haven't I addressed?",
             "What follow-up questions might this raise?",
-
             # Bias detection
             "Am I favoring a particular viewpoint unfairly?",
             "Am I being appropriately uncertain vs overconfident?",
-
             # Quality check
             "Is this actually helpful, or just verbose?",
             "Am I being clear and precise?",
@@ -646,7 +642,7 @@ class ReflectiveLoop:
 
         # Prune if over limit
         if len(self.insights) > self.max_insights:
-            self.insights = self.insights[-self.max_insights:]
+            self.insights = self.insights[-self.max_insights :]
 
     def get_reflection_prompt_for_training(
         self,
@@ -687,7 +683,8 @@ Based on this reflection:
             },
             "total_reflections": total,
             "most_common": max(self.detected_patterns, key=self.detected_patterns.get)
-            if self.detected_patterns else None,
+            if self.detected_patterns
+            else None,
         }
 
 
@@ -827,7 +824,8 @@ class MetaCognitionModule(nn.Module):
 
             # Add reflection prompts
             reflection = self.reflective_loop.get_reflection_prompt_for_training(
-                context, ""  # Empty response since we're pre-generating
+                context,
+                "",  # Empty response since we're pre-generating
             )
             prompt_parts.append(reflection)
 

@@ -8,8 +8,6 @@ Enables using local LLMs (via transformers) as teachers, useful for:
 - Specialized domain teachers from fine-tuned models
 """
 
-from typing import Any
-
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
@@ -17,8 +15,6 @@ from aspire.teachers.base import (
     BaseTeacher,
     ChallengeType,
     DialogueHistory,
-    DimensionScore,
-    EvaluationDimension,
     TeacherChallenge,
     TeacherEvaluation,
 )

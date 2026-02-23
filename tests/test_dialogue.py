@@ -15,22 +15,16 @@ Windows compatibility notes:
 
 from __future__ import annotations
 
-import asyncio
 import hashlib
 import json
-import tempfile
-from dataclasses import field
 from multiprocessing import freeze_support
-from pathlib import Path
-from typing import Any
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 import torch
-import torch.nn as nn
 
-from aspire.dialogue.generator import DialogueGenerator, GeneratedDialogue
 from aspire.dialogue.formatter import DialogueFormatter, FormattedDialogue
+from aspire.dialogue.generator import DialogueGenerator, GeneratedDialogue
 from aspire.dialogue.manager import DialogueManager
 from aspire.teachers.base import (
     BaseTeacher,
@@ -42,7 +36,6 @@ from aspire.teachers.base import (
     TeacherChallenge,
     TeacherEvaluation,
 )
-
 
 # ============================================================================
 # Test Fixtures
@@ -919,7 +912,7 @@ class TestDialogueManager:
         key = manager._get_cache_key("Test prompt")
 
         # Should be md5 hash of "TeacherName:prompt"
-        expected = hashlib.md5("MockTeacher:Test prompt".encode()).hexdigest()
+        expected = hashlib.md5(b"MockTeacher:Test prompt").hexdigest()
         assert key == expected
 
     def test_manager_get_cache_path(self, mock_generator, tmp_path):

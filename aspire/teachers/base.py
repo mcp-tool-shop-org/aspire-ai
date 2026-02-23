@@ -18,6 +18,7 @@ MAX_RESPONSE_LENGTH = 100_000  # Maximum characters for responses
 
 class InputValidationError(ValueError):
     """Error raised when input validation fails."""
+
     pass
 
 
@@ -201,9 +202,7 @@ class BaseTeacher(ABC):
         """
         if prompt is not None:
             if not isinstance(prompt, str):
-                raise InputValidationError(
-                    f"Prompt must be a string, got {type(prompt).__name__}"
-                )
+                raise InputValidationError(f"Prompt must be a string, got {type(prompt).__name__}")
             if len(prompt) > MAX_PROMPT_LENGTH:
                 raise InputValidationError(
                     f"Prompt exceeds maximum length of {MAX_PROMPT_LENGTH:,} characters "

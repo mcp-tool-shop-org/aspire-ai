@@ -21,7 +21,6 @@ from unittest.mock import patch
 import pytest
 import yaml
 
-
 # ============================================================================
 # StudentConfig Tests
 # ============================================================================
@@ -532,8 +531,9 @@ student:
 
     def test_aspire_config_from_yaml_invalid(self):
         """Test that invalid YAML field raises validation error."""
-        from aspire.config import AspireConfig
         from pydantic import ValidationError
+
+        from aspire.config import AspireConfig
 
         yaml_content = """
 student:
@@ -551,7 +551,7 @@ student:
 
     def test_aspire_config_to_yaml(self):
         """Test saving configuration to YAML file."""
-        from aspire.config import AspireConfig, StudentConfig, TrainingConfig, CurriculumConfig
+        from aspire.config import AspireConfig, CurriculumConfig, StudentConfig, TrainingConfig
 
         student_config = StudentConfig(
             model_name_or_path="test-model",
@@ -592,7 +592,7 @@ student:
 
     def test_aspire_config_yaml_round_trip(self):
         """Test that config survives YAML round-trip (non-Path fields)."""
-        from aspire.config import AspireConfig, StudentConfig, CriticConfig
+        from aspire.config import AspireConfig, CriticConfig, StudentConfig
 
         # Note: Round-trip with default Path fields fails because PyYAML
         # serializes Path objects as Python-specific tags that safe_load can't read.
@@ -695,11 +695,11 @@ class TestConfigIntegration:
         """Test all configs can serialize to dict."""
         from aspire.config import (
             AspireConfig,
-            StudentConfig,
             CriticConfig,
-            TeacherConfig,
             CurriculumConfig,
             LossConfig,
+            StudentConfig,
+            TeacherConfig,
             TrainingConfig,
         )
 

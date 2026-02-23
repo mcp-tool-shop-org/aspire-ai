@@ -13,13 +13,11 @@ import pytest
 
 from aspire.teachers.base import (
     ChallengeType,
-    DialogueHistory,
     EvaluationDimension,
     TeacherChallenge,
     TeacherEvaluation,
 )
 from aspire.teachers.claude import ClaudeTeacher, ClaudeTeacherError
-
 
 # ============================================================================
 # Initialization Tests

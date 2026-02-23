@@ -24,13 +24,11 @@ import sys
 import tempfile
 from multiprocessing import freeze_support, get_start_method
 from pathlib import Path
-from unittest.mock import MagicMock, patch
 
 os.environ["XFORMERS_DISABLED"] = "1"
 
 import pytest
 import torch
-
 
 # ============================================================================
 # DataLoader Compatibility

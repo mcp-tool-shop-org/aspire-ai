@@ -2,11 +2,10 @@
 Dialogue manager - orchestrates dialogue generation and caching.
 """
 
-import json
 import hashlib
+import json
+from collections.abc import Iterator
 from pathlib import Path
-from typing import Iterator
-from dataclasses import asdict
 
 from aspire.dialogue.generator import DialogueGenerator, GeneratedDialogue
 from aspire.teachers.base import DialogueHistory, TeacherEvaluation

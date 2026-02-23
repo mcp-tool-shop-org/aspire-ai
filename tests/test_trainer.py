@@ -17,7 +17,7 @@ import os
 import tempfile
 from multiprocessing import freeze_support
 from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, patch, PropertyMock
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 import torch
@@ -221,8 +221,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init(self, mock_all_dependencies):
         """Test basic trainer initialization."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig
+        from aspire.trainer import AspireTrainer
 
         config = AspireConfig(device="cpu")
 
@@ -235,8 +235,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_student_basic(self, mock_all_dependencies):
         """Test student model loading and tokenizer pad_token setup."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig
+        from aspire.trainer import AspireTrainer
 
         mocks = mock_all_dependencies
         config = AspireConfig(device="cpu")
@@ -251,8 +251,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_student_with_lora(self, mock_all_dependencies):
         """Test LoRA configuration is applied when use_lora=True."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, StudentConfig
+        from aspire.trainer import AspireTrainer
 
         with patch("aspire.trainer.get_peft_model") as mock_get_peft, \
              patch("aspire.trainer.LoraConfig") as mock_lora_config:
@@ -283,8 +283,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_student_with_quantization_4bit(self, mock_all_dependencies):
         """Test 4-bit quantization configuration."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, StudentConfig
+        from aspire.trainer import AspireTrainer
 
         with patch("aspire.trainer.BitsAndBytesConfig") as mock_bnb, \
              patch("aspire.trainer.prepare_model_for_kbit_training") as mock_prepare:
@@ -306,8 +306,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_student_with_quantization_8bit(self, mock_all_dependencies):
         """Test 8-bit quantization configuration."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, StudentConfig
+        from aspire.trainer import AspireTrainer
 
         with patch("aspire.trainer.BitsAndBytesConfig") as mock_bnb, \
              patch("aspire.trainer.prepare_model_for_kbit_training") as mock_prepare:
@@ -482,8 +482,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_teacher_claude(self, mock_all_dependencies):
         """Test teacher initialization with Claude."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, TeacherConfig
+        from aspire.trainer import AspireTrainer
 
         teacher_config = TeacherConfig(default_teacher="claude", claude_model="claude-sonnet-4-20250514")
         config = AspireConfig(teacher=teacher_config, device="cpu")
@@ -500,8 +500,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_teacher_openai(self, mock_all_dependencies):
         """Test teacher initialization with OpenAI."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, TeacherConfig
+        from aspire.trainer import AspireTrainer
 
         teacher_config = TeacherConfig(default_teacher="openai", openai_model="gpt-4o")
         config = AspireConfig(teacher=teacher_config, device="cpu")
@@ -518,8 +518,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_loss(self, mock_all_dependencies):
         """Test AspireLoss initialization with config weights."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, LossConfig
+        from aspire.trainer import AspireTrainer
 
         loss_config = LossConfig(
             critic_score_weight=1.5,
@@ -541,8 +541,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_optimizers_adamw(self, mock_all_dependencies):
         """Test AdamW optimizer initialization."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, TrainingConfig
+        from aspire.trainer import AspireTrainer
 
         training_config = TrainingConfig(
             optimizer="adamw",
@@ -559,8 +559,8 @@ class TestAspireTrainerInit:
 
     def test_trainer_init_optimizers_adamw_8bit(self, mock_all_dependencies):
         """Test AdamW 8-bit optimizer initialization."""
-        from aspire.trainer import AspireTrainer
         from aspire.config import AspireConfig, TrainingConfig
+        from aspire.trainer import AspireTrainer
 
         with patch("aspire.trainer.bnb") as mock_bnb:
             mock_opt = MagicMock()
@@ -661,7 +661,6 @@ class TestAspireTrainerTraining:
 
     def test_trainer_train_creates_dataloader(self, mock_trainer):
         """Test that train() creates DataLoader with correct settings."""
-        from torch.utils.data import DataLoader
 
         with patch.object(mock_trainer, "_train_epoch", return_value={"loss": 0.5, "critic_loss": 0.3, "student_loss": 0.2}), \
              patch.object(mock_trainer, "_save_checkpoint"):
@@ -731,6 +730,7 @@ class TestAspireTrainerTraining:
     def test_trainer_train_epoch_basic(self, mock_trainer):
         """Test _train_epoch sets models to train mode and processes batches."""
         from torch.utils.data import DataLoader
+
         from aspire.trainer import AspireDataset
 
         with patch.object(mock_trainer, "_compute_batch_loss") as mock_loss, \
@@ -787,8 +787,9 @@ class TestAspireTrainerTraining:
             }
 
             # Create dataloader with 8 batches (should call optimizer.step twice with grad_accum=4)
-            from aspire.trainer import AspireDataset
             from torch.utils.data import DataLoader
+
+            from aspire.trainer import AspireDataset
 
             prompts = ["prompt"] * 8
             dataset = AspireDataset(prompts, mock_trainer.tokenizer, max_length=64)
@@ -817,8 +818,9 @@ class TestAspireTrainerTraining:
                 "student_total": torch.tensor(0.2),
             }
 
-            from aspire.trainer import AspireDataset
             from torch.utils.data import DataLoader
+
+            from aspire.trainer import AspireDataset
 
             prompts = ["prompt 1", "prompt 2"]
             dataset = AspireDataset(prompts, mock_trainer.tokenizer, max_length=64)

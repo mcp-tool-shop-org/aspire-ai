@@ -14,11 +14,9 @@ from __future__ import annotations
 
 from multiprocessing import freeze_support
 from typing import TYPE_CHECKING
-from unittest.mock import MagicMock
 
 import pytest
 import torch
-import torch.nn as nn
 
 from aspire.losses.combined import AspireLoss
 from aspire.losses.critic import CriticLoss

@@ -18,30 +18,26 @@ Windows compatibility notes:
 from __future__ import annotations
 
 import asyncio
-import hashlib
 import json
 import os
-import tempfile
 from multiprocessing import freeze_support
-from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock
 
 os.environ["XFORMERS_DISABLED"] = "1"
 
 import pytest
 import torch
 
-from aspire.dialogue.generator import DialogueGenerator, GeneratedDialogue
 from aspire.dialogue.formatter import DialogueFormatter, FormattedDialogue
+from aspire.dialogue.generator import DialogueGenerator, GeneratedDialogue
 from aspire.dialogue.manager import DialogueManager
 from aspire.teachers.base import (
+    ChallengeType,
     DialogueHistory,
     DialogueTurn,
     TeacherChallenge,
     TeacherEvaluation,
-    ChallengeType,
 )
-
 
 # ============================================================================
 # Test Fixtures

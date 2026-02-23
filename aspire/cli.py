@@ -8,7 +8,6 @@ import shutil
 import sys
 from multiprocessing import freeze_support
 from pathlib import Path
-from typing import Optional
 
 import typer
 from rich.console import Console
@@ -33,9 +32,13 @@ def version_callback(value: bool) -> None:
 
 @app.callback()
 def main(
-    version: Optional[bool] = typer.Option(
-        None, "--version", "-V", callback=version_callback, is_eager=True,
-        help="Show version and exit."
+    version: bool | None = typer.Option(
+        None,
+        "--version",
+        "-V",
+        callback=version_callback,
+        is_eager=True,
+        help="Show version and exit.",
     ),
 ) -> None:
     """ASPIRE: Teaching AI to develop judgment, not just knowledge."""
@@ -82,7 +85,7 @@ def train(
 
     # Train
     trainer = AspireTrainer(cfg)
-    metrics = trainer.train(prompts)
+    trainer.train(prompts)
 
     console.print("[bold green]Training complete![/bold green]")
 
@@ -97,6 +100,7 @@ def evaluate(
     freeze_support()
 
     import asyncio
+
     from aspire.config import AspireConfig
     from aspire.trainer import AspireTrainer
 
@@ -143,9 +147,11 @@ def dialogue(
     freeze_support()
 
     import asyncio
+
     from transformers import AutoModelForCausalLM, AutoTokenizer
-    from aspire.teachers import get_teacher
+
     from aspire.dialogue import DialogueGenerator
+    from aspire.teachers import get_teacher
 
     console.print(f"[bold]Generating dialogue with {teacher} teacher[/bold]\n")
 
@@ -176,16 +182,19 @@ def dialogue(
     console.print(f"\n[bold green]Initial Response:[/bold green]\n{dialogue.initial_response}")
 
     for turn in dialogue.history.turns:
-        console.print(f"\n[bold yellow]Challenge ({turn.challenge.challenge_type.value}):[/bold yellow]")
+        console.print(
+            f"\n[bold yellow]Challenge ({turn.challenge.challenge_type.value}):[/bold yellow]"
+        )
         console.print(turn.challenge.content)
-        console.print(f"\n[bold green]Response:[/bold green]")
+        console.print("\n[bold green]Response:[/bold green]")
         console.print(turn.student_response)
 
-    console.print(f"\n[bold magenta]Final Score:[/bold magenta] {dialogue.final_evaluation.overall_score:.1f}/10")
+    score = dialogue.final_evaluation.overall_score
+    console.print(f"\n[bold magenta]Final Score:[/bold magenta] {score:.1f}/10")
     console.print(f"\n[bold]Reasoning:[/bold]\n{dialogue.final_evaluation.reasoning}")
 
     if dialogue.final_evaluation.improved_response:
-        console.print(f"\n[bold blue]Improved Response:[/bold blue]")
+        console.print("\n[bold blue]Improved Response:[/bold blue]")
         console.print(dialogue.final_evaluation.improved_response)
 
 
@@ -230,17 +239,18 @@ def init(
 @app.command()
 def doctor():
     """Check your environment for ASPIRE compatibility."""
-    console.print(Panel.fit(
-        f"[bold]ASPIRE Environment Check[/bold]\nVersion {__version__}",
-        border_style="blue"
-    ))
+    console.print(
+        Panel.fit(
+            f"[bold]ASPIRE Environment Check[/bold]\nVersion {__version__}", border_style="blue"
+        )
+    )
     console.print()
 
     all_good = True
 
     # Python version
     py_version = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
-    if sys.version_info >= (3, 10):
+    if sys.version_info >= (3, 10):  # noqa: UP036
         console.print(f"[green]OK[/green]  Python {py_version} (>= 3.10 required)")
     else:
         console.print(f"[red]ERROR[/red]  Python {py_version} (>= 3.10 required)")
@@ -249,6 +259,7 @@ def doctor():
     # PyTorch and CUDA
     try:
         import torch
+
         console.print(f"[green]OK[/green]  PyTorch {torch.__version__}")
 
         if torch.cuda.is_available():
@@ -257,19 +268,24 @@ def doctor():
             console.print(f"[green]OK[/green]  CUDA available: {gpu_name} ({gpu_mem:.1f} GB)")
 
             if gpu_mem < 8:
-                console.print(f"[yellow]WARN[/yellow]  GPU has < 8GB VRAM - may need 4-bit quantization")
+                console.print(
+                    "[yellow]WARN[/yellow]  GPU has < 8GB VRAM - may need 4-bit quantization"
+                )
         else:
-            console.print(f"[yellow]WARN[/yellow]  CUDA not available - training will be slow on CPU")
+            console.print(
+                "[yellow]WARN[/yellow]  CUDA not available - training will be slow on CPU"
+            )
     except ImportError:
-        console.print(f"[red]ERROR[/red]  PyTorch not installed")
+        console.print("[red]ERROR[/red]  PyTorch not installed")
         all_good = False
 
     # Transformers
     try:
         import transformers
+
         console.print(f"[green]OK[/green]  Transformers {transformers.__version__}")
     except ImportError:
-        console.print(f"[red]ERROR[/red]  Transformers not installed")
+        console.print("[red]ERROR[/red]  Transformers not installed")
         all_good = False
 
     # API Keys
@@ -278,18 +294,20 @@ def doctor():
 
     anthropic_key = os.environ.get("ANTHROPIC_API_KEY")
     if anthropic_key:
-        masked = anthropic_key[:8] + "..." + anthropic_key[-4:] if len(anthropic_key) > 12 else "***"
+        masked = (
+            anthropic_key[:8] + "..." + anthropic_key[-4:] if len(anthropic_key) > 12 else "***"
+        )
         console.print(f"[green]OK[/green]  ANTHROPIC_API_KEY set ({masked})")
     else:
-        console.print(f"[yellow]WARN[/yellow]  ANTHROPIC_API_KEY not set")
-        console.print(f"         Set with: [cyan]export ANTHROPIC_API_KEY=your-key[/cyan]")
+        console.print("[yellow]WARN[/yellow]  ANTHROPIC_API_KEY not set")
+        console.print("         Set with: [cyan]export ANTHROPIC_API_KEY=your-key[/cyan]")
 
     openai_key = os.environ.get("OPENAI_API_KEY")
     if openai_key:
         masked = openai_key[:8] + "..." + openai_key[-4:] if len(openai_key) > 12 else "***"
         console.print(f"[green]OK[/green]  OPENAI_API_KEY set ({masked})")
     else:
-        console.print(f"[dim]--[/dim]    OPENAI_API_KEY not set (optional)")
+        console.print("[dim]--[/dim]    OPENAI_API_KEY not set (optional)")
 
     # Disk space
     console.print()
@@ -302,7 +320,7 @@ def doctor():
         size_gb = total_size / (1024**3)
         console.print(f"[dim]--[/dim]    HuggingFace cache: {size_gb:.1f} GB at {cache_dir}")
     else:
-        console.print(f"[dim]--[/dim]    HuggingFace cache: not yet created")
+        console.print("[dim]--[/dim]    HuggingFace cache: not yet created")
 
     # Check free space
     try:
@@ -311,9 +329,13 @@ def doctor():
         if free_gb > 20:
             console.print(f"[green]OK[/green]  Free disk space: {free_gb:.1f} GB")
         elif free_gb > 10:
-            console.print(f"[yellow]WARN[/yellow]  Free disk space: {free_gb:.1f} GB (models can be large)")
+            console.print(
+                f"[yellow]WARN[/yellow]  Free disk space: {free_gb:.1f} GB (models can be large)"
+            )
         else:
-            console.print(f"[red]ERROR[/red]  Free disk space: {free_gb:.1f} GB (may be insufficient)")
+            console.print(
+                f"[red]ERROR[/red]  Free disk space: {free_gb:.1f} GB (may be insufficient)"
+            )
             all_good = False
     except Exception:
         pass
@@ -321,15 +343,19 @@ def doctor():
     # Summary
     console.print()
     if all_good:
-        console.print(Panel.fit(
-            "[bold green]All checks passed![/bold green]\nYou're ready to use ASPIRE.",
-            border_style="green"
-        ))
+        console.print(
+            Panel.fit(
+                "[bold green]All checks passed![/bold green]\nYou're ready to use ASPIRE.",
+                border_style="green",
+            )
+        )
     else:
-        console.print(Panel.fit(
-            "[bold red]Some issues found.[/bold red]\nPlease address the errors above.",
-            border_style="red"
-        ))
+        console.print(
+            Panel.fit(
+                "[bold red]Some issues found.[/bold red]\nPlease address the errors above.",
+                border_style="red",
+            )
+        )
 
     raise typer.Exit(0 if all_good else 1)
 

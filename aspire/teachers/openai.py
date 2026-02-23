@@ -20,6 +20,7 @@ from aspire.teachers.base import (
 
 class OpenAITeacherError(Exception):
     """Error specific to OpenAI teacher operations."""
+
     pass
 
 
@@ -153,7 +154,7 @@ Respond with JSON:
     "strengths": [],
     "weaknesses": [],
     "suggestions": [],
-    {"\"improved_response\": \"...\"" if generate_improved else ""}
+    {'"improved_response": "..."' if generate_improved else ""}
 }}"""
 
         response = await self.client.chat.completions.create(

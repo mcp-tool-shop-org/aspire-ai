@@ -17,10 +17,8 @@ Windows compatibility notes:
 from __future__ import annotations
 
 import os
-import tempfile
 from multiprocessing import freeze_support
-from pathlib import Path
-from unittest.mock import MagicMock, patch, PropertyMock
+from unittest.mock import patch
 
 os.environ["XFORMERS_DISABLED"] = "1"
 

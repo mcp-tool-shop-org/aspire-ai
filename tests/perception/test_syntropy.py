@@ -6,25 +6,26 @@ syntropic integration, and the overall syntropic engine.
 """
 
 import os
+
 os.environ["XFORMERS_DISABLED"] = "1"
+
 
 import pytest
 import torch
-import math
 
 from aspire.perception.syntropy import (
-    SyntropicDimension,
-    SyntropicState,
-    SyntropicMeasurement,
     CoherenceField,
-    SyntropicResonanceDetector,
-    SyntropicIntegrator,
-    SyntropicFlowTracker,
-    SyntropicEngine,
+    SyntropicDimension,
     SyntropicEmpathyEvaluator,
+    SyntropicEngine,
+    SyntropicFlowTracker,
+    SyntropicIntegrator,
+    SyntropicMeasurement,
+    SyntropicResonanceDetector,
+    SyntropicState,
+    compute_empathic_syntropy,
     compute_negentropy_approximation,
     compute_semantic_coherence,
-    compute_empathic_syntropy,
 )
 
 

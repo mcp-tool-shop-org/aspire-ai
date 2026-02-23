@@ -22,20 +22,19 @@ Usage:
 
 from __future__ import annotations
 
-import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from aspire.perception.theory_of_mind import MentalStateTracker
-from aspire.perception.controlled_chaos import ChaosGenerator, ChaosConfig, ChaosInjection
 from aspire.perception.character import CharacterCore
-from aspire.perception.metacognition import MetaCognitionModule, ConfidenceCalibrator
-from aspire.perception.empathy_evaluation import PerceptionEvaluator, PerceptionEvaluation
+from aspire.perception.controlled_chaos import ChaosConfig, ChaosGenerator, ChaosInjection
+from aspire.perception.empathy_evaluation import PerceptionEvaluation, PerceptionEvaluator
+from aspire.perception.metacognition import MetaCognitionModule
+from aspire.perception.theory_of_mind import MentalStateTracker
 
 
 @dataclass
@@ -112,9 +111,7 @@ class PerceptionModule(nn.Module):
 
         # Initialize components based on config
         if self.config.tom_enabled:
-            self.mental_state_tracker = MentalStateTracker(
-                hidden_dim=self.config.tom_hidden_dim
-            )
+            self.mental_state_tracker = MentalStateTracker(hidden_dim=self.config.tom_hidden_dim)
         else:
             self.mental_state_tracker = None
 
@@ -128,9 +125,7 @@ class PerceptionModule(nn.Module):
             self.chaos_generator = None
 
         if self.config.character_enabled:
-            self.character = CharacterCore(
-                storage_dir=self.config.character_storage_dir
-            )
+            self.character = CharacterCore(storage_dir=self.config.character_storage_dir)
         else:
             self.character = None
 
@@ -140,9 +135,7 @@ class PerceptionModule(nn.Module):
             self.metacognition = None
 
         if self.config.perception_eval_enabled:
-            self.evaluator = PerceptionEvaluator(
-                strictness=self.config.perception_eval_strictness
-            )
+            self.evaluator = PerceptionEvaluator(strictness=self.config.perception_eval_strictness)
         else:
             self.evaluator = None
 
@@ -205,12 +198,15 @@ class PerceptionModule(nn.Module):
         if self.metacognition is not None:
             meta_out = self.metacognition(hidden_states, attention_mask, output_logits)
             outputs.update({f"meta_{k}": v for k, v in meta_out.items()})
-            meta_features = torch.cat([
-                meta_out["should_hedge"],
-                meta_out["should_clarify"],
-                meta_out["should_ask_user"],
-                meta_out["meta_confidence"],
-            ], dim=-1)
+            meta_features = torch.cat(
+                [
+                    meta_out["should_hedge"],
+                    meta_out["should_clarify"],
+                    meta_out["should_ask_user"],
+                    meta_out["meta_confidence"],
+                ],
+                dim=-1,
+            )
             features.append(meta_features)
 
         # Combined perception
@@ -559,7 +555,7 @@ def integrate_perception_with_trainer(
 
         # Compute perception loss
         if "hidden_states" in result:
-            perception_out = perception_module(
+            perception_module(
                 result["hidden_states"],
                 result.get("attention_mask"),
             )
@@ -569,7 +565,7 @@ def integrate_perception_with_trainer(
 
     trainer._train_step = perception_train_step
 
-    print(f"Perception module integrated with trainer")
+    print("Perception module integrated with trainer")
     print(f"  - ToM enabled: {perception_module.config.tom_enabled}")
     print(f"  - Chaos enabled: {perception_module.config.chaos_enabled}")
     print(f"  - Character enabled: {perception_module.config.character_enabled}")

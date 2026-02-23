@@ -22,7 +22,7 @@ import time
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 import torch
 import torch.nn as nn
@@ -141,6 +141,7 @@ class BehavioralTrait:
         # Add some variance based on stability
         if self.stability < 1.0:
             import random
+
             variance = (1.0 - self.stability) * 0.2
             base += random.gauss(0, variance)
             base = max(0.0, min(1.0, base))
@@ -482,10 +483,7 @@ class CharacterCore:
 
     def get_trait_profile(self, context: str = "") -> dict[TraitDimension, float]:
         """Get current trait positions for given context."""
-        return {
-            dim: trait.get_effective_position(context)
-            for dim, trait in self.traits.items()
-        }
+        return {dim: trait.get_effective_position(context) for dim, trait in self.traits.items()}
 
     def resolve_value_conflict(
         self,
@@ -719,13 +717,14 @@ class CharacterCore:
                 value_type = ValueType(value_name)
                 # Validate and sanitize value_data keys
                 safe_data = {
-                    k: v for k, v in value_data.items()
+                    k: v
+                    for k, v in value_data.items()
                     if k in {"priority", "strength", "description", "contexts", "conflicts_with"}
                     and (isinstance(v, (int, float, str, list)) or v is None)
                 }
                 char.set_value(value_type, **safe_data)
                 loaded_values += 1
-            except (ValueError, TypeError) as e:
+            except (ValueError, TypeError):
                 # Log and continue on invalid data
                 continue
 
@@ -752,13 +751,14 @@ class CharacterCore:
                 trait_dim = TraitDimension(trait_name)
                 # Validate and sanitize trait_data keys
                 safe_data = {
-                    k: v for k, v in trait_data.items()
+                    k: v
+                    for k, v in trait_data.items()
                     if k in {"position", "stability", "context_modifiers"}
                     and (isinstance(v, (int, float, dict)) or v is None)
                 }
                 char.set_trait(trait_dim, **safe_data)
                 loaded_traits += 1
-            except (ValueError, TypeError) as e:
+            except (ValueError, TypeError):
                 # Log and continue on invalid data
                 continue
 

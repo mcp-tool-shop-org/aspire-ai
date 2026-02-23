@@ -6,19 +6,19 @@ Two types of losses:
 2. Student losses - train the student using critic feedback
 """
 
+from aspire.losses.combined import AspireLoss
 from aspire.losses.critic import (
     CriticLoss,
-    CriticScoreLoss,
     CriticReasoningLoss,
+    CriticScoreLoss,
 )
 from aspire.losses.student import (
-    StudentLoss,
-    RewardLoss,
-    ContrastiveLoss,
-    TrajectoryLoss,
     CoherenceLoss,
+    ContrastiveLoss,
+    RewardLoss,
+    StudentLoss,
+    TrajectoryLoss,
 )
-from aspire.losses.combined import AspireLoss
 
 __all__ = [
     # Critic losses

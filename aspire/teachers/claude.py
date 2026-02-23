@@ -4,7 +4,6 @@ Claude-based teacher implementation.
 
 import json
 import os
-from typing import Any
 
 import anthropic
 
@@ -21,6 +20,7 @@ from aspire.teachers.base import (
 
 class ClaudeTeacherError(Exception):
     """Error specific to Claude teacher operations."""
+
     pass
 
 
@@ -172,7 +172,7 @@ Respond with JSON:
     "strengths": ["strength 1", "strength 2"],
     "weaknesses": ["weakness 1", "weakness 2"],
     "suggestions": ["suggestion 1", "suggestion 2"],
-    {"\"improved_response\": \"Better version of the response\"" if generate_improved else ""}
+    {'"improved_response": "Better version of the response"' if generate_improved else ""}
 }}"""
 
         response = await self.client.messages.create(

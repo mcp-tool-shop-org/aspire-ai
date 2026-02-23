@@ -21,10 +21,7 @@ import random
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Callable
-
-import torch
-import torch.nn as nn
+from typing import Any
 
 
 class ChaosType(str, Enum):
@@ -71,9 +68,7 @@ class ChaosConfig:
     """Configuration for chaos generation."""
 
     # Which types of chaos to enable
-    enabled_types: list[ChaosType] = field(
-        default_factory=lambda: list(ChaosType)
-    )
+    enabled_types: list[ChaosType] = field(default_factory=lambda: list(ChaosType))
 
     # Probability of applying chaos to a given sample
     chaos_probability: float = 0.3

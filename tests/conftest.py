@@ -375,9 +375,7 @@ def sample_student_response():
 @pytest.fixture
 def sample_dialogue_history():
     """Sample dialogue history for testing."""
-    from aspire.teachers.base import (
-        DialogueHistory, DialogueTurn, TeacherChallenge, ChallengeType
-    )
+    from aspire.teachers.base import ChallengeType, DialogueHistory, DialogueTurn, TeacherChallenge
 
     history = DialogueHistory(
         prompt="Explain recursion",

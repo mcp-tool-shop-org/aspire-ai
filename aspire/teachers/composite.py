@@ -8,7 +8,6 @@ their own expertise and style.
 
 import asyncio
 import random
-from typing import Callable
 
 from aspire.teachers.base import (
     BaseTeacher,
@@ -169,9 +168,10 @@ class CompositeTeacher(BaseTeacher):
 
         # Weighted average of scores
         total_weight = sum(self.weights)
-        weighted_score = sum(
-            eval.overall_score * weight for eval, weight in zip(evaluations, self.weights)
-        ) / total_weight
+        weighted_score = (
+            sum(eval.overall_score * weight for eval, weight in zip(evaluations, self.weights))
+            / total_weight
+        )
 
         # Combine dimension scores
         dimension_scores_map: dict[EvaluationDimension, list[tuple[float, float]]] = {}

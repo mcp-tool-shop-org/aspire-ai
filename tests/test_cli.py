@@ -7,16 +7,14 @@ Coverage target: CLI commands and options.
 import json
 import os
 import sys
-from pathlib import Path
-from unittest.mock import MagicMock, patch, AsyncMock
 import tempfile
+from pathlib import Path
+from unittest.mock import AsyncMock, MagicMock, patch
 
-import pytest
 from typer.testing import CliRunner
 
-from aspire.cli import app
 from aspire import __version__
-
+from aspire.cli import app
 
 runner = CliRunner()
 

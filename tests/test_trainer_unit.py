@@ -6,14 +6,13 @@ Coverage target: Trainer initialization and component setup.
 
 import tempfile
 from pathlib import Path
-from unittest.mock import MagicMock, patch, AsyncMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 import torch
 
 from aspire.config import AspireConfig
 from aspire.trainer import AspireDataset
-
 
 # ============================================================================
 # AspireDataset Tests

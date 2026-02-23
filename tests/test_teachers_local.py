@@ -17,7 +17,6 @@ from aspire.teachers.base import (
 )
 from aspire.teachers.local import LocalTeacher
 
-
 # ============================================================================
 # Initialization Tests
 # ============================================================================
