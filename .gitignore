@@ -59,5 +59,6 @@ Thumbs.db
 aspire-ai-master-deliverables/
 aspire-ai-master-deliverables.zip
 site/.astro/
+site/dist/
 site/node_modules/
 .polyglot-cache.json
