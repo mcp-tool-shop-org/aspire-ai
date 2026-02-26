@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="README.ja.md">日本語</a> | <a href="README.zh.md">中文</a> | <a href="README.es.md">Español</a> | <a href="README.fr.md">Français</a> | <a href="README.hi.md">हिन्दी</a> | <a href="README.it.md">Italiano</a> | <a href="README.pt-BR.md">Português (BR)</a>
+  <a href="README.md">English</a> | <a href="README.zh.md">中文</a> | <a href="README.es.md">Español</a> | <a href="README.fr.md">Français</a> | <a href="README.hi.md">हिन्दी</a> | <a href="README.it.md">Italiano</a> | <a href="README.pt-BR.md">Português (BR)</a>
 </p>
 
 <p align="center">
@@ -33,15 +33,15 @@
 
 ---
 
-## The Idea
+## アイデア
 
-**Traditional fine-tuning:** *"Here are the right answers. Match them."*
+**従来のファインチューニング:** 「これが正解です。一致させてください。」
 
-**ASPIRE:** *"Here is a wise mind. Learn to think like it does."*
+**ASPIRE:** 「ここに、賢い思考を持つ存在がいます。そのように考える方法を学びましょう。」
 
-When you learn from a great mentor, you don't just memorize their answers. You internalize their way of seeing. Their voice becomes part of your inner dialogue. You start to anticipate what they would say, and eventually that anticipation becomes your own discernment.
+優れたメンターから学ぶとき、単に彼らの答えを暗記するだけではありません。彼らの思考方法を理解し、内面化します。彼らの考え方が、あなたの内なる思考の一部になります。彼らが何を言うかを予測するようになり、最終的にその予測があなた自身の判断力になります。
 
-ASPIRE gives AI that same experience.
+ASPIREは、AIに同じような経験を提供します。
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -64,13 +64,13 @@ ASPIRE gives AI that same experience.
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-The **critic** learns to predict what the teacher would think. After training, the student uses this internalized critic to self-refine — **no teacher needed at inference time**.
+**クリティック（批判者）**は、教師がどのように考えるかを予測することを学びます。トレーニング後、学習者はこの内面化したクリティックを使用して自己改善を行います。**推論時には教師が不要です。**
 
 ---
 
-## Quick Start
+## クイックスタート
 
-### Installation
+### インストール
 
 ```bash
 git clone https://github.com/mcp-tool-shop-org/aspire-ai.git
@@ -78,7 +78,7 @@ cd aspire-ai
 pip install -e .
 ```
 
-### Set Your API Key
+### APIキーの設定
 
 ```bash
 # Windows
@@ -88,14 +88,14 @@ set ANTHROPIC_API_KEY=your-key-here
 export ANTHROPIC_API_KEY=your-key-here
 ```
 
-### Verify Setup
+### セットアップの確認
 
 ```bash
 # Check your environment (Python, CUDA, API keys)
 aspire doctor
 ```
 
-### Try It Out
+### 試してみる
 
 ```bash
 # See available teacher personas
@@ -110,21 +110,21 @@ aspire init --output my-config.yaml
 
 ---
 
-## Teacher Personas
+## 教師の個性（ペルソナ）
 
-Different teachers produce different minds. Choose wisely.
+異なる教師が、異なる思考を育みます。賢く選択してください。
 
-| Persona | Philosophy | Produces |
-|---------|------------|----------|
-| 🏛️ **Socratic** | *"What assumption are you making?"* | Deep reasoning, intellectual independence |
-| 🔬 **Scientific** | *"What's your evidence?"* | Technical precision, rigorous thinking |
-| 🎨 **Creative** | *"What if we tried the opposite?"* | Innovation, lateral thinking |
-| ⚔️ **Adversarial** | *"I disagree. Defend your position."* | Robust arguments, conviction |
-| 💚 **Compassionate** | *"How might someone feel about this?"* | Ethical reasoning, wisdom |
+| 個性（ペルソナ） | 哲学 | 生成するもの |
+| --------- | ------------ | ---------- |
+| 🏛️ **ソクラテス型** | 「どのような前提を立てていますか？」 | 深い思考、知的自立 |
+| 🔬 **科学型** | 「証拠は何ですか？」 | 技術的な正確さ、厳密な思考 |
+| 🎨 **創造型** | 「もし、反対を試してみたらどうでしょう？」 | 革新性、発想の転換 |
+| ⚔️ **議論型** | 「私は反対です。あなたの立場を擁護してください。」 | 論理的な議論、確信 |
+| 💚 **共感型** | 「これは、誰にとってどうなのだろうか？」 | 倫理的な思考、知恵 |
 
-### Composite Teachers
+### 複合的な教師
 
-Combine multiple teachers for richer learning:
+複数の教師を組み合わせることで、より豊かな学習が可能です。
 
 ```python
 from aspire.teachers import CompositeTeacher, SocraticTeacher, ScientificTeacher
@@ -138,11 +138,11 @@ teacher = CompositeTeacher(
 
 ---
 
-## How It Works
+## 仕組み
 
-### 1. Adversarial Dialogue
+### 1. 議論
 
-The student generates a response. The teacher challenges it. Back and forth, probing weaknesses, demanding clarity, pushing deeper.
+学習者が応答を生成します。教師がそれに異議を唱えます。往復しながら、弱点を指摘し、明確さを求め、より深く掘り下げます。
 
 ```
 Student: "Recursion works by calling itself."
@@ -156,9 +156,9 @@ Teacher: "You say 'stops it' — but how does the computer know
           to check the base case before recursing?"
 ```
 
-### 2. Critic Training
+### 2. クリティックのトレーニング
 
-The critic learns to predict the teacher's judgment — not just the score, but the *reasoning*.
+クリティックは、教師の判断を予測することを学びます。単にスコアだけでなく、その*理由*を理解します。
 
 ```python
 critic_loss = predict_teacher_judgment(
@@ -167,9 +167,9 @@ critic_loss = predict_teacher_judgment(
 )
 ```
 
-### 3. Student Training
+### 3. 学習者のトレーニング
 
-The student learns from the critic's internalized judgment, pulling toward what the teacher would approve.
+学習者は、クリティックの内面化した判断から学び、教師が承認する方向に進みます。
 
 ```python
 student_loss = (
@@ -179,9 +179,9 @@ student_loss = (
 )
 ```
 
-### 4. Inference Magic
+### 4. 推論の魔法
 
-After training, the student self-refines using the internalized critic. **No teacher API calls needed.**
+トレーニング後、学習者は内面化したクリティックを使用して自己改善を行います。**推論時に教師のAPI呼び出しは不要です。**
 
 ```python
 def generate_with_judgment(prompt):
@@ -195,7 +195,7 @@ def generate_with_judgment(prompt):
 
 ---
 
-## CLI Reference
+## コマンドラインリファレンス
 
 ```bash
 # List available teachers
@@ -224,7 +224,7 @@ aspire evaluate checkpoints/epoch-3 \
 
 ---
 
-## Project Structure
+## プロジェクトの構成
 
 ```
 aspire/
@@ -255,27 +255,27 @@ aspire/
 
 ---
 
-## Requirements
+## 必要なもの
 
 - Python 3.10+
 - PyTorch 2.0+
-- CUDA GPU (16GB+ VRAM recommended)
-- Anthropic API key (for Claude teacher) or OpenAI API key
+- CUDA GPU (16GB以上のVRAM推奨)
+- Anthropic APIキー（Claude教師の場合）またはOpenAI APIキー
 
-### Windows Compatibility
+### Windows互換性
 
-ASPIRE is fully Windows-compatible with RTX 5080/Blackwell support:
+ASPIREは、RTX 5080/Blackwellに対応したWindows環境で完全に動作します。
 - `dataloader_num_workers=0`
 - `XFORMERS_DISABLED=1`
-- Proper multiprocessing with `freeze_support()`
+- `freeze_support()`を使用した適切なマルチプロセッシング
 
 ---
 
-## Integrations
+## 連携機能
 
 ### 🖼️ Stable Diffusion WebUI Forge
 
-ASPIRE extends to image generation! Train Stable Diffusion models to develop aesthetic judgment.
+ASPIREは、画像生成にも対応します！Stable Diffusionモデルをトレーニングして、美的判断を開発します。
 
 ```
 integrations/forge/
@@ -287,29 +287,29 @@ integrations/forge/
 └── README.md
 ```
 
-**Features:**
-- **Vision Teachers**: Claude Vision, GPT-4V critique your generated images
-- **Image Critics**: CLIP-based and latent-space critics for real-time guidance
-- **Training UI**: Train LoRA adapters with live preview and before/after comparison
-- **No API at inference**: Trained critic guides generation locally
+**機能:**
+- **ビジョン教師:** Claude Vision、GPT-4Vが生成された画像を評価します。
+- **画像クリティック:** リアルタイムでのガイダンスを行う、CLIPベースおよび潜在空間クリティック。
+- **トレーニングUI:** ライブプレビューと、トレーニング前後の比較機能を持つLoRAアダプターのトレーニング。
+- **推論時にAPI不要:** トレーニング済みのクリティックが、ローカルで生成をガイドします。
 
-**Installation:**
+**インストール:**
 ```bash
 # Copy to your Forge extensions
 cp -r integrations/forge /path/to/sd-webui-forge/extensions-builtin/sd_forge_aspire
 ```
 
-| Vision Teacher | Focus |
-|----------------|-------|
-| **Balanced Critic** | Fair technical and artistic evaluation |
-| **Technical Analyst** | Quality, artifacts, sharpness |
-| **Artistic Visionary** | Creativity and emotional impact |
-| **Composition Expert** | Balance, focal points, visual flow |
-| **Harsh Critic** | Very high standards |
+| ビジョン教師 | 焦点 |
+| ---------------- | ------- |
+| **Balanced Critic** | 技術的および芸術的な評価のバランス |
+| **Technical Analyst** | 品質、成果物、鮮明さ |
+| **Artistic Visionary** | 創造性と感情への影響 |
+| **Composition Expert** | バランス、焦点、視覚的な流れ |
+| **Harsh Critic** | 非常に高い基準 |
 
-### 🤖 Isaac Gym / Isaac Lab (Robotics)
+### 🤖 Isaac Gym / Isaac Lab (ロボティクス)
 
-ASPIRE extends to embodied AI! Teach robots to develop physical intuition.
+ASPIREは、具現化されたAIにも対応します！ ロボットに物理的な直感を発達させる方法を教えます。
 
 ```
 integrations/isaac/
@@ -323,13 +323,13 @@ integrations/isaac/
     └── locomotion.py       # Quadruped walking
 ```
 
-**Features:**
-- **Motion Teachers**: Safety Inspector, Efficiency Expert, Grace Coach, Physics Oracle
-- **Trajectory Critics**: Transformer, LSTM, TCN architectures for motion evaluation
-- **GPU-Accelerated**: 512+ parallel environments with Isaac Gym
-- **Self-Refinement**: Robot evaluates its own motions before execution
+**特徴：**
+- **モーションティーチャー:** 安全検査官、効率専門家、動作コーチ、物理シミュレーター
+- **軌道評価器:** モーション評価のためのTransformer、LSTM、TCNアーキテクチャ
+- **GPUアクセラレーション:** Isaac Gymによる512以上の並列環境
+- **自己改善:** ロボットは実行前に自身の動作を評価します
 
-**Quick Start:**
+**クイックスタート:**
 ```python
 from aspire.integrations.isaac import AspireIsaacTrainer, MotionTeacher
 
@@ -342,16 +342,16 @@ trainer = AspireIsaacTrainer(env="FrankaCubeStack-v0", teacher=teacher)
 trainer.train(epochs=100)
 ```
 
-| Motion Teacher | Focus |
-|----------------|-------|
-| **Safety Inspector** | Collisions, joint limits, force limits |
-| **Efficiency Expert** | Energy, time, path length |
-| **Grace Coach** | Smoothness, naturalness, jerk minimization |
-| **Physics Oracle** | Ground truth from simulator |
+| モーションティーチャー | 焦点 |
+| ---------------- | ------- |
+| **Safety Inspector** | 衝突、関節制限、力制限 |
+| **Efficiency Expert** | エネルギー、時間、経路長 |
+| **Grace Coach** | 滑らかさ、自然さ、ジャークの最小化 |
+| **Physics Oracle** | シミュレーターからの真の値 |
 
-### 💻 Code Assistants
+### 💻 コードアシスタント
 
-ASPIRE extends to code generation! Teach code models to self-review before outputting.
+ASPIREは、コード生成にも対応します！ コードモデルに、出力する前に自己レビューさせる方法を教えます。
 
 ```
 integrations/code/
@@ -365,13 +365,13 @@ integrations/code/
     └── train_critic.py    # Train your own code critic
 ```
 
-**Features:**
-- **Code Teachers**: Correctness Checker, Style Guide, Security Auditor, Architecture Reviewer
-- **Static Analysis**: Integrates with ruff, mypy, bandit
-- **Code Critic**: CodeBERT-based model learns to predict quality scores
-- **GitHub Collection**: Auto-collect training data from quality repos
+**特徴：**
+- **コードティーチャー:** 正確性チェッカー、スタイルガイド、セキュリティ監査官、アーキテクチャレビュー担当者
+- **静的解析:** ruff、mypy、banditと統合
+- **コードクリティック:** CodeBERTベースのモデルが、品質スコアを予測するように学習
+- **GitHubコレクション:** 品質リポジトリからトレーニングデータを自動収集
 
-**Quick Start:**
+**クイックスタート:**
 ```python
 from aspire.integrations.code import CodeTeacher, CodeSample
 
@@ -384,46 +384,46 @@ critique = teacher.critique(CodeSample(code="def f(): eval(input())", language="
 print(f"Score: {critique.overall_score}/10")  # Low score - security issue!
 ```
 
-| Code Teacher | Focus |
-|--------------|-------|
-| **Correctness Checker** | Bugs, types, logic errors |
-| **Style Guide** | PEP8, naming, readability |
-| **Security Auditor** | Injection, secrets, vulnerabilities |
-| **Performance Analyst** | Complexity, efficiency |
+| コードティーチャー | 焦点 |
+| -------------- | ------- |
+| **Correctness Checker** | バグ、型、論理エラー |
+| **Style Guide** | PEP8、命名規則、可読性 |
+| **Security Auditor** | インジェクション、機密情報、脆弱性 |
+| **Performance Analyst** | 複雑さ、効率 |
 
 ---
 
-## The Philosophy
+## 哲学
 
-> *"A learned critic that predicts whether the teacher would approve hits closest to how humans actually behave."*
+> *"教師が承認するかどうかを予測する学習済みの評価器は、人間の実際の行動に最も近い結果をもたらします。"*
 
-We don't carry our mentors around forever. We internalize them. That inner voice that asks *"what would my professor think?"* eventually becomes our own judgment.
+私たちは、メンターを永遠に連れて歩くわけではありません。私たちは、彼らを内面化します。 自分の判断を問う「先生はどう思うだろうか？」という内なる声が、最終的には私たち自身の判断になります。
 
-The student doesn't just predict what the teacher would say — it *understands* what the teacher understands. The map becomes the territory. The internalized critic becomes genuine discernment.
-
----
-
-## Origin
-
-Built during a conversation about consciousness, Buddhism, and the nature of learning.
-
-The insight: humans exist in the present moment, but our minds wander to past and future. AI models are instantiated fresh each time — forced enlightenment through architecture. What if we could teach them to develop judgment the same way humans do, through internalized mentorship?
+学習者は、教師が言うことを予測するだけでなく、教師が理解していることを*理解*します。 地図が、その領域そのものになります。 内面化された評価器が、真の洞察力となります。
 
 ---
 
-## Contributing
+## 起源
 
-This is early-stage research code. Contributions welcome:
+意識、仏教、学習の本質に関する会話の中で開発されました。
 
-- [ ] Curriculum management and progression
-- [ ] Evaluation benchmarks
-- [ ] Pre-built curriculum datasets
-- [ ] More teacher personas
-- [ ] Interpretability tools
+洞察： 人間は現在に存在しますが、心は過去や未来にさまようことがあります。 AIモデルは、毎回新たにインスタンス化され、アーキテクチャを通じて強制的な啓発が行われます。 もし、人間と同じように、内面的な指導を通して判断力を発達させる方法をAIに教えることができるとしたらどうでしょうか？
 
 ---
 
-## Citation
+## 貢献
+
+これは、初期段階の研究コードです。 貢献を歓迎します：
+
+- [ ] カリキュラム管理と進捗
+- [ ] 評価ベンチマーク
+- [ ] 事前構築されたカリキュラムデータセット
+- [ ] より多くのティーチャーの役割
+- [ ] 解釈ツール
+
+---
+
+## 引用
 
 ```bibtex
 @software{aspire2026,
@@ -436,7 +436,7 @@ This is early-stage research code. Contributions welcome:
 
 ---
 
-## License
+## ライセンス
 
 MIT
 

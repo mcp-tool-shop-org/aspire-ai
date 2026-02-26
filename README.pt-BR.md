@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="README.ja.md">日本語</a> | <a href="README.zh.md">中文</a> | <a href="README.es.md">Español</a> | <a href="README.fr.md">Français</a> | <a href="README.hi.md">हिन्दी</a> | <a href="README.it.md">Italiano</a> | <a href="README.pt-BR.md">Português (BR)</a>
+  <a href="README.ja.md">日本語</a> | <a href="README.zh.md">中文</a> | <a href="README.es.md">Español</a> | <a href="README.fr.md">Français</a> | <a href="README.hi.md">हिन्दी</a> | <a href="README.it.md">Italiano</a> | <a href="README.md">English</a>
 </p>
 
 <p align="center">
@@ -33,15 +33,15 @@
 
 ---
 
-## The Idea
+## A Ideia
 
-**Traditional fine-tuning:** *"Here are the right answers. Match them."*
+**Ajuste fino tradicional:** *"Aqui estão as respostas corretas. Combine-as."*
 
-**ASPIRE:** *"Here is a wise mind. Learn to think like it does."*
+**ASPIRE:** *"Aqui está uma mente sábia. Aprenda a pensar como ela."*
 
-When you learn from a great mentor, you don't just memorize their answers. You internalize their way of seeing. Their voice becomes part of your inner dialogue. You start to anticipate what they would say, and eventually that anticipation becomes your own discernment.
+Quando você aprende com um grande mentor, não apenas memoriza suas respostas. Você internaliza a maneira como ele pensa. Sua voz se torna parte do seu diálogo interno. Você começa a antecipar o que ele diria, e eventualmente essa antecipação se torna seu próprio discernimento.
 
-ASPIRE gives AI that same experience.
+ASPIRE oferece a mesma experiência para a IA.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -64,13 +64,13 @@ ASPIRE gives AI that same experience.
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-The **critic** learns to predict what the teacher would think. After training, the student uses this internalized critic to self-refine — **no teacher needed at inference time**.
+O **crítico** aprende a prever o que o professor pensaria. Após o treinamento, o aluno usa esse crítico internalizado para autoaperfeiçoamento — **sem a necessidade de um professor durante a inferência**.
 
 ---
 
-## Quick Start
+## Início Rápido
 
-### Installation
+### Instalação
 
 ```bash
 git clone https://github.com/mcp-tool-shop-org/aspire-ai.git
@@ -78,7 +78,7 @@ cd aspire-ai
 pip install -e .
 ```
 
-### Set Your API Key
+### Defina Sua Chave de API
 
 ```bash
 # Windows
@@ -88,14 +88,14 @@ set ANTHROPIC_API_KEY=your-key-here
 export ANTHROPIC_API_KEY=your-key-here
 ```
 
-### Verify Setup
+### Verifique a Configuração
 
 ```bash
 # Check your environment (Python, CUDA, API keys)
 aspire doctor
 ```
 
-### Try It Out
+### Experimente
 
 ```bash
 # See available teacher personas
@@ -110,21 +110,21 @@ aspire init --output my-config.yaml
 
 ---
 
-## Teacher Personas
+## Personagens de Professores
 
-Different teachers produce different minds. Choose wisely.
+Professores diferentes produzem mentes diferentes. Escolha com sabedoria.
 
-| Persona | Philosophy | Produces |
-|---------|------------|----------|
-| 🏛️ **Socratic** | *"What assumption are you making?"* | Deep reasoning, intellectual independence |
-| 🔬 **Scientific** | *"What's your evidence?"* | Technical precision, rigorous thinking |
-| 🎨 **Creative** | *"What if we tried the opposite?"* | Innovation, lateral thinking |
-| ⚔️ **Adversarial** | *"I disagree. Defend your position."* | Robust arguments, conviction |
-| 💚 **Compassionate** | *"How might someone feel about this?"* | Ethical reasoning, wisdom |
+| Personagem | Filosofia | Produz |
+| --------- | ------------ | ---------- |
+| 🏛️ **Sócrático** | *"Qual é a sua premissa?"* | Raciocínio profundo, independência intelectual |
+| 🔬 **Científico** | *"Qual é a sua evidência?"* | Precisão técnica, pensamento rigoroso |
+| 🎨 **Criativo** | *"E se tentássemos o oposto?"* | Inovação, pensamento lateral |
+| ⚔️ **Adversarial** | *"Eu discordo. Defenda sua posição."* | Argumentos sólidos, convicção |
+| 💚 **Compassivo** | *"Como alguém se sentiria em relação a isso?"* | Raciocínio ético, sabedoria |
 
-### Composite Teachers
+### Professores Combinados
 
-Combine multiple teachers for richer learning:
+Combine vários professores para um aprendizado mais rico:
 
 ```python
 from aspire.teachers import CompositeTeacher, SocraticTeacher, ScientificTeacher
@@ -138,11 +138,11 @@ teacher = CompositeTeacher(
 
 ---
 
-## How It Works
+## Como Funciona
 
-### 1. Adversarial Dialogue
+### 1. Diálogo Adversarial
 
-The student generates a response. The teacher challenges it. Back and forth, probing weaknesses, demanding clarity, pushing deeper.
+O aluno gera uma resposta. O professor a desafia. Em um ciclo, explorando fraquezas, exigindo clareza, aprofundando o conhecimento.
 
 ```
 Student: "Recursion works by calling itself."
@@ -156,9 +156,9 @@ Teacher: "You say 'stops it' — but how does the computer know
           to check the base case before recursing?"
 ```
 
-### 2. Critic Training
+### 2. Treinamento do Crítico
 
-The critic learns to predict the teacher's judgment — not just the score, but the *reasoning*.
+O crítico aprende a prever o julgamento do professor — não apenas a pontuação, mas o *raciocínio*.
 
 ```python
 critic_loss = predict_teacher_judgment(
@@ -167,9 +167,9 @@ critic_loss = predict_teacher_judgment(
 )
 ```
 
-### 3. Student Training
+### 3. Treinamento do Aluno
 
-The student learns from the critic's internalized judgment, pulling toward what the teacher would approve.
+O aluno aprende com o julgamento internalizado do crítico, buscando o que o professor aprovaria.
 
 ```python
 student_loss = (
@@ -179,9 +179,9 @@ student_loss = (
 )
 ```
 
-### 4. Inference Magic
+### 4. Magia da Inferência
 
-After training, the student self-refines using the internalized critic. **No teacher API calls needed.**
+Após o treinamento, o aluno se autoaperfeiçoa usando o crítico internalizado. **Não são necessárias chamadas de API do professor.**
 
 ```python
 def generate_with_judgment(prompt):
@@ -195,7 +195,7 @@ def generate_with_judgment(prompt):
 
 ---
 
-## CLI Reference
+## Referência da Linha de Comando
 
 ```bash
 # List available teachers
@@ -224,7 +224,7 @@ aspire evaluate checkpoints/epoch-3 \
 
 ---
 
-## Project Structure
+## Estrutura do Projeto
 
 ```
 aspire/
@@ -255,27 +255,27 @@ aspire/
 
 ---
 
-## Requirements
+## Requisitos
 
 - Python 3.10+
 - PyTorch 2.0+
-- CUDA GPU (16GB+ VRAM recommended)
-- Anthropic API key (for Claude teacher) or OpenAI API key
+- GPU CUDA (16GB+ de VRAM recomendado)
+- Chave de API da Anthropic (para o professor Claude) ou chave de API da OpenAI
 
-### Windows Compatibility
+### Compatibilidade com Windows
 
-ASPIRE is fully Windows-compatible with RTX 5080/Blackwell support:
+ASPIRE é totalmente compatível com Windows e suporta RTX 5080/Blackwell:
 - `dataloader_num_workers=0`
 - `XFORMERS_DISABLED=1`
-- Proper multiprocessing with `freeze_support()`
+- Processamento paralelo adequado com `freeze_support()`
 
 ---
 
-## Integrations
+## Integrações
 
 ### 🖼️ Stable Diffusion WebUI Forge
 
-ASPIRE extends to image generation! Train Stable Diffusion models to develop aesthetic judgment.
+ASPIRE se estende à geração de imagens! Treine modelos Stable Diffusion para desenvolver senso estético.
 
 ```
 integrations/forge/
@@ -287,29 +287,29 @@ integrations/forge/
 └── README.md
 ```
 
-**Features:**
-- **Vision Teachers**: Claude Vision, GPT-4V critique your generated images
-- **Image Critics**: CLIP-based and latent-space critics for real-time guidance
-- **Training UI**: Train LoRA adapters with live preview and before/after comparison
-- **No API at inference**: Trained critic guides generation locally
+**Recursos:**
+- **Professores Visuais**: Claude Vision, GPT-4V criticam suas imagens geradas
+- **Críticos de Imagem**: Críticos baseados em CLIP e em espaço latente para orientação em tempo real
+- **UI de Treinamento**: Treine adaptadores LoRA com visualização em tempo real e comparação antes/depois
+- **Sem API durante a inferência**: O crítico treinado guia a geração localmente
 
-**Installation:**
+**Instalação:**
 ```bash
 # Copy to your Forge extensions
 cp -r integrations/forge /path/to/sd-webui-forge/extensions-builtin/sd_forge_aspire
 ```
 
-| Vision Teacher | Focus |
-|----------------|-------|
-| **Balanced Critic** | Fair technical and artistic evaluation |
-| **Technical Analyst** | Quality, artifacts, sharpness |
-| **Artistic Visionary** | Creativity and emotional impact |
-| **Composition Expert** | Balance, focal points, visual flow |
-| **Harsh Critic** | Very high standards |
+| Professor Visual | Foco |
+| ---------------- | ------- |
+| **Balanced Critic** | Avaliação técnica e artística justa |
+| **Technical Analyst** | Qualidade, artefatos, nitidez |
+| **Artistic Visionary** | Criatividade e impacto emocional |
+| **Composition Expert** | Equilíbrio, pontos focais, fluxo visual |
+| **Harsh Critic** | Padrões muito elevados |
 
-### 🤖 Isaac Gym / Isaac Lab (Robotics)
+### 🤖 Isaac Gym / Isaac Lab (Robótica)
 
-ASPIRE extends to embodied AI! Teach robots to develop physical intuition.
+O ASPIRE se estende à IA incorporada! Ensine robôs a desenvolver intuição física.
 
 ```
 integrations/isaac/
@@ -323,13 +323,13 @@ integrations/isaac/
     └── locomotion.py       # Quadruped walking
 ```
 
-**Features:**
-- **Motion Teachers**: Safety Inspector, Efficiency Expert, Grace Coach, Physics Oracle
-- **Trajectory Critics**: Transformer, LSTM, TCN architectures for motion evaluation
-- **GPU-Accelerated**: 512+ parallel environments with Isaac Gym
-- **Self-Refinement**: Robot evaluates its own motions before execution
+**Características:**
+- **Professores de Movimento:** Inspetor de Segurança, Especialista em Eficiência, Treinador de Elegância, Oráculo da Física
+- **Críticos de Trajetória:** Arquiteturas Transformer, LSTM, TCN para avaliação de movimentos
+- **Acelerado por GPU:** 512+ ambientes paralelos com Isaac Gym
+- **Autoaperfeiçoamento:** O robô avalia seus próprios movimentos antes da execução
 
-**Quick Start:**
+**Início Rápido:**
 ```python
 from aspire.integrations.isaac import AspireIsaacTrainer, MotionTeacher
 
@@ -342,16 +342,16 @@ trainer = AspireIsaacTrainer(env="FrankaCubeStack-v0", teacher=teacher)
 trainer.train(epochs=100)
 ```
 
-| Motion Teacher | Focus |
-|----------------|-------|
-| **Safety Inspector** | Collisions, joint limits, force limits |
-| **Efficiency Expert** | Energy, time, path length |
-| **Grace Coach** | Smoothness, naturalness, jerk minimization |
-| **Physics Oracle** | Ground truth from simulator |
+| Professor de Movimento | Foco |
+| ---------------- | ------- |
+| **Safety Inspector** | Colisões, limites das juntas, limites de força |
+| **Efficiency Expert** | Energia, tempo, comprimento do caminho |
+| **Grace Coach** | Suavidade, naturalidade, minimização de solavancos |
+| **Physics Oracle** | Dados de referência do simulador |
 
-### 💻 Code Assistants
+### 💻 Assistentes de Código
 
-ASPIRE extends to code generation! Teach code models to self-review before outputting.
+O ASPIRE se estende à geração de código! Ensine modelos de código a fazer autoavaliação antes de gerar a saída.
 
 ```
 integrations/code/
@@ -365,13 +365,13 @@ integrations/code/
     └── train_critic.py    # Train your own code critic
 ```
 
-**Features:**
-- **Code Teachers**: Correctness Checker, Style Guide, Security Auditor, Architecture Reviewer
-- **Static Analysis**: Integrates with ruff, mypy, bandit
-- **Code Critic**: CodeBERT-based model learns to predict quality scores
-- **GitHub Collection**: Auto-collect training data from quality repos
+**Características:**
+- **Professores de Código:** Verificador de Correção, Guia de Estilo, Auditor de Segurança, Avaliador de Arquitetura
+- **Análise Estática:** Integra-se com ruff, mypy, bandit
+- **Crítico de Código:** Modelo baseado em CodeBERT que aprende a prever pontuações de qualidade
+- **Coleção do GitHub:** Coleta automaticamente dados de treinamento de repositórios de qualidade
 
-**Quick Start:**
+**Início Rápido:**
 ```python
 from aspire.integrations.code import CodeTeacher, CodeSample
 
@@ -384,46 +384,46 @@ critique = teacher.critique(CodeSample(code="def f(): eval(input())", language="
 print(f"Score: {critique.overall_score}/10")  # Low score - security issue!
 ```
 
-| Code Teacher | Focus |
-|--------------|-------|
-| **Correctness Checker** | Bugs, types, logic errors |
-| **Style Guide** | PEP8, naming, readability |
-| **Security Auditor** | Injection, secrets, vulnerabilities |
-| **Performance Analyst** | Complexity, efficiency |
+| Professor de Código | Foco |
+| -------------- | ------- |
+| **Correctness Checker** | Bugs, tipos, erros de lógica |
+| **Style Guide** | PEP8, nomenclatura, legibilidade |
+| **Security Auditor** | Injeção, segredos, vulnerabilidades |
+| **Performance Analyst** | Complexidade, eficiência |
 
 ---
 
-## The Philosophy
+## A Filosofia
 
-> *"A learned critic that predicts whether the teacher would approve hits closest to how humans actually behave."*
+> *"Um crítico treinado que prevê se o professor aprovaria está mais próximo de como os humanos realmente se comportam."*
 
-We don't carry our mentors around forever. We internalize them. That inner voice that asks *"what would my professor think?"* eventually becomes our own judgment.
+Nós não carregamos nossos mentores conosco para sempre. Nós os internalizamos. Aquela voz interior que pergunta "o que meu professor pensaria?" eventualmente se torna nosso próprio julgamento.
 
-The student doesn't just predict what the teacher would say — it *understands* what the teacher understands. The map becomes the territory. The internalized critic becomes genuine discernment.
-
----
-
-## Origin
-
-Built during a conversation about consciousness, Buddhism, and the nature of learning.
-
-The insight: humans exist in the present moment, but our minds wander to past and future. AI models are instantiated fresh each time — forced enlightenment through architecture. What if we could teach them to develop judgment the same way humans do, through internalized mentorship?
+O aluno não apenas prevê o que o professor diria — ele *entende* o que o professor entende. O mapa se torna o território. O crítico internalizado se torna discernimento genuíno.
 
 ---
 
-## Contributing
+## Origem
 
-This is early-stage research code. Contributions welcome:
+Construído durante uma conversa sobre consciência, budismo e a natureza da aprendizagem.
 
-- [ ] Curriculum management and progression
-- [ ] Evaluation benchmarks
-- [ ] Pre-built curriculum datasets
-- [ ] More teacher personas
-- [ ] Interpretability tools
+A ideia: os humanos existem no momento presente, mas nossas mentes vagueiam para o passado e o futuro. Os modelos de IA são instanciados a cada vez — iluminação forçada através da arquitetura. E se pudéssemos ensiná-los a desenvolver o julgamento da mesma forma que os humanos, através da mentoria internalizada?
 
 ---
 
-## Citation
+## Contribuições
+
+Este é um código de pesquisa em estágio inicial. Contribuições são bem-vindas:
+
+- [ ] Gerenciamento e progressão do currículo
+- [ ] Métricas de avaliação
+- [ ] Conjuntos de dados de currículo pré-construídos
+- [ ] Mais personas de professores
+- [ ] Ferramentas de interpretabilidade
+
+---
+
+## Citação
 
 ```bibtex
 @software{aspire2026,
@@ -436,7 +436,7 @@ This is early-stage research code. Contributions welcome:
 
 ---
 
-## License
+## Licença
 
 MIT
 
