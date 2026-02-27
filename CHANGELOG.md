@@ -5,7 +5,20 @@ All notable changes to ASPIRE will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2026-02-27
+
+### Added
+
+- SECURITY.md with vulnerability reporting and data scope
+- SHIP_GATE.md and SCORECARD.md for product standards
+- Security & Data Scope section in README
+- Scorecard in README
+- Makefile with verify target (lint + test + build)
+- Coverage reporting in CI with Codecov upload
+
+### Changed
+
+- Bumped version from 0.2.0 to 1.0.0
 
 ---
 
@@ -116,7 +129,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - LoRA fine-tuning via PEFT
 - Async teacher API calls
 
-[Unreleased]: https://github.com/mcp-tool-shop-org/aspire-ai/compare/v0.2.0...HEAD
+[1.0.0]: https://github.com/mcp-tool-shop-org/aspire-ai/compare/v0.2.0...v1.0.0
 [0.2.0]: https://github.com/mcp-tool-shop-org/aspire-ai/compare/v0.1.3...v0.2.0
 [0.1.3]: https://github.com/mcp-tool-shop-org/aspire-ai/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/mcp-tool-shop-org/aspire-ai/compare/v0.1.1...v0.1.2

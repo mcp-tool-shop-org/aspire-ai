@@ -25,9 +25,9 @@
 
 <p align="center">
   <a href="https://github.com/mcp-tool-shop-org/aspire-ai/actions/workflows/ci.yml"><img src="https://github.com/mcp-tool-shop-org/aspire-ai/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://codecov.io/gh/mcp-tool-shop-org/aspire-ai"><img src="https://codecov.io/gh/mcp-tool-shop-org/aspire-ai/branch/main/graph/badge.svg" alt="codecov" /></a>
   <a href="https://pypi.org/project/aspire-ai/"><img src="https://img.shields.io/pypi/v/aspire-ai" alt="PyPI" /></a>
-  <a href="https://github.com/mcp-tool-shop-org/aspire-ai/blob/main/LICENSE"><img src="https://img.shields.io/github/license/mcp-tool-shop-org/aspire-ai" alt="License: MIT" /></a>
-  <a href="https://pypi.org/project/aspire-ai/"><img src="https://img.shields.io/pypi/pyversions/aspire-ai" alt="Python versions" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License" /></a>
   <a href="https://mcp-tool-shop-org.github.io/aspire-ai/"><img src="https://img.shields.io/badge/Landing_Page-live-blue" alt="Landing Page" /></a>
 </p>
 
@@ -436,16 +436,26 @@ This is early-stage research code. Contributions welcome:
 
 ---
 
+## Security & Data Scope
+
+- **Data accessed:** Reads training prompts, model checkpoints, and configuration files from local filesystem. Calls external APIs (Anthropic, OpenAI) only when teacher modules are explicitly configured.
+- **Data NOT accessed:** No telemetry. No user data storage beyond training artifacts. No credential storage — API keys are read from environment variables at runtime.
+- **Permissions required:** Read/write access to training data and checkpoint directories. GPU access for model training. Network access only when using API-based teachers.
+
+## Scorecard
+
+| Gate | Status |
+|------|--------|
+| A. Security Baseline | PASS |
+| B. Error Handling | PASS |
+| C. Operator Docs | PASS |
+| D. Shipping Hygiene | PASS |
+| E. Identity | PASS |
+
 ## License
 
-MIT
+[MIT](LICENSE)
 
 ---
 
-<p align="center">
-  <em>"Teaching AI to develop judgment, not just knowledge."</em>
-</p>
-
-<p align="center">
-  Built by <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a>
-</p>
+Built by <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a>
