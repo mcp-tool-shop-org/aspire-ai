@@ -25,9 +25,9 @@
 
 <p align="center">
   <a href="https://github.com/mcp-tool-shop-org/aspire-ai/actions/workflows/ci.yml"><img src="https://github.com/mcp-tool-shop-org/aspire-ai/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://codecov.io/gh/mcp-tool-shop-org/aspire-ai"><img src="https://codecov.io/gh/mcp-tool-shop-org/aspire-ai/branch/main/graph/badge.svg" alt="codecov" /></a>
   <a href="https://pypi.org/project/aspire-ai/"><img src="https://img.shields.io/pypi/v/aspire-ai" alt="PyPI" /></a>
-  <a href="https://github.com/mcp-tool-shop-org/aspire-ai/blob/main/LICENSE"><img src="https://img.shields.io/github/license/mcp-tool-shop-org/aspire-ai" alt="License: MIT" /></a>
-  <a href="https://pypi.org/project/aspire-ai/"><img src="https://img.shields.io/pypi/pyversions/aspire-ai" alt="Python versions" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License" /></a>
   <a href="https://mcp-tool-shop-org.github.io/aspire-ai/"><img src="https://img.shields.io/badge/Landing_Page-live-blue" alt="Landing Page" /></a>
 </p>
 
@@ -39,7 +39,7 @@
 
 **ASPIRE：** *"这里是一位睿智的思想。学习像它一样思考。"*
 
-当你从一位伟大的导师那里学习时，你不仅仅是记住他们的答案。你是在内化他们的思考方式。他们的声音会成为你内心对话的一部分。你开始预料他们会说什么，最终，这种预料会成为你自己的判断力。
+当你从一位伟大的导师那里学习时，你不仅仅是记住他们的答案。你是在内化他们的思考方式。他们的声音会成为你内心对话的一部分。你开始预料他们会说什么，最终，这种预料会转化为你自己的判断力。
 
 ASPIRE 为 AI 提供了同样的体验。
 
@@ -64,7 +64,7 @@ ASPIRE 为 AI 提供了同样的体验。
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-**评估器 (critic)** 学习预测教师会如何思考。经过训练后，学生使用这个内化的评估器进行自我完善——**推理时不需要教师**。
+**“批评家”** 学习预测导师的思考方式。经过训练后，学生利用这个内化的“批评家”进行自我完善——**推理阶段不需要导师**。
 
 ---
 
@@ -110,21 +110,21 @@ aspire init --output my-config.yaml
 
 ---
 
-## 教师角色
+## 导师角色
 
-不同的教师会培养不同的思维方式。请谨慎选择。
+不同的导师会塑造不同的思维方式。请谨慎选择。
 
-| 角色 | 哲学 | 产出 |
-| --------- | ------------ | ---------- |
-| 🏛️ **苏格拉底式 (Socratic)** | *"你所做的假设是什么？"* | 深入的推理，独立的思考能力 |
-| 🔬 **科学 (Scientific)** | *"你的证据是什么？"* | 技术精确性，严谨的思考 |
-| 🎨 **创造性 (Creative)** | *"如果我们尝试相反的方法会怎么样？"* | 创新，发散性思维 |
-| ⚔️ **对抗性 (Adversarial)** | *"我不同意。请为你的观点辩护。"* | 有力的论点，坚定 |
-| 💚 **富有同情心 (Compassionate)** | *"这件事可能会让别人感到如何？"* | 伦理推理，智慧 |
+| 角色 | 理念 | 特点 |
+|---------|------------|----------|
+| 🏛️ **苏格拉底式** | *"你基于什么假设？"* | 深刻的推理，独立的思考 |
+| 🔬 **科学式** | *"你的证据是什么？"* | 技术精确，严谨的思考 |
+| 🎨 **创造式** | *"如果我们尝试相反的方法会怎么样？"* | 创新，发散性思维 |
+| ⚔️ **对抗式** | *"我不同意。请为你的观点辩护。"* | 有力的论点，坚定 |
+| 💚 **富有同情心** | *"这件事可能会让别人感到如何？"* | 伦理推理，智慧 |
 
-### 组合教师
+### 组合导师
 
-结合多个教师以获得更丰富的学习体验：
+结合多个导师，以获得更丰富的学习体验：
 
 ```python
 from aspire.teachers import CompositeTeacher, SocraticTeacher, ScientificTeacher
@@ -142,7 +142,7 @@ teacher = CompositeTeacher(
 
 ### 1. 对话式学习
 
-学生生成一个回复。教师对其提出挑战。来回进行，探究弱点，要求清晰，深入思考。
+学生生成一个回复。导师对其进行挑战。来回进行，探究弱点，要求清晰，深入思考。
 
 ```
 Student: "Recursion works by calling itself."
@@ -156,9 +156,9 @@ Teacher: "You say 'stops it' — but how does the computer know
           to check the base case before recursing?"
 ```
 
-### 2. 评估器训练
+### 2. 批评家训练
 
-评估器学习预测教师的判断——不仅是分数，而是*推理过程*。
+“批评家” 学习预测导师的判断——不仅是分数，而是*推理过程*。
 
 ```python
 critic_loss = predict_teacher_judgment(
@@ -169,7 +169,7 @@ critic_loss = predict_teacher_judgment(
 
 ### 3. 学生训练
 
-学生从评估器的内化判断中学习，朝着教师会认可的方向发展。
+学生从“批评家”的内化判断中学习，朝着导师会认可的方向发展。
 
 ```python
 student_loss = (
@@ -181,7 +181,7 @@ student_loss = (
 
 ### 4. 推理魔法
 
-经过训练后，学生使用内化的评估器进行自我完善。**推理时不需要教师 API 调用。**
+经过训练后，学生使用内化的“批评家”进行自我完善。**推理阶段不需要调用导师的 API。**
 
 ```python
 def generate_with_judgment(prompt):
@@ -255,19 +255,19 @@ aspire/
 
 ---
 
-## 依赖项
+## 依赖
 
 - Python 3.10+
 - PyTorch 2.0+
-- CUDA GPU (建议 16GB+ VRAM)
-- Anthropic API 密钥 (用于 Claude 教师) 或 OpenAI API 密钥
+- CUDA GPU (建议 16GB+ 的显存)
+- Anthropic API 密钥（用于 Claude 导师）或 OpenAI API 密钥
 
 ### Windows 兼容性
 
 ASPIRE 完美兼容 Windows，并支持 RTX 5080/Blackwell：
 - `dataloader_num_workers=0`
 - `XFORMERS_DISABLED=1`
-- 使用 `freeze_support()` 进行正确的多进程处理
+- 使用 `freeze_support()` 实现正确的多进程
 
 ---
 
@@ -275,7 +275,7 @@ ASPIRE 完美兼容 Windows，并支持 RTX 5080/Blackwell：
 
 ### 🖼️ Stable Diffusion WebUI Forge
 
-ASPIRE 扩展到图像生成！训练 Stable Diffusion 模型以培养审美判断力。
+ASPIRE 扩展到图像生成！训练 Stable Diffusion 模型，培养审美判断力。
 
 ```
 integrations/forge/
@@ -287,11 +287,11 @@ integrations/forge/
 └── README.md
 ```
 
-**功能：**
-- **视觉教师 (Vision Teachers)**：Claude Vision、GPT-4V 评估您生成的图像
-- **图像评估器 (Image Critics)**：基于 CLIP 和潜在空间的评估器，用于实时指导
-- **训练 UI**：训练 LoRA 适配器，具有实时预览和前后比较功能
-- **推理时无需 API**：训练好的评估器在本地指导生成
+**特点：**
+- **视觉导师：** Claude Vision、GPT-4V 评估您生成的图像
+- **图像批评家：** 基于 CLIP 和潜在空间的批评家，提供实时指导
+- **训练 UI：** 训练 LoRA 适配器，具有实时预览和前后比较功能
+- **推理阶段无需 API：** 训练好的批评家在本地指导生成
 
 **安装：**
 ```bash
@@ -299,17 +299,17 @@ integrations/forge/
 cp -r integrations/forge /path/to/sd-webui-forge/extensions-builtin/sd_forge_aspire
 ```
 
-| 视觉教师 | 重点 |
-| ---------------- | ------- |
-| **Balanced Critic** | 公正的技术和艺术评估 |
-| **Technical Analyst** | 质量、产出、清晰度 |
+| 视觉导师 | 关注点 |
+|----------------|-------|
+| **Balanced Critic** | 公平的技术和艺术评估 |
+| **Technical Analyst** | 质量、瑕疵、清晰度 |
 | **Artistic Visionary** | 创造力和情感冲击 |
 | **Composition Expert** | 平衡、焦点、视觉流程 |
-| **Harsh Critic** | 极高的标准 |
+| **Harsh Critic** | 极高的标准。 |
 
-### 🤖 Isaac Gym / Isaac Lab (机器人)
+### 🤖 Isaac Gym / Isaac Lab (机器人学)
 
-ASPIRE 扩展到具身人工智能！ 训练机器人发展物理直觉。
+ASPIRE项目扩展到具身人工智能领域！旨在教会机器人发展身体直觉。
 
 ```
 integrations/isaac/
@@ -323,13 +323,13 @@ integrations/isaac/
     └── locomotion.py       # Quadruped walking
 ```
 
-**功能：**
-- **运动指导者：** 安全检查员、效率专家、优雅教练、物理预言家
-- **轨迹评估器：** Transformer、LSTM、TCN 架构，用于评估运动
-- **GPU 加速：** 使用 Isaac Gym，支持 512 个以上的并行环境
-- **自我完善：** 机器人会在执行动作之前评估自身的动作
+**功能特点：**
+- **运动指导模块：** 包括安全检查员、效率专家、姿态教练和物理专家。
+- **运动轨迹评估模块：** 采用Transformer、LSTM和TCN等架构进行运动评估。
+- **GPU加速：** 配合Isaac Gym，支持512个以上的并行环境。
+- **自我优化：** 机器人会在执行动作前，先评估自身的运动。
 
-**快速开始：**
+**快速入门：**
 ```python
 from aspire.integrations.isaac import AspireIsaacTrainer, MotionTeacher
 
@@ -342,16 +342,16 @@ trainer = AspireIsaacTrainer(env="FrankaCubeStack-v0", teacher=teacher)
 trainer.train(epochs=100)
 ```
 
-| 运动指导者 | 重点 |
-| ---------------- | ------- |
-| **Safety Inspector** | 碰撞、关节限制、力限制 |
-| **Efficiency Expert** | 能量、时间、路径长度 |
-| **Grace Coach** | 平滑度、自然性、冲击最小化 |
-| **Physics Oracle** | 模拟器提供的真实数据 |
+| 运动教练。 | 关注点 |
+|----------------|-------|
+| **Safety Inspector** | 碰撞、关节限制、力限制。 |
+| **Efficiency Expert** | 能量、时间、路径长度。 |
+| **Grace Coach** | 流畅性、自然性、减少抖动。 |
+| **Physics Oracle** | 模拟器提供的真实数据。 |
 
-### 💻 代码助手
+### 💻 代码辅助工具
 
-ASPIRE 扩展到代码生成！ 训练代码模型在输出之前进行自我审查。
+ASPIRE现在也扩展到代码生成领域！我们正在训练代码模型，使其在输出代码之前能够进行自我审查。
 
 ```
 integrations/code/
@@ -366,12 +366,12 @@ integrations/code/
 ```
 
 **功能：**
-- **代码指导者：** 正确性检查器、风格指南、安全审计员、架构审查员
-- **静态分析：** 集成 ruff、mypy、bandit
-- **代码评估器：** 基于 CodeBERT 的模型，用于预测质量分数
-- **GitHub 收集器：** 自动从高质量代码库收集训练数据
+- **代码助手：** 包含代码正确性检查器、代码风格指南、安全审计工具、架构审查工具。
+- **静态分析：** 集成了 ruff、mypy、bandit 等工具。
+- **代码质量评估：** 基于 CodeBERT 的模型，用于预测代码质量得分。
+- **GitHub 数据收集：** 自动从高质量代码仓库中收集训练数据。
 
-**快速开始：**
+**快速入门：**
 ```python
 from aspire.integrations.code import CodeTeacher, CodeSample
 
@@ -384,41 +384,41 @@ critique = teacher.critique(CodeSample(code="def f(): eval(input())", language="
 print(f"Score: {critique.overall_score}/10")  # Low score - security issue!
 ```
 
-| 代码指导者 | 重点 |
-| -------------- | ------- |
-| **Correctness Checker** | 错误、类型、逻辑错误 |
-| **Style Guide** | PEP8、命名、可读性 |
-| **Security Auditor** | 注入、密钥、漏洞 |
-| **Performance Analyst** | 复杂性、效率 |
+| 代码教师 | 关注点 |
+|--------------|-------|
+| **Correctness Checker** | 错误、类型错误、逻辑错误。 |
+| **Style Guide** | PEP8规范、命名、可读性。 |
+| **Security Auditor** | 注入攻击、秘密、漏洞。 |
+| **Performance Analyst** | 复杂性，效率。 |
 
 ---
 
-## 设计理念
+## 哲学理念
 
-> *"一个学习的评估器，它预测指导者是否会批准，这最接近人类的行为方式。"*
+“一位博学的评论者，他预测教师是否会认可某种观点，这更能反映人类的真实行为方式。”
 
-我们不会永远带着导师。我们会将他们的知识内化。那个会问“我的教授会怎么想？”的内在声音，最终会成为我们自己的判断。
+我们不会永远依赖导师的指导。我们会将他们的教诲内化于心。那个总在问“我的教授会怎么想？”的内在声音，最终会转化为我们自己的判断。
 
-学生不仅预测指导者会说什么，而是*理解*指导者所理解的内容。 蓝图变成了现实。 内化的评估器变成了真正的洞察力。
+学生不仅仅是预测老师会说什么，而是*理解*了老师所理解的内容。地图成为了现实，内化的批判意识转化为真正的洞察力。
 
 ---
 
 ## 起源
 
-这个项目是在关于意识、佛教和学习本质的对话中诞生的。
+这部作品是在一次关于意识、佛教以及学习本质的对话中诞生的。
 
-核心思想：人类存在于当下，但我们的思想会游走于过去和未来。 AI 模型每次都会被重新实例化，通过这种“强制启蒙”的方式来发展。 我们可以教他们像人类一样，通过内化的指导来发展判断力吗？
+洞察：人类存在于当下，但我们的思想常常流连于过去和未来。人工智能模型每次运行都是全新的——通过架构来实现“顿悟”。如果我们可以像培养人类一样，通过内化的指导来教它们发展判断力，会怎么样呢？
 
 ---
 
 ## 贡献
 
-这部分是早期阶段的研究代码。 欢迎贡献：
+这部分代码处于研究的早期阶段。欢迎贡献。
 
-- [ ] 课程管理和进度
-- [ ] 评估基准
-- [ ] 预构建的课程数据集
-- [ ] 更多指导者角色
+- [ ] 课程管理与进度跟踪
+- [ ] 评估标准
+- [ ] 预设的课程数据集
+- [ ] 更多教师角色模型
 - [ ] 可解释性工具
 
 ---
@@ -436,16 +436,26 @@ print(f"Score: {critique.overall_score}/10")  # Low score - security issue!
 
 ---
 
-## 许可证
+## 安全与数据范围
 
-MIT
+- **访问的数据：** 从本地文件系统中读取训练提示、模型检查点和配置文件。只有在明确配置了“教师”模块时，才会调用外部API（Anthropic、OpenAI）。
+- **未访问的数据：** 不收集任何遥测数据。除了训练产生的中间文件外，不存储任何用户数据。不存储任何凭证——API密钥在运行时从环境变量中读取。
+- **所需权限：** 访问训练数据和检查点目录的读/写权限。进行模型训练需要访问GPU。只有在使用基于API的“教师”模块时才需要网络访问。
+
+## 计分卡
+
+| 门。 | 状态。 |
+|------|--------|
+| A. 安全基线。 | 通过。 |
+| B. 错误处理。 | 通过。 |
+| C. 操作手册。 | 通过。 |
+| D. 航运卫生。 | 通过。 |
+| E. 身份认同。 | 通过。 |
+
+## 许可
+
+[麻省理工学院] (LICENSE)
 
 ---
 
-<p align="center">
-  <em>"Teaching AI to develop judgment, not just knowledge."</em>
-</p>
-
-<p align="center">
-  Built by <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a>
-</p>
+由 <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a> 制作。

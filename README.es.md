@@ -25,9 +25,9 @@
 
 <p align="center">
   <a href="https://github.com/mcp-tool-shop-org/aspire-ai/actions/workflows/ci.yml"><img src="https://github.com/mcp-tool-shop-org/aspire-ai/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://codecov.io/gh/mcp-tool-shop-org/aspire-ai"><img src="https://codecov.io/gh/mcp-tool-shop-org/aspire-ai/branch/main/graph/badge.svg" alt="codecov" /></a>
   <a href="https://pypi.org/project/aspire-ai/"><img src="https://img.shields.io/pypi/v/aspire-ai" alt="PyPI" /></a>
-  <a href="https://github.com/mcp-tool-shop-org/aspire-ai/blob/main/LICENSE"><img src="https://img.shields.io/github/license/mcp-tool-shop-org/aspire-ai" alt="License: MIT" /></a>
-  <a href="https://pypi.org/project/aspire-ai/"><img src="https://img.shields.io/pypi/pyversions/aspire-ai" alt="Python versions" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License" /></a>
   <a href="https://mcp-tool-shop-org.github.io/aspire-ai/"><img src="https://img.shields.io/badge/Landing_Page-live-blue" alt="Landing Page" /></a>
 </p>
 
@@ -35,13 +35,13 @@
 
 ## La Idea
 
-**Ajuste fino tradicional:** *"Aquí están las respuestas correctas. Haz coincidir cada una."*
+**Ajuste fino tradicional:** *"Aquí están las respuestas correctas. Emparejalas."*
 
 **ASPIRE:** *"Aquí hay una mente sabia. Aprende a pensar como ella."*
 
 Cuando aprendes de un gran mentor, no solo memorizas sus respuestas. Internalizas su forma de ver las cosas. Su voz se convierte en parte de tu diálogo interno. Empiezas a anticipar lo que diría, y eventualmente, esa anticipación se convierte en tu propio criterio.
 
-ASPIRE le brinda a la IA esa misma experiencia.
+ASPIRE le da a la IA esa misma experiencia.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -78,7 +78,7 @@ cd aspire-ai
 pip install -e .
 ```
 
-### Configure su clave de API
+### Configura tu clave de API
 
 ```bash
 # Windows
@@ -88,14 +88,14 @@ set ANTHROPIC_API_KEY=your-key-here
 export ANTHROPIC_API_KEY=your-key-here
 ```
 
-### Verifique la configuración
+### Verifica la configuración
 
 ```bash
 # Check your environment (Python, CUDA, API keys)
 aspire doctor
 ```
 
-### Pruébelo
+### Pruébalo
 
 ```bash
 # See available teacher personas
@@ -112,19 +112,19 @@ aspire init --output my-config.yaml
 
 ## Perfiles de profesores
 
-Diferentes profesores generan diferentes tipos de pensamiento. Elija sabiamente.
+Diferentes profesores generan diferentes formas de pensar. Elige sabiamente.
 
 | Perfil | Filosofía | Produce |
-| --------- | ------------ | ---------- |
-| 🏛️ **Sócrates** | *"¿Qué suposición estás haciendo?"* | Razonamiento profundo, independencia intelectual. |
-| 🔬 **Científico** | *"¿Cuál es tu evidencia?"* | Precisión técnica, pensamiento riguroso. |
-| 🎨 **Creativo** | *"¿Qué tal si probamos lo contrario?"* | Innovación, pensamiento lateral. |
-| ⚔️ **Adversario** | *"No estoy de acuerdo. Defiende tu posición."* | Argumentos sólidos, convicción. |
-| 💚 **Compasivo** | *"¿Cómo se sentiría alguien al respecto?"* | Razonamiento ético, sabiduría. |
+|---------|------------|----------|
+| 🏛️ **Sócrates** | *"¿Qué suposición estás haciendo?"* | Razonamiento profundo, independencia intelectual |
+| 🔬 **Científico** | *"¿Cuál es tu evidencia?"* | Precisión técnica, pensamiento riguroso |
+| 🎨 **Creativo** | *"¿Qué tal si probamos lo contrario?"* | Innovación, pensamiento lateral |
+| ⚔️ **Adversario** | *"No estoy de acuerdo. Defiende tu posición."* | Argumentos sólidos, convicción |
+| 💚 **Compasivo** | *"¿Cómo se sentiría alguien al respecto?"* | Razonamiento ético, sabiduría |
 
 ### Profesores compuestos
 
-Combine múltiples profesores para un aprendizaje más enriquecido:
+Combina múltiples profesores para un aprendizaje más enriquecido:
 
 ```python
 from aspire.teachers import CompositeTeacher, SocraticTeacher, ScientificTeacher
@@ -267,7 +267,7 @@ aspire/
 ASPIRE es totalmente compatible con Windows y admite RTX 5080/Blackwell:
 - `dataloader_num_workers=0`
 - `XFORMERS_DISABLED=1`
-- Procesamiento multinúcleo adecuado con `freeze_support()`
+- Procesamiento multiproceso adecuado con `freeze_support()`
 
 ---
 
@@ -275,7 +275,7 @@ ASPIRE es totalmente compatible con Windows y admite RTX 5080/Blackwell:
 
 ### 🖼️ Stable Diffusion WebUI Forge
 
-¡ASPIRE se extiende a la generación de imágenes! Entrene modelos de Stable Diffusion para desarrollar un juicio estético.
+¡ASPIRE se extiende a la generación de imágenes! Entrena modelos de Stable Diffusion para desarrollar un juicio estético.
 
 ```
 integrations/forge/
@@ -290,7 +290,7 @@ integrations/forge/
 **Características:**
 - **Profesores de visión:** Claude Vision, GPT-4V critican las imágenes generadas.
 - **Críticos de imágenes:** Críticos basados en CLIP y en el espacio latente para una guía en tiempo real.
-- **Interfaz de usuario de entrenamiento:** Entrene adaptadores LoRA con una vista previa en vivo y comparación antes/después.
+- **Interfaz de usuario de entrenamiento:** Entrena adaptadores LoRA con una vista previa en vivo y comparación antes/después.
 - **Sin API durante la inferencia:** El crítico entrenado guía la generación localmente.
 
 **Instalación:**
@@ -300,12 +300,12 @@ cp -r integrations/forge /path/to/sd-webui-forge/extensions-builtin/sd_forge_asp
 ```
 
 | Profesor de visión | Enfoque |
-| ---------------- | ------- |
-| **Balanced Critic** | Evaluación técnica y artística justa. |
+|----------------|-------|
+| **Balanced Critic** | Evaluación técnica y artística justa |
 | **Technical Analyst** | Calidad, artefactos, nitidez |
 | **Artistic Visionary** | Creatividad e impacto emocional |
 | **Composition Expert** | Equilibrio, puntos focales, flujo visual |
-| **Harsh Critic** | Estándares muy altos |
+| **Harsh Critic** | Estándares muy altos. |
 
 ### 🤖 Isaac Gym / Isaac Lab (Robótica)
 
@@ -324,12 +324,12 @@ integrations/isaac/
 ```
 
 **Características:**
-- **Instructores de movimiento:** Inspector de seguridad, Experto en eficiencia, Entrenador de elegancia, Oráculo de la física
-- **Evaluadores de trayectoria:** Arquitecturas Transformer, LSTM, TCN para la evaluación del movimiento
-- **Acelerado por GPU:** Más de 512 entornos paralelos con Isaac Gym
-- **Auto-perfeccionamiento:** El robot evalúa sus propios movimientos antes de la ejecución
+- **Instructores de movimiento:** Inspector de seguridad, Experto en eficiencia, Entrenador de elegancia, Oráculo de la física.
+- **Críticos de trayectoria:** Arquitecturas Transformer, LSTM y TCN para la evaluación del movimiento.
+- **Aceleración por GPU:** Más de 512 entornos paralelos con Isaac Gym.
+- **Autoperfeccionamiento:** El robot evalúa sus propios movimientos antes de la ejecución.
 
-**Inicio rápido:**
+**Cómo empezar:**
 ```python
 from aspire.integrations.isaac import AspireIsaacTrainer, MotionTeacher
 
@@ -343,15 +343,15 @@ trainer.train(epochs=100)
 ```
 
 | Instructor de movimiento | Enfoque |
-| ---------------- | ------- |
-| **Safety Inspector** | Colisiones, límites de articulación, límites de fuerza |
-| **Efficiency Expert** | Energía, tiempo, longitud de la trayectoria |
-| **Grace Coach** | Suavidad, naturalidad, minimización de sacudidas |
-| **Physics Oracle** | Datos de referencia del simulador |
+|----------------|-------|
+| **Safety Inspector** | Colisiones, límites de las articulaciones, límites de fuerza. |
+| **Efficiency Expert** | Energía, tiempo, longitud de la trayectoria. |
+| **Grace Coach** | Suavidad, naturalidad, minimización de sacudidas. |
+| **Physics Oracle** | Datos de referencia del simulador. |
 
 ### 💻 Asistentes de código
 
-¡ASPIRE se extiende a la generación de código! Enseñe a los modelos de código a realizar auto-revisiones antes de la salida.
+¡ASPIRE se extiende a la generación de código! Enseñe a los modelos de código a realizar autoevaluaciones antes de generar la salida.
 
 ```
 integrations/code/
@@ -366,12 +366,12 @@ integrations/code/
 ```
 
 **Características:**
-- **Instructores de código:** Verificador de corrección, Guía de estilo, Auditor de seguridad, Revisor de arquitectura
-- **Análisis estático:** Se integra con ruff, mypy, bandit
-- **Crítico de código:** Modelo basado en CodeBERT que aprende a predecir puntuaciones de calidad
-- **Colección de GitHub:** Recopilación automática de datos de entrenamiento de repositorios de calidad
+- **Instructores de código:** Verificador de corrección, Guía de estilo, Auditor de seguridad, Revisor de arquitectura.
+- **Análisis estático:** Se integra con ruff, mypy, bandit.
+- **Crítico de código:** Modelo basado en CodeBERT que aprende a predecir puntuaciones de calidad.
+- **Colección de GitHub:** Recopila automáticamente datos de entrenamiento de repositorios de alta calidad.
 
-**Inicio rápido:**
+**Cómo empezar:**
 ```python
 from aspire.integrations.code import CodeTeacher, CodeSample
 
@@ -385,11 +385,11 @@ print(f"Score: {critique.overall_score}/10")  # Low score - security issue!
 ```
 
 | Instructor de código | Enfoque |
-| -------------- | ------- |
-| **Correctness Checker** | Errores, tipos, errores lógicos |
-| **Style Guide** | PEP8, nombres, legibilidad |
-| **Security Auditor** | Inyección, secretos, vulnerabilidades |
-| **Performance Analyst** | Complejidad, eficiencia |
+|--------------|-------|
+| **Correctness Checker** | Errores, tipos, errores lógicos. |
+| **Style Guide** | PEP8, nomenclatura, legibilidad. |
+| **Security Auditor** | Inyección, secretos, vulnerabilidades. |
+| **Performance Analyst** | Complejidad, eficiencia. |
 
 ---
 
@@ -405,25 +405,25 @@ El estudiante no solo predice lo que el instructor diría, sino que *entiende* l
 
 ## Origen
 
-Construido durante una conversación sobre la conciencia, el budismo y la naturaleza del aprendizaje.
+Creado durante una conversación sobre la conciencia, el budismo y la naturaleza del aprendizaje.
 
-La idea: los humanos existen en el momento presente, pero nuestras mentes divagan al pasado y al futuro. Los modelos de IA se instancian de nuevo cada vez, una iluminación forzada a través de la arquitectura. ¿Qué pasaría si pudiéramos enseñarles a desarrollar el juicio de la misma manera que los humanos, a través de la tutoría internalizada?
+La idea: los humanos existen en el momento presente, pero nuestras mentes divagan hacia el pasado y el futuro. Los modelos de IA se instancian cada vez que se ejecutan, lo que obliga a una iluminación a través de la arquitectura. ¿Qué pasaría si pudiéramos enseñarles a desarrollar el juicio de la misma manera que los humanos, a través de la tutoría internalizada?
 
 ---
 
 ## Contribuciones
 
-Este es código de investigación en una etapa temprana. Se aceptan contribuciones:
+Este es un código de investigación en etapa inicial. Se aceptan contribuciones:
 
-- [ ] Gestión y progresión del currículo
-- [ ] Marcos de evaluación
-- [ ] Conjuntos de datos de currículo predefinidos
-- [ ] Más personalidades de instructores
-- [ ] Herramientas de interpretabilidad
+- [ ] Gestión y progresión del currículo.
+- [ ] Marcos de evaluación.
+- [ ] Conjuntos de datos de currículo predefinidos.
+- [ ] Más personalidades de instructores.
+- [ ] Herramientas de interpretabilidad.
 
 ---
 
-## Citación
+## Cita
 
 ```bibtex
 @software{aspire2026,
@@ -436,16 +436,26 @@ Este es código de investigación en una etapa temprana. Se aceptan contribucion
 
 ---
 
+## Seguridad y alcance de los datos
+
+- **Datos accedidos:** Lee indicaciones de entrenamiento, puntos de control del modelo y archivos de configuración del sistema de archivos local. Llama a API externas (Anthropic, OpenAI) solo cuando los módulos del instructor están configurados explícitamente.
+- **Datos NO accedidos:** No hay telemetría. No hay almacenamiento de datos del usuario más allá de los artefactos de entrenamiento. No hay almacenamiento de credenciales: las claves de API se leen de las variables de entorno en tiempo de ejecución.
+- **Permisos requeridos:** Acceso de lectura/escritura a los datos de entrenamiento y a los directorios de puntos de control. Acceso a la GPU para el entrenamiento del modelo. Acceso a la red solo cuando se utilizan instructores basados en API.
+
+## Cuadro de evaluación
+
+| Puerta | Estado |
+|------|--------|
+| A. Línea de base de seguridad | PASADO |
+| B. Manejo de errores | PASADO |
+| C. Documentación para operadores | PASADO |
+| D. Higiene de implementación | PASADO |
+| E. Identidad | PASADO |
+
 ## Licencia
 
-MIT
+[MIT](LICENSE)
 
 ---
 
-<p align="center">
-  <em>"Teaching AI to develop judgment, not just knowledge."</em>
-</p>
-
-<p align="center">
-  Built by <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a>
-</p>
+Creado por <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a

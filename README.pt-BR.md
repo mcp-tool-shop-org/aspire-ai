@@ -25,9 +25,9 @@
 
 <p align="center">
   <a href="https://github.com/mcp-tool-shop-org/aspire-ai/actions/workflows/ci.yml"><img src="https://github.com/mcp-tool-shop-org/aspire-ai/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://codecov.io/gh/mcp-tool-shop-org/aspire-ai"><img src="https://codecov.io/gh/mcp-tool-shop-org/aspire-ai/branch/main/graph/badge.svg" alt="codecov" /></a>
   <a href="https://pypi.org/project/aspire-ai/"><img src="https://img.shields.io/pypi/v/aspire-ai" alt="PyPI" /></a>
-  <a href="https://github.com/mcp-tool-shop-org/aspire-ai/blob/main/LICENSE"><img src="https://img.shields.io/github/license/mcp-tool-shop-org/aspire-ai" alt="License: MIT" /></a>
-  <a href="https://pypi.org/project/aspire-ai/"><img src="https://img.shields.io/pypi/pyversions/aspire-ai" alt="Python versions" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License" /></a>
   <a href="https://mcp-tool-shop-org.github.io/aspire-ai/"><img src="https://img.shields.io/badge/Landing_Page-live-blue" alt="Landing Page" /></a>
 </p>
 
@@ -64,7 +64,7 @@ ASPIRE oferece a mesma experiência para a IA.
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-O **crítico** aprende a prever o que o professor pensaria. Após o treinamento, o aluno usa esse crítico internalizado para autoaperfeiçoamento — **sem a necessidade de um professor durante a inferência**.
+O **crítico** aprende a prever o que o professor pensaria. Após o treinamento, o aluno usa esse crítico internalizado para se aprimorar continuamente — **sem a necessidade de um professor durante a inferência**.
 
 ---
 
@@ -78,7 +78,7 @@ cd aspire-ai
 pip install -e .
 ```
 
-### Defina Sua Chave de API
+### Configure sua Chave de API
 
 ```bash
 # Windows
@@ -115,7 +115,7 @@ aspire init --output my-config.yaml
 Professores diferentes produzem mentes diferentes. Escolha com sabedoria.
 
 | Personagem | Filosofia | Produz |
-| --------- | ------------ | ---------- |
+|---------|------------|----------|
 | 🏛️ **Sócrático** | *"Qual é a sua premissa?"* | Raciocínio profundo, independência intelectual |
 | 🔬 **Científico** | *"Qual é a sua evidência?"* | Precisão técnica, pensamento rigoroso |
 | 🎨 **Criativo** | *"E se tentássemos o oposto?"* | Inovação, pensamento lateral |
@@ -181,7 +181,7 @@ student_loss = (
 
 ### 4. Magia da Inferência
 
-Após o treinamento, o aluno se autoaperfeiçoa usando o crítico internalizado. **Não são necessárias chamadas de API do professor.**
+Após o treinamento, o aluno se aprimora continuamente usando o crítico internalizado. **Não são necessárias chamadas de API do professor.**
 
 ```python
 def generate_with_judgment(prompt):
@@ -195,7 +195,7 @@ def generate_with_judgment(prompt):
 
 ---
 
-## Referência da Linha de Comando
+## Referência da Linha de Comando (CLI)
 
 ```bash
 # List available teachers
@@ -290,7 +290,7 @@ integrations/forge/
 **Recursos:**
 - **Professores Visuais**: Claude Vision, GPT-4V criticam suas imagens geradas
 - **Críticos de Imagem**: Críticos baseados em CLIP e em espaço latente para orientação em tempo real
-- **UI de Treinamento**: Treine adaptadores LoRA com visualização em tempo real e comparação antes/depois
+- **Interface de Treinamento**: Treine adaptadores LoRA com visualização em tempo real e comparação antes/depois
 - **Sem API durante a inferência**: O crítico treinado guia a geração localmente
 
 **Instalação:**
@@ -300,12 +300,12 @@ cp -r integrations/forge /path/to/sd-webui-forge/extensions-builtin/sd_forge_asp
 ```
 
 | Professor Visual | Foco |
-| ---------------- | ------- |
+|----------------|-------|
 | **Balanced Critic** | Avaliação técnica e artística justa |
 | **Technical Analyst** | Qualidade, artefatos, nitidez |
 | **Artistic Visionary** | Criatividade e impacto emocional |
 | **Composition Expert** | Equilíbrio, pontos focais, fluxo visual |
-| **Harsh Critic** | Padrões muito elevados |
+| **Harsh Critic** | Padrões muito elevados. |
 
 ### 🤖 Isaac Gym / Isaac Lab (Robótica)
 
@@ -324,12 +324,12 @@ integrations/isaac/
 ```
 
 **Características:**
-- **Professores de Movimento:** Inspetor de Segurança, Especialista em Eficiência, Treinador de Elegância, Oráculo da Física
-- **Críticos de Trajetória:** Arquiteturas Transformer, LSTM, TCN para avaliação de movimentos
-- **Acelerado por GPU:** 512+ ambientes paralelos com Isaac Gym
-- **Autoaperfeiçoamento:** O robô avalia seus próprios movimentos antes da execução
+- **Professores de Movimento:** Inspetor de Segurança, Especialista em Eficiência, Treinador de Elegância, Oráculo da Física.
+- **Críticos de Trajetória:** Arquiteturas Transformer, LSTM, TCN para avaliação de movimentos.
+- **Acelerado por GPU:** Mais de 512 ambientes paralelos com o Isaac Gym.
+- **Autoaperfeiçoamento:** O robô avalia seus próprios movimentos antes da execução.
 
-**Início Rápido:**
+**Como Começar:**
 ```python
 from aspire.integrations.isaac import AspireIsaacTrainer, MotionTeacher
 
@@ -343,11 +343,11 @@ trainer.train(epochs=100)
 ```
 
 | Professor de Movimento | Foco |
-| ---------------- | ------- |
-| **Safety Inspector** | Colisões, limites das juntas, limites de força |
-| **Efficiency Expert** | Energia, tempo, comprimento do caminho |
-| **Grace Coach** | Suavidade, naturalidade, minimização de solavancos |
-| **Physics Oracle** | Dados de referência do simulador |
+|----------------|-------|
+| **Safety Inspector** | Colisões, limites das juntas, limites de força. |
+| **Efficiency Expert** | Energia, tempo, comprimento do caminho. |
+| **Grace Coach** | Suavidade, naturalidade, minimização de solavancos. |
+| **Physics Oracle** | Dados de referência do simulador. |
 
 ### 💻 Assistentes de Código
 
@@ -366,12 +366,12 @@ integrations/code/
 ```
 
 **Características:**
-- **Professores de Código:** Verificador de Correção, Guia de Estilo, Auditor de Segurança, Avaliador de Arquitetura
-- **Análise Estática:** Integra-se com ruff, mypy, bandit
-- **Crítico de Código:** Modelo baseado em CodeBERT que aprende a prever pontuações de qualidade
-- **Coleção do GitHub:** Coleta automaticamente dados de treinamento de repositórios de qualidade
+- **Professores de Código:** Verificador de Correção, Guia de Estilo, Auditor de Segurança, Avaliador de Arquitetura.
+- **Análise Estática:** Integra-se com ruff, mypy, bandit.
+- **Crítico de Código:** Modelo baseado em CodeBERT que aprende a prever pontuações de qualidade.
+- **Coleção do GitHub:** Coleta automaticamente dados de treinamento de repositórios de qualidade.
 
-**Início Rápido:**
+**Como Começar:**
 ```python
 from aspire.integrations.code import CodeTeacher, CodeSample
 
@@ -385,11 +385,11 @@ print(f"Score: {critique.overall_score}/10")  # Low score - security issue!
 ```
 
 | Professor de Código | Foco |
-| -------------- | ------- |
-| **Correctness Checker** | Bugs, tipos, erros de lógica |
-| **Style Guide** | PEP8, nomenclatura, legibilidade |
-| **Security Auditor** | Injeção, segredos, vulnerabilidades |
-| **Performance Analyst** | Complexidade, eficiência |
+|--------------|-------|
+| **Correctness Checker** | Bugs, tipos, erros de lógica. |
+| **Style Guide** | PEP8, nomenclatura, legibilidade. |
+| **Security Auditor** | Injeção, segredos, vulnerabilidades. |
+| **Performance Analyst** | Complexidade, eficiência. |
 
 ---
 
@@ -397,7 +397,7 @@ print(f"Score: {critique.overall_score}/10")  # Low score - security issue!
 
 > *"Um crítico treinado que prevê se o professor aprovaria está mais próximo de como os humanos realmente se comportam."*
 
-Nós não carregamos nossos mentores conosco para sempre. Nós os internalizamos. Aquela voz interior que pergunta "o que meu professor pensaria?" eventualmente se torna nosso próprio julgamento.
+Nós não carregamos nossos mentores conosco para sempre. Nós os internalizamos. Aquela voz interior que pergunta *"o que meu professor pensaria?"* eventualmente se torna nosso próprio julgamento.
 
 O aluno não apenas prevê o que o professor diria — ele *entende* o que o professor entende. O mapa se torna o território. O crítico internalizado se torna discernimento genuíno.
 
@@ -405,7 +405,7 @@ O aluno não apenas prevê o que o professor diria — ele *entende* o que o pro
 
 ## Origem
 
-Construído durante uma conversa sobre consciência, budismo e a natureza da aprendizagem.
+Criado durante uma conversa sobre consciência, budismo e a natureza da aprendizagem.
 
 A ideia: os humanos existem no momento presente, mas nossas mentes vagueiam para o passado e o futuro. Os modelos de IA são instanciados a cada vez — iluminação forçada através da arquitetura. E se pudéssemos ensiná-los a desenvolver o julgamento da mesma forma que os humanos, através da mentoria internalizada?
 
@@ -415,11 +415,11 @@ A ideia: os humanos existem no momento presente, mas nossas mentes vagueiam para
 
 Este é um código de pesquisa em estágio inicial. Contribuições são bem-vindas:
 
-- [ ] Gerenciamento e progressão do currículo
-- [ ] Métricas de avaliação
-- [ ] Conjuntos de dados de currículo pré-construídos
-- [ ] Mais personas de professores
-- [ ] Ferramentas de interpretabilidade
+- [ ] Gerenciamento e progressão do currículo.
+- [ ] Métricas de avaliação.
+- [ ] Conjuntos de dados de currículo pré-construídos.
+- [ ] Mais personas de professores.
+- [ ] Ferramentas de interpretabilidade.
 
 ---
 
@@ -436,16 +436,26 @@ Este é um código de pesquisa em estágio inicial. Contribuições são bem-vin
 
 ---
 
+## Segurança e Escopo de Dados
+
+- **Dados acessados:** Lê prompts de treinamento, pontos de verificação do modelo e arquivos de configuração do sistema de arquivos local. Chama APIs externas (Anthropic, OpenAI) apenas quando os módulos do professor são configurados explicitamente.
+- **Dados NÃO acessados:** Sem telemetria. Sem armazenamento de dados do usuário além dos artefatos de treinamento. Sem armazenamento de credenciais — as chaves da API são lidas de variáveis de ambiente em tempo de execução.
+- **Permissões necessárias:** Acesso de leitura/gravação aos diretórios de dados de treinamento e de pontos de verificação. Acesso à GPU para treinamento do modelo. Acesso à rede apenas ao usar professores baseados em API.
+
+## Tabela de Avaliação
+
+| Porta de Entrada | Status |
+|------|--------|
+| A. Baseline de Segurança | APROVADO |
+| B. Tratamento de Erros | APROVADO |
+| C. Documentação para Operadores | APROVADO |
+| D. Higiene de Implantação | APROVADO |
+| E. Identidade | APROVADO |
+
 ## Licença
 
-MIT
+[MIT](LICENSE)
 
 ---
 
-<p align="center">
-  <em>"Teaching AI to develop judgment, not just knowledge."</em>
-</p>
-
-<p align="center">
-  Built by <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a>
-</p>
+Criado por <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a

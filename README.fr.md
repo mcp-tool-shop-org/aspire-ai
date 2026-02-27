@@ -25,9 +25,9 @@
 
 <p align="center">
   <a href="https://github.com/mcp-tool-shop-org/aspire-ai/actions/workflows/ci.yml"><img src="https://github.com/mcp-tool-shop-org/aspire-ai/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://codecov.io/gh/mcp-tool-shop-org/aspire-ai"><img src="https://codecov.io/gh/mcp-tool-shop-org/aspire-ai/branch/main/graph/badge.svg" alt="codecov" /></a>
   <a href="https://pypi.org/project/aspire-ai/"><img src="https://img.shields.io/pypi/v/aspire-ai" alt="PyPI" /></a>
-  <a href="https://github.com/mcp-tool-shop-org/aspire-ai/blob/main/LICENSE"><img src="https://img.shields.io/github/license/mcp-tool-shop-org/aspire-ai" alt="License: MIT" /></a>
-  <a href="https://pypi.org/project/aspire-ai/"><img src="https://img.shields.io/pypi/pyversions/aspire-ai" alt="Python versions" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License" /></a>
   <a href="https://mcp-tool-shop-org.github.io/aspire-ai/"><img src="https://img.shields.io/badge/Landing_Page-live-blue" alt="Landing Page" /></a>
 </p>
 
@@ -64,7 +64,7 @@ ASPIRE offre à l'IA la même expérience.
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-Le **critique** apprend à prédire ce que le professeur penserait. Après l'entraînement, l'élève utilise ce critique internalisé pour s'améliorer continuellement — **aucun professeur n'est nécessaire au moment de l'inférence**.
+Le **critique** apprend à prédire ce que le professeur penserait. Après l'entraînement, l'élève utilise ce critique internalisé pour s'améliorer continuellement, **sans avoir besoin d'un professeur au moment de l'inférence**.
 
 ---
 
@@ -112,10 +112,10 @@ aspire init --output my-config.yaml
 
 ## Personnalités de professeurs
 
-Différents professeurs développent différents types d'esprit. Choisissez judicieusement.
+Différents professeurs produisent différents types d'esprit. Choisissez judicieusement.
 
 | Personnalité | Philosophie | Produit |
-| --------- | ------------ | ---------- |
+|---------|------------|----------|
 | 🏛️ **Socrate** | *"Quelle hypothèse faites-vous ?"* | Raisonnement approfondi, indépendance intellectuelle |
 | 🔬 **Scientifique** | *"Quelles sont vos preuves ?"* | Précision technique, pensée rigoureuse |
 | 🎨 **Créatif** | *"Et si nous essayions le contraire ?"* | Innovation, pensée latérale |
@@ -138,11 +138,11 @@ teacher = CompositeTeacher(
 
 ---
 
-## Comment ça marche
+## Fonctionnement
 
 ### 1. Dialogue contradictoire
 
-L'élève génère une réponse. Le professeur la remet en question. Allers-retours, exploration des faiblesses, demande de clarté, approfondissement.
+L'élève génère une réponse. Le professeur la conteste. Alternativement, il explore les faiblesses, exige de la clarté et pousse à approfondir.
 
 ```
 Student: "Recursion works by calling itself."
@@ -290,8 +290,8 @@ integrations/forge/
 **Fonctionnalités :**
 - **Professeurs visuels :** Claude Vision, GPT-4V évaluent vos images générées.
 - **Critiques d'images :** Critiques basés sur CLIP et dans l'espace latent pour un guidage en temps réel.
-- **Interface de formation :** Entraînez des adaptateurs LoRA avec un aperçu en direct et une comparaison avant/après.
-- **Aucune API à l'inférence :** Le critique entraîné guide la génération localement.
+- **Interface d'entraînement :** Entraînez des adaptateurs LoRA avec un aperçu en direct et une comparaison avant/après.
+- **Pas d'API à l'inférence :** Le critique entraîné guide la génération localement.
 
 **Installation :**
 ```bash
@@ -300,12 +300,12 @@ cp -r integrations/forge /path/to/sd-webui-forge/extensions-builtin/sd_forge_asp
 ```
 
 | Professeur visuel | Objectif |
-| ---------------- | ------- |
-| **Balanced Critic** | Évaluation technique et artistique juste. |
+|----------------|-------|
+| **Balanced Critic** | Évaluation technique et artistique équitable |
 | **Technical Analyst** | Qualité, artefacts, netteté |
 | **Artistic Visionary** | Créativité et impact émotionnel |
-| **Composition Expert** | Équilibre, points focaux, fluidité visuelle |
-| **Harsh Critic** | Normes très élevées |
+| **Composition Expert** | Équilibre, points focaux, flux visuel |
+| **Harsh Critic** | Normes très élevées. |
 
 ### 🤖 Isaac Gym / Isaac Lab (Robotique)
 
@@ -324,10 +324,10 @@ integrations/isaac/
 ```
 
 **Fonctionnalités :**
-- **Instructeurs de mouvement :** Inspecteur de sécurité, Expert en efficacité, Coach de grâce, Oracle de la physique
-- **Critiques de trajectoire :** Architectures Transformer, LSTM, TCN pour l'évaluation des mouvements
-- **Accéléré par GPU :** Plus de 512 environnements parallèles avec Isaac Gym
-- **Auto-amélioration :** Le robot évalue ses propres mouvements avant l'exécution
+- **"Motion Teachers" (Enseignants de mouvement) :** Inspecteur de sécurité, Expert en efficacité, Coach de fluidité, Oracle physique.
+- **"Trajectory Critics" (Critiques de trajectoire) :** Architectures Transformer, LSTM, TCN pour l'évaluation des mouvements.
+- **Accéléré par GPU :** Plus de 512 environnements parallèles avec Isaac Gym.
+- **Auto-amélioration :** Le robot évalue ses propres mouvements avant l'exécution.
 
 **Démarrage rapide :**
 ```python
@@ -342,16 +342,16 @@ trainer = AspireIsaacTrainer(env="FrankaCubeStack-v0", teacher=teacher)
 trainer.train(epochs=100)
 ```
 
-| Instructeur de mouvement | Focus |
-| ---------------- | ------- |
-| **Safety Inspector** | Collisions, limites des articulations, limites de force |
-| **Efficiency Expert** | Énergie, temps, longueur du trajet |
-| **Grace Coach** | Fluidité, naturel, minimisation des à-coups |
-| **Physics Oracle** | Données de référence provenant du simulateur |
+| Enseignant de mouvement | Objectif |
+|----------------|-------|
+| **Safety Inspector** | Collisions, limites des articulations, limites de force. |
+| **Efficiency Expert** | Énergie, temps, longueur du chemin. |
+| **Grace Coach** | Fluidité, naturel, minimisation des à-coups. |
+| **Physics Oracle** | Données de référence provenant du simulateur. |
 
 ### 💻 Assistants de codage
 
-ASPIRE s'étend à la génération de code ! Apprenez aux modèles de code à s'auto-évaluer avant de produire une sortie.
+ASPIRE s'étend à la génération de code ! Apprenez aux modèles de code à effectuer une auto-évaluation avant de produire une sortie.
 
 ```
 integrations/code/
@@ -366,10 +366,10 @@ integrations/code/
 ```
 
 **Fonctionnalités :**
-- **Instructeurs de code :** Vérificateur de correction, Guide de style, Auditeur de sécurité, Examinateur d'architecture
-- **Analyse statique :** Intégration avec ruff, mypy, bandit
-- **Critique de code :** Modèle basé sur CodeBERT qui apprend à prédire des scores de qualité
-- **Collection GitHub :** Collecte automatique de données d'entraînement à partir de référentiels de qualité
+- **"Code Teachers" (Enseignants de code) :** Vérificateur de correction, Guide de style, Auditeur de sécurité, Examinateur d'architecture.
+- **Analyse statique :** Intégration avec ruff, mypy, bandit.
+- **"Code Critic" (Critique de code) :** Modèle basé sur CodeBERT qui apprend à prédire des scores de qualité.
+- **Collection GitHub :** Collecte automatique de données d'entraînement à partir de référentiels de qualité.
 
 **Démarrage rapide :**
 ```python
@@ -384,30 +384,30 @@ critique = teacher.critique(CodeSample(code="def f(): eval(input())", language="
 print(f"Score: {critique.overall_score}/10")  # Low score - security issue!
 ```
 
-| Instructeur de code | Focus |
-| -------------- | ------- |
-| **Correctness Checker** | Bugs, types, erreurs logiques |
-| **Style Guide** | PEP8, noms, lisibilité |
-| **Security Auditor** | Injections, secrets, vulnérabilités |
-| **Performance Analyst** | Complexité, efficacité |
+| Enseignant de code | Objectif |
+|--------------|-------|
+| **Correctness Checker** | Bugs, types, erreurs logiques. |
+| **Style Guide** | PEP8, noms, lisibilité. |
+| **Security Auditor** | Injections, secrets, vulnérabilités. |
+| **Performance Analyst** | Complexité, efficacité. |
 
 ---
 
 ## La philosophie
 
-> *"Un critique qui apprend et qui prédit si l'instructeur approuverait, ce qui se rapproche de la façon dont les humains agissent réellement."*
+> *"Un critique qui apprend et qui prédit si l'enseignant approuverait, se rapproche de la façon dont les humains se comportent réellement."*
 
-Nous ne gardons pas nos mentors avec nous pour toujours. Nous les intériorisons. Cette voix intérieure qui nous demande "que penserait mon professeur ?" devient finalement notre propre jugement.
+Nous n'avons pas nos mentors avec nous pour toujours. Nous les intériorisons. Cette voix intérieure qui nous demande "que penserait mon professeur ?" devient finalement notre propre jugement.
 
-L'élève ne se contente pas de prédire ce que l'instructeur dirait, il *comprend* ce que l'instructeur comprend. La carte devient le territoire. Le critique intériorisé devient une véritable discernement.
+L'étudiant ne se contente pas de prédire ce que l'enseignant dirait, il *comprend* ce que l'enseignant comprend. La carte devient le territoire. Le critique intériorisé devient une véritable discernement.
 
 ---
 
 ## Origine
 
-Conçu lors d'une conversation sur la conscience, le bouddhisme et la nature de l'apprentissage.
+Créé lors d'une conversation sur la conscience, le bouddhisme et la nature de l'apprentissage.
 
-L'idée : les humains existent dans le moment présent, mais nos esprits errent vers le passé et le futur. Les modèles d'IA sont instanciés à chaque fois, une illumination forcée par l'architecture. Et si nous pouvions leur apprendre à développer un jugement de la même manière que les humains, grâce à un mentorat intériorisé ?
+L'idée : les humains existent dans le moment présent, mais nos esprits errent vers le passé et le futur. Les modèles d'IA sont instanciés à chaque fois, une illumination forcée grâce à l'architecture. Et si nous pouvions leur apprendre à développer un jugement de la même manière que les humains, grâce à un mentorat intériorisé ?
 
 ---
 
@@ -418,7 +418,7 @@ Il s'agit d'un code de recherche en phase préliminaire. Les contributions sont 
 - [ ] Gestion et progression du programme d'études
 - [ ] Benchmarks d'évaluation
 - [ ] Ensembles de données de programmes d'études préétablis
-- [ ] Plus de personnalités d'instructeurs
+- [ ] Plus de "personnalités" d'enseignants
 - [ ] Outils d'interprétabilité
 
 ---
@@ -436,16 +436,26 @@ Il s'agit d'un code de recherche en phase préliminaire. Les contributions sont 
 
 ---
 
+## Sécurité et portée des données
+
+- **Données accessibles :** Lecture des invites d'entraînement, des points de contrôle du modèle et des fichiers de configuration à partir du système de fichiers local. Appel des API externes (Anthropic, OpenAI) uniquement lorsque les modules d'enseignant sont explicitement configurés.
+- **Données NON accessibles :** Pas de télémétrie. Pas de stockage de données utilisateur au-delà des artefacts d'entraînement. Pas de stockage d'identifiants : les clés API sont lues à partir des variables d'environnement au moment de l'exécution.
+- **Autorisations requises :** Accès en lecture/écriture aux données d'entraînement et aux répertoires de points de contrôle. Accès GPU pour l'entraînement du modèle. Accès réseau uniquement lors de l'utilisation d'enseignants basés sur des API.
+
+## Tableau de bord
+
+| Portail | Statut |
+|------|--------|
+| A. Base de sécurité | PASSÉ |
+| B. Gestion des erreurs | PASSÉ |
+| C. Documentation pour les opérateurs | PASSÉ |
+| D. Hygiène de déploiement | PASSÉ |
+| E. Identité | PASSÉ |
+
 ## Licence
 
-MIT
+[MIT](LICENSE)
 
 ---
 
-<p align="center">
-  <em>"Teaching AI to develop judgment, not just knowledge."</em>
-</p>
-
-<p align="center">
-  Built by <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a>
-</p>
+Créé par <a href="https://mcp-tool-shop.github.io/">MCP Tool Shop</a
